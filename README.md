@@ -1,4 +1,3 @@
-# software-engineering-project-infinotes
-software-engineering-project-infinotes created by GitHub Classroom
+# InfiNotes
 
 Drawing and note taking application developed by Michael Sawchuk (🤪), Kobin Kempe (😳), Anuja Mehta (🙄), and Nolan Raghu (🤤).
