@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="installed npm :P" />
+    <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="we delete things that we don't understand...">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/package.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,7 +46,7 @@
       <updated>1612989919179</updated>
       <workItem from="1612989924912" duration="2896000" />
       <workItem from="1613057830529" duration="170000" />
-      <workItem from="1613149390786" duration="1291000" />
+      <workItem from="1613149390786" duration="4615000" />
     </task>
     <task id="LOCAL-00001" summary="initialzied firebase">
       <created>1613149769444</created>
@@ -57,7 +62,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613150429751</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="we delete things that we don't understand...">
+      <created>1613150795875</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1613150795875</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -78,6 +90,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initialzied firebase" />
     <MESSAGE value="installed npm :P" />
-    <option name="LAST_COMMIT_MESSAGE" value="installed npm :P" />
+    <MESSAGE value="we delete things that we don't understand..." />
+    <option name="LAST_COMMIT_MESSAGE" value="we delete things that we don't understand..." />
   </component>
 </project>
