@@ -2,15 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="we delete things that we don't understand...">
+      <change afterPath="$PROJECT_DIR$/boundless/src/LoginScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boundless/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boundless/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -46,7 +55,7 @@
       <updated>1612989919179</updated>
       <workItem from="1612989924912" duration="2896000" />
       <workItem from="1613057830529" duration="170000" />
-      <workItem from="1613149390786" duration="4615000" />
+      <workItem from="1613149390786" duration="7109000" />
     </task>
     <task id="LOCAL-00001" summary="initialzied firebase">
       <created>1613149769444</created>
