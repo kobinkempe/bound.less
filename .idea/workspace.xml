@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/software-engineering-project-infinotes.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-    </list>
+    <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="initialzied firebase" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,8 +41,16 @@
       <updated>1612989919179</updated>
       <workItem from="1612989924912" duration="2896000" />
       <workItem from="1613057830529" duration="170000" />
-      <workItem from="1613149390786" duration="328000" />
+      <workItem from="1613149390786" duration="658000" />
     </task>
+    <task id="LOCAL-00001" summary="initialzied firebase">
+      <created>1613149769444</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1613149769444</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -63,5 +67,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initialzied firebase" />
+    <option name="LAST_COMMIT_MESSAGE" value="initialzied firebase" />
   </component>
 </project>
