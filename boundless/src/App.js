@@ -1,9 +1,4 @@
-import './App.css';
-import heyworld from "./oleTom.js";
-import {
-  incrementByAmount,
-  selectCount,
-} from './Redux/reducerSliceOne'
+import './Stylesheets/App.css';
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,7 +7,7 @@ import {
   useRouteMatch,
   useParams
 } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import Home from "./Pages/Home";
 
 function App() {
   return (
@@ -38,38 +33,11 @@ function App() {
               <Topics />
             </Route>
             <Route path="/">
-              <MainPage />
+              <Home />
             </Route>
           </Switch>
         </div>
       </Router>
-  );
-}
-
-function MainPage() {
-  const count = useSelector(selectCount);
-  const dispatch = useDispatch();
-
-  return (
-      <div className="App">
-        <header className="App-header">
-          <heyworld/>
-          <p>
-            {count}
-          </p>
-          <button onClick={()=>{dispatch(incrementByAmount(2))}}>
-            increment by 2
-          </button>
-          <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
   );
 }
 
