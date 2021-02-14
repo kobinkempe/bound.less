@@ -1,5 +1,5 @@
 import {Link, Route, Switch, useRouteMatch, Redirect} from "react-router-dom";
-import Canvas from "./Canvas";
+import CanvasPage from "./CanvasPage";
 
 export default function CanvasRouter() {
     let {path, url} = useRouteMatch();
@@ -23,7 +23,7 @@ export default function CanvasRouter() {
 
             <Switch>
                 <Route path={`${path}/:canvasId`}>
-                    <Canvas />
+                    <CanvasPage />
                 </Route>
                 <Route exact path={path}>
                     <Redirect to='/profile' />
