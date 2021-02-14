@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff">
-      <change afterPath="$PROJECT_DIR$/boundless/src/oleTom.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/boundless/src/oleTom.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/boundless/src/AdHoc/withPenTool.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/boundless/src/Pages/PaperTemplate.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/boundless/src/Pages/default.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boundless/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boundless/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Pages/Canvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/Canvas.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +18,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -51,6 +52,12 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/boundless/src/Pages" />
+      <recent name="$PROJECT_DIR$/boundless/public" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
