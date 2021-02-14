@@ -1,4 +1,4 @@
-import '../Stylesheets/App.css';
+import '../Stylesheets/Home.css';
 import {
     incrementByAmount,
     selectCount,
