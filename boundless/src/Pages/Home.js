@@ -18,14 +18,6 @@ export default function Home() {
                 <button onClick={()=>{dispatch(incrementByAmount(2))}}>
                     increment by 2
                 </button>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
             </header>
         </div>
     );

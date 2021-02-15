@@ -10,10 +10,33 @@ type Coordinate = {
     y: number;
 };
 
+let TEXT_RENDERING_BOOL = true;
+
 const Canvas = ({ width, height }: CanvasProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isPainting, setIsPainting] = useState(false);
     const [mousePosition, setMousePosition] = useState<Coordinate | undefined>(undefined);
+
+    if(canvasRef != null && TEXT_RENDERING_BOOL){
+            const textRef = canvasRef.current? canvasRef.current.getContext("2d"): null;
+
+            //I know, I know. The second condition is only to appease the TSX compiler
+            if(textRef && canvasRef.current) {
+                textRef.font = "30px Verdana";
+                textRef.globalAlpha = .5;
+                textRef.fillStyle = "read";
+                textRef.textAlign = "center";
+                textRef.fillText("Click and drag your mouse to draw!",
+                    canvasRef.current.width/2,
+                    canvasRef.current.height/2);
+                textRef.globalAlpha = 1;
+
+                TEXT_RENDERING_BOOL = false;
+            }
+
+    }
+
+
 
     const startPaint = useCallback((event: MouseEvent) => {
         const coordinates = getCoordinates(event);
