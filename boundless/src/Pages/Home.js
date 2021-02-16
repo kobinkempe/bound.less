@@ -12,11 +12,14 @@ export default function Home() {
     return (
         <div className="App">
             <header className="App-header">
+                <text>
+                    Hook/Redux State Example (below)
+                </text>
                 <p>
                     {count}
                 </p>
                 <button onClick={()=>{dispatch(incrementByAmount(2))}}>
-                    increment by 2
+                    Increment by 2
                 </button>
             </header>
         </div>

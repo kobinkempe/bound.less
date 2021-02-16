@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
 
 interface CanvasProps {
     width: number;
     height: number;
+    canvasId: number;
 }
 
 type Coordinate = {
@@ -12,7 +13,10 @@ type Coordinate = {
 
 let TEXT_RENDERING_BOOL = true;
 
-const Canvas = ({ width, height }: CanvasProps) => {
+const canvasArr: RefObject<HTMLCanvasElement>[] = [];
+
+
+const Canvas = ({ width, height, canvasId}: CanvasProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isPainting, setIsPainting] = useState(false);
     const [mousePosition, setMousePosition] = useState<Coordinate | undefined>(undefined);
