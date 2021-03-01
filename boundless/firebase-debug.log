@@ -1,0 +1,18 @@
+[debug] [2021-03-01T21:55:50.706Z] ----------------------------------------------------------------------
+[debug] [2021-03-01T21:55:50.708Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\micha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2021-03-01T21:55:50.708Z] CLI Version:   9.5.0
+[debug] [2021-03-01T21:55:50.708Z] Platform:      win32
+[debug] [2021-03-01T21:55:50.708Z] Node Version:  v14.16.0
+[debug] [2021-03-01T21:55:50.709Z] Time:          Mon Mar 01 2021 15:55:50 GMT-0600 (Central Standard Time)
+[debug] [2021-03-01T21:55:50.709Z] ----------------------------------------------------------------------
+[debug] [2021-03-01T21:55:50.709Z] 
+[debug] [2021-03-01T21:55:50.710Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] i  Firebase optionally collects CLI usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 
+[debug] [2021-03-01T21:55:50.889Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2021-03-01T21:55:50.890Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=700985919&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...
