@@ -1,21 +1,22 @@
 import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
 import Two from "two.js";
+import {current} from "@reduxjs/toolkit";
+import ReactDOM from 'react-dom'
 
 
-const   TwoCanvas = ({width, height, canvasID}) => {
+const TwoCanvas = ({width, height, canvasID}) => {
     const svgRef = useRef(null);
-    const [two, setTwo] = useState(new Two({fullscreen:true}).appendTo(svgRef.current));
+    const [two, setTwo] = useState(null);
     const [mouse, setMouse] = useState(null);
     const [isDrawing, setIsDrawing] = useState(null);
-    const [right, setRight] = useRef();
-    const [left, setLeft] = useRef(false);
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
-    const [size, setSize] = useState(40);
+    const [size, setSize] = useState(80);
 
 
 
     const makeCircle = useCallback((event) => {
+        setTwo(new Two({fullscreen:true }).appendTo(svgRef.current));
         const rect = two.makeRectangle(x, y, size, size);
         rect.fill = 'rgb(0,200,255)';
         rect.noStroke();
@@ -32,12 +33,10 @@ const   TwoCanvas = ({width, height, canvasID}) => {
             return
         }
         const canvas = svgRef.current;
-        canvas.addEventListener('mouseDown', makeCircle);
-        return () =>{
-            canvas.removeEventListener('mouseDown', makeCircle);
-        }
-
-
+            canvas.addEventListener('mouseDown', makeCircle);
+            return () => {
+                canvas.removeEventListener('mouseDown', makeCircle);
+            }
     });
 
     return <svg ref={svgRef} height={height} width={width}/>

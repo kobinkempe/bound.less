@@ -10,7 +10,7 @@ export default function CanvasPage(){
     return (
         <div>
             <h3>You are viewing canvas #{canvasId}</h3>
-            <Canvas/>
+            <TwoCanvas/>
         </div>
     )
 }
