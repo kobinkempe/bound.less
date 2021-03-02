@@ -16,15 +16,21 @@ const TwoCanvas = ({width, height, canvasID}) => {
 
 
     const makeCircle = useCallback((event) => {
+
+
+
         setTwo(new Two({fullscreen:true }).appendTo(svgRef.current));
         const rect = two.makeRectangle(x, y, size, size);
-        rect.fill = 'rgb(0,200,255)';
+        rect.fill = "rgb(0,200,255)";
         rect.noStroke();
         setX(x + 10);
         setY(y + 10);
         setSize(size+2);
         two.update();
-        console.log("click Made\n")
+        console.log("click Made\n");
+
+
+
     }, []);
 
 
@@ -33,12 +39,15 @@ const TwoCanvas = ({width, height, canvasID}) => {
             return
         }
         const canvas = svgRef.current;
-            canvas.addEventListener('mouseDown', makeCircle);
+            canvas.addEventListener('mousedown', makeCircle);
             return () => {
-                canvas.removeEventListener('mouseDown', makeCircle);
+                canvas.removeEventListener('mousedown', makeCircle);
             }
     });
 
-    return <svg ref={svgRef} height={height} width={width}/>
+    return (
+    <div>
+    <svg ref={svgRef} height={height} width={width}/>
+    </div>)
 }
 export default TwoCanvas;
