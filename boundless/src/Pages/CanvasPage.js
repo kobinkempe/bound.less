@@ -3,7 +3,7 @@ import Canvas from "../Draw/Canvas"
 
 
 
-export default function CanvasPage(){
+export const CanvasPage = () => {
     let {canvasId} = useParams();
     return (
         <div>

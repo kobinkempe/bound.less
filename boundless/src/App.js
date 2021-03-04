@@ -5,7 +5,7 @@ import {
   Link
 } from "react-router-dom";
 import Home from "./Pages/Home";
-import CanvasRouter from "./Pages/CanvasRouter";
+import {CanvasRouter} from "./Pages/CanvasRouter";
 import Profile from "./Pages/Profile";
 
 function App() {
@@ -17,15 +17,15 @@ function App() {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/canvas">Start Creating!</Link>
+              <Link to="/canvas/1">Start Creating!</Link>
             </li>
           </ul>
 
           <Switch>
-            <Route path="/canvas">
+            <Route path="/canvas/:canvasid">
               <CanvasRouter />
             </Route>
-            <Route path='/profile'>
+            <Route path='/profile/:username'>
               <Profile />
             </Route>
             <Route exact path="/">

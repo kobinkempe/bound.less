@@ -1,9 +1,10 @@
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 export default function Profile(){
+    let {username} = useParams();
     return (
         <div>
-            <h2>Your profile</h2>
+            <h2>Welcome to your profile {username}</h2>
 
             <ul>
                 <li>
