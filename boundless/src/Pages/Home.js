@@ -12,20 +12,15 @@ export default function Home() {
     return (
         <div className="App">
             <header className="App-header">
+                <text>
+                    Hook/Redux State Example (below)
+                </text>
                 <p>
                     {count}
                 </p>
                 <button onClick={()=>{dispatch(incrementByAmount(2))}}>
-                    increment by 2
+                    Increment by 2
                 </button>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
             </header>
         </div>
     );
