@@ -5,7 +5,7 @@ import TwoCanvas from "../Draw/TwoCanvas";
 
 
 
-export default function CanvasPage(){
+export const CanvasPage = () => {
     let {canvasId} = useParams();
     return (
         <div>

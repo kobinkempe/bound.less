@@ -1,11 +1,10 @@
 import {Link, Route, Switch, useRouteMatch, Redirect} from "react-router-dom";
-import CanvasPage from "./CanvasPage";
+import {CanvasPage} from "./CanvasPage";
 
-export default function CanvasRouter() {
+export const CanvasRouter = () => {
     let {path, url} = useRouteMatch();
+    console.log(path);
 
-    //TODO: Something I don't understand is making it so it doesn't
-    // work when you are on a specific canvas and refresh it
     return (
         <div>
             <h2>Canvas</h2>
@@ -22,11 +21,11 @@ export default function CanvasRouter() {
             </ul>
 
             <Switch>
-                <Route path={`${path}/:canvasId`}>
+                <Route path={`${path}`}>
                     <CanvasPage />
                 </Route>
                 <Route exact path={path}>
-                    <Redirect to='/profile' />
+                    <Redirect to='/profile/tombrady' />
                 </Route>
             </Switch>
         </div>
