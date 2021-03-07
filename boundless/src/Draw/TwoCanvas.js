@@ -3,33 +3,39 @@ import Two from "two.js";
 import {current} from "@reduxjs/toolkit";
 import ReactDOM from 'react-dom'
 
-/**
-const loadHook = () =>{
-    const []
-}
-**/
-
 
 let TEXT_RENDERING_BOOL = true;
-const TwoCanvas = ({width, height, canvasID}) => {
+const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
     const svgRef = useRef(null);
 
+    //Creates the 'two' object w/o mounting it to the actual DOM
     const [two, setTwo] = useState(
         new Two({height:window.innerHeight, width:window.innerWidth, autostart:true})
     );
 
     //Determines whether TwoCanvas has been appended onto svgRef
     const [isLoaded, setIsLoaded] = useState(false);
+
+    //Stores mouse coordinates
     const [mouse, setMouse] = useState([0,0]);
+
+    //Boolean for if the mouse is currently down
     const [isDrawing, setIsDrawing] = useState(false);
-    const [size, setSize] = useState(80);
 
 
-    // Boolean for if all two stuff is loaded in
-    function isGood(){
 
-        return svgRef.current && isLoaded;
-    }
+    /** QUICK TIPS
+     *  - So the wait I implemented this is primarily with
+     *  useEffect + Callback pairings.
+     *
+     *  useEffect is called EVERY TIME THE DOM IS RENDERED and returns
+     *  when the dom is dismounted.
+     *
+     *  useCallbacks are useEffects that only render when any of their dependencies
+     *  change, so best practice is to have them depend on certain state booleans
+     *
+     *
+     * **/
 
     //Appends twoCanvas and approves loading
     useEffect(() => {
@@ -40,6 +46,8 @@ const TwoCanvas = ({width, height, canvasID}) => {
         setTwo(two.appendTo(svgRef.current));
         setIsLoaded(true);
     });
+
+    //Currently not being used, but very fun
     function getRandomColor() {
         return 'rgb('
             + Math.floor(Math.random() * 255) + ','
@@ -47,34 +55,8 @@ const TwoCanvas = ({width, height, canvasID}) => {
             + Math.floor(Math.random() * 255) + ')';
     }
 
-    /**
-    const makeCircle = useCallback((event) => {
-        if(!isGood()) {
-            //const two = new Two({height:height, width:width}).appendTo(svgRef.current);
-            const rect = two.makeRectangle(0,0, size, size);
-            rect.fill = getRandomColor();
-            rect.noStroke();
-            setMouse([mouse[0] + 10, mouse[1] + 10]);
-            setSize(size + 2);
-            console.log("click Made\n");
-            two.update();
-        }
 
-    }, []);
-
-    //Appends twoCanvas and approves loading
-    useEffect(() => {
-        if (!isGood()) {
-            return;
-        }
-        const canvas  = two.renderer.domElement;
-        canvas.addEventListener('mousedown', makeCircle);
-        return () => {
-            //canvas.removeEventListener('mousedown', makeCircle);
-        };
-    });
-**/
-
+    //Callback for when mouse is down
     const startPaint = useCallback((event) => {
         //console.log("startPaint CAlled");
         const coordinates = getsCoordinates(event);
@@ -85,6 +67,7 @@ const TwoCanvas = ({width, height, canvasID}) => {
         }
     }, []);
 
+    //useEffect for startPaint
     useEffect(() => {
         if (!svgRef.current) {
             //console.log("SVG Status: "+(svgRef.current != null));
@@ -101,6 +84,7 @@ const TwoCanvas = ({width, height, canvasID}) => {
         //}
     }, [startPaint, two]);
 
+    //instantiates newMouse and draws lines
     const paint = useCallback(
         (event ) => {
             //console.log("Paint Called")
@@ -116,6 +100,7 @@ const TwoCanvas = ({width, height, canvasID}) => {
         [isDrawing, mouse]
     );
 
+    //useEffect for paint
     useEffect(() => {
         if (!svgRef.current) {
             //console.log("paint Ev. Handle notGood")
@@ -131,11 +116,13 @@ const TwoCanvas = ({width, height, canvasID}) => {
             };
     }, [paint, two]);
 
+    //Triggers when the mouse is up or off the screen
     const exitPaint = useCallback(() => {
         setIsDrawing(false);
         setMouse(undefined);
     }, []);
 
+    //useEffect for exitPaint
     useEffect(() => {
         if (!svgRef.current) {
             //console.log("MouseUp or MouseLeave Ev. Handle notGood")
@@ -154,6 +141,7 @@ const TwoCanvas = ({width, height, canvasID}) => {
             };
     }, [exitPaint, two]);
 
+    //Gets the coordinates of the mouse event
     const getsCoordinates = (event) => {
         if (!svgRef.current) {
             //console.log("getsCoordinates failed")
@@ -164,14 +152,19 @@ const TwoCanvas = ({width, height, canvasID}) => {
             //console.log("getsCoordinates called");
             const canvas = two.renderer.domElement;
 
-        console.log("x: "+event.pageX-svgRef.current.offsetX+" y: "+event.pageY-svgRef.current.offsetY);
+        console.log("x: "+event.pageX +" y: "+event.offsetY);
 
         //Coordinate notes:
         // Don't use canvas or svgRef.current (which would normally make sense)
-        // because they're like fake parent classes wrap the actual SVG two.js
-        // generates and appends
+        // because canvas is modded via Two and doesn't work and
+        // svgRef.current is just an empty component that I stick the two SVG onto
 
-        //COORDINATES THAT WORK (3/7)
+
+
+        //COORDINATES THAT WORK (3/7) (for some reason)
+        //
+        //
+        //
         // x: event.pageX, y: event.offsetY
         return [event.pageX,  event.offsetY]
     };
