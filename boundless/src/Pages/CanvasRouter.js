@@ -22,7 +22,9 @@ export const CanvasRouter = () => {
 
             <Switch>
                 <Route path={`${path}`}>
-                    <CanvasPage />
+                    <CanvasPage
+                        canvasID={path[path.length-1]}
+                    />
                 </Route>
                 <Route exact path={path}>
                     <Redirect to='/profile/tombrady' />

@@ -5,11 +5,11 @@ import TwoCanvas from "../Draw/TwoCanvas";
 
 
 
-export const CanvasPage = () => {
+export const CanvasPage = ({canvasID}) => {
     let {canvasId} = useParams();
     return (
         <div>
-            <h3>You are viewing canvas #{canvasId}</h3>
+            <h3>You are viewing canvas #{canvasID}</h3>
             <TwoCanvas/>
         </div>
     )
