@@ -175,7 +175,6 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
             //console.log("SVG Status: "+(svgRef.current != null));
             return;
         }
-        console.log("tryan make a line");
         const path = two.makeLine(
                     originalMousePosition[0],
                     originalMousePosition[1],
