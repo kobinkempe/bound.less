@@ -3,20 +3,17 @@ import {useDispatch} from "react-redux";
 import {Link} from "react-router-dom";
 import {Button} from "@material-ui/core";
 import {logIn, logOut} from "../Redux/loginState";
+import GoogleSignIn from "../Components/GoogleSignIn"
 
 export default function Home() {
     const dispatch = useDispatch();
 
     return (
         <div className="App">
-            <div>
-                <Button onClick={()=>{dispatch(logIn('johnDoe'))}}>Log In as John Doe</Button>
-                <Button onClick={()=>{dispatch(logIn('janeDoe'))}}>Log In as Jane Doe</Button>
-                <Button onClick={()=>{dispatch(logOut)}}>Log Out</Button>
-            </div>
             <div style={{lineHeight: 1.5}}>
                 <Link to="/" className="Header-text">Home</Link>
                 <Link to="/sheets/1" className="Header-text">Start Creating!</Link>
+                <GoogleSignIn/>
             </div>
             <header className="App-header">
                 <div className="Welcome-message">
