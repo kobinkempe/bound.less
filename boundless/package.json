@@ -15,6 +15,7 @@
     "react-colorful": "^5.0.0",
     "react-dom": "^17.0.1",
     "react-google-login": "^5.2.2",
+    "react-paper-bindings": "^1.1.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "redux": "^4.0.5",
