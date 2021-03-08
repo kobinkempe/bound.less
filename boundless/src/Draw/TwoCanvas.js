@@ -8,6 +8,9 @@ import {selectRGB} from "../Redux/rSlicePenOptions";
 import svg from "two.js/src/renderers/svg";
 
 
+
+const radius = 40;
+
 let TEXT_RENDERING_BOOL = true;
 const TwoCanvas = ({canvasID}) => {
     const svgRef = useRef(null);
@@ -74,6 +77,7 @@ const TwoCanvas = ({canvasID}) => {
 
 
     const toggleTool = useCallback( (event) => {
+        console.log("toggleTool triggered");
         switch(event.key){
             case 'c':
                 setToolInUse('circle');
@@ -95,10 +99,12 @@ const TwoCanvas = ({canvasID}) => {
             return;
         }
 
-        const canvas = two.renderer.domElement;
-        canvas.addEventListener('keypress', toggleTool);
+        document.addEventListener('keypress', toggleTool);
+        document.addEventListener('keydown', toggleTool);
+
         return () => {
-            canvas.removeEventListener('keyPress', toggleTool);
+            document.removeEventListener('keypress', toggleTool);
+            document.removeEventListener('keydown', toggleTool);
         }
         }, [toggleTool, two]);
 
@@ -136,13 +142,13 @@ const TwoCanvas = ({canvasID}) => {
             if (inUse) {
                 //console.log("Paint Called w/inUse as true;")
                 const newMouse = getsCoordinates(event);
-                if (mouse && newMouse) {
+                if (mouse && newMouse && (toolInUse === 'pen')) {
                     drawLine(mouse, newMouse);
                     setMouse(newMouse);
                 }
             }
         },
-        [inUse, mouse]
+        [inUse, mouse, toolInUse]
     );
 
     //useEffect for paint
@@ -163,9 +169,34 @@ const TwoCanvas = ({canvasID}) => {
 
     //Triggers when the mouse is up or off the screen
     const exitPaint = useCallback(() => {
-        setInUse(false);
-        setMouse(undefined);
+        if(toolInUse === 'pen') {
+            setInUse(false);
+            setMouse(undefined);
+        }
     }, []);
+
+
+    const dropShape = useCallback((event) => {
+        if(inUse) {
+                const newMouse = getsCoordinates(event);
+                if(newMouse){
+                    if(toolInUse === 'circle') {
+                        const circ = two.makeCircle(newMouse[0], newMouse[1], radius);
+                        circ.fill(penColor);
+                        setTwo(two);
+
+                    } else if(toolInUse === 'rectangle'){
+                        const rect = two.makeCircle(newMouse[0], newMouse[1], radius);
+                        rect.fill(penColor);
+                        setTwo(two);
+                    }
+
+                }
+
+            }
+
+
+    }, [inUse, toolInUse, two, setTwo]);
 
     //useEffect for exitPaint
     useEffect(() => {
@@ -177,8 +208,9 @@ const TwoCanvas = ({canvasID}) => {
         }
             const canvas = two.renderer.domElement;
             //console.log("MouseUp & mouseLEave mounted");
-            canvas.addEventListener('mouseup', exitPaint);
-            canvas.addEventListener('mouseleave', exitPaint);
+                canvas.addEventListener('mouseup', exitPaint);
+                canvas.addEventListener('mouseleave', exitPaint);
+                canvas.addEventListener('mouseup', dropShape);
 
             return () => {
                 canvas.removeEventListener('mouseup', exitPaint);
