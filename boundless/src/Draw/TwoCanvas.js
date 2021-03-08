@@ -79,22 +79,34 @@ const TwoCanvas = ({canvasID}) => {
     /** Shape Stuff**/
 
 
+
     const toggleTool = useCallback( (event) => {
         console.log("toggleTool triggered");
         switch(event.key){
             case 'c':
                 setToolInUse('circle');
+                setIsPenning(false);
+                setIsStickering(true);
                 break;
             case 'p':
                 setToolInUse('pen');
+                setIsStickering(false);
+                setIsPenning(false);
                 break;
             case 'r':
                 setToolInUse('rectangle');
+                setIsStickering(true);
+                setIsPenning(false)
+                break;
+            case 'd':
+                two.clear();
+                two.update();
+                setTwo(two);
                 break;
 
         }
 
-    }, [setToolInUse, toolInUse])
+    }, [toolInUse, isPenning, isStickering, two])
 
 
     useEffect(() => {
@@ -185,6 +197,7 @@ const TwoCanvas = ({canvasID}) => {
                 const newMouse = getsCoordinates(event);
                 if(newMouse){
                     if(toolInUse === 'circle') {
+                        console.log('Circle tool triggered');
                         const circ = two.makeCircle(newMouse[0], newMouse[1], radius);
                         circ.fill = penColor;
                         two.update();
