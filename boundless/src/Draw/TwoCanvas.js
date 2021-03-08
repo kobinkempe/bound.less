@@ -30,6 +30,9 @@ const TwoCanvas = ({canvasID}) => {
     //Boolean for if the mouse is currently down
     const [inUse, setInUse] = useState(false);
 
+    /** TOOLS **/
+    const [isPenning, setIsPenning]  = useState(false);
+    const [isStickering, setIsStickering] = useState(false);
     const [toolInUse, setToolInUse] = useState('pen');
 
 
@@ -178,16 +181,22 @@ const TwoCanvas = ({canvasID}) => {
 
     const dropShape = useCallback((event) => {
         if(inUse) {
+            console.log('useCallback called while in use');
                 const newMouse = getsCoordinates(event);
                 if(newMouse){
                     if(toolInUse === 'circle') {
                         const circ = two.makeCircle(newMouse[0], newMouse[1], radius);
-                        circ.fill(penColor);
+                        circ.fill = penColor;
+                        two.update();
+                        console.log(penColor);
                         setTwo(two);
 
                     } else if(toolInUse === 'rectangle'){
-                        const rect = two.makeCircle(newMouse[0], newMouse[1], radius);
-                        rect.fill(penColor);
+                        console.log('Rectangle tool triggered')
+                        const rect = two.makeRectangle(newMouse[0], newMouse[1], radius, radius);
+                        rect.fill = penColor
+                        two.update();
+                        console.log(penColor);
                         setTwo(two);
                     }
 
@@ -196,7 +205,7 @@ const TwoCanvas = ({canvasID}) => {
             }
 
 
-    }, [inUse, toolInUse, two, setTwo]);
+    }, [inUse, toolInUse, two, penColor]);
 
     //useEffect for exitPaint
     useEffect(() => {
@@ -215,8 +224,9 @@ const TwoCanvas = ({canvasID}) => {
             return () => {
                 canvas.removeEventListener('mouseup', exitPaint);
                 canvas.removeEventListener('mouseleave', exitPaint);
+                canvas.addEventListener('mouseup', dropShape);
             };
-    }, [exitPaint, two]);
+    }, [exitPaint, two, dropShape]);
 
     //Gets the coordinates of the mouse event
     const getsCoordinates = (event) => {
