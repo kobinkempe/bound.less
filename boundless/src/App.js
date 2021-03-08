@@ -7,19 +7,16 @@ import {
 import Home from "./Pages/Home";
 import {CanvasRouter} from "./Pages/CanvasRouter";
 import Profile from "./Pages/Profile";
+import './Stylesheets/Home.css';
 
 function App() {
   return (
       <Router>
         <div>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/canvas/1">Start Creating!</Link>
-            </li>
-          </ul>
+          <div style={{lineHeight: 1.5}}>
+            <a href="/" className="Header-text">Home</a>
+            <a href="/canvas/1" className="Header-text">Start Creating!</a>
+          </div>
 
           <Switch>
             <Route path="/canvas/:canvasid">

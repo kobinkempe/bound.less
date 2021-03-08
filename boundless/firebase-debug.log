@@ -1,0 +1,31 @@
+[debug] [2021-03-08T05:12:06.345Z] ----------------------------------------------------------------------
+[debug] [2021-03-08T05:12:06.346Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\micha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2021-03-08T05:12:06.347Z] CLI Version:   9.5.0
+[debug] [2021-03-08T05:12:06.347Z] Platform:      win32
+[debug] [2021-03-08T05:12:06.347Z] Node Version:  v14.16.0
+[debug] [2021-03-08T05:12:06.347Z] Time:          Sun Mar 07 2021 23:12:06 GMT-0600 (Central Standard Time)
+[debug] [2021-03-08T05:12:06.348Z] ----------------------------------------------------------------------
+[debug] [2021-03-08T05:12:06.348Z] 
+[debug] [2021-03-08T05:12:06.353Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-03-08T05:12:06.353Z] > authorizing via signed-in user
+[debug] [2021-03-08T05:12:06.353Z] [iam] checking project bound-less-vu for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2021-03-08T05:12:06.355Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/bound-less-vu:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2021-03-08T05:12:06.511Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Mon, 08 Mar 2021 05:12:07 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=88","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-03-08T05:12:06.512Z] > refreshing access token with scopes: []
+[debug] [2021-03-08T05:12:06.512Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-03-08T05:12:06.597Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","date":"Mon, 08 Mar 2021 05:12:07 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-03-08T05:12:06.601Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/bound-less-vu [none]
+[debug] [2021-03-08T05:12:06.761Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/bound-less-vu 200
+[debug] [2021-03-08T05:12:06.762Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/bound-less-vu {"projectId":"bound-less-vu","projectNumber":"904885000533","displayName":"Bound less","name":"projects/bound-less-vu","resources":{"hostingSite":"bound-less-vu","storageBucket":"bound-less-vu.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[info] 
+[info] === Deploying to 'bound-less-vu'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2021-03-08T05:12:06.765Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-03-08T05:12:06.766Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-03-08T05:12:06.841Z] <<< HTTP RESPONSE 200 {"date":"Mon, 08 Mar 2021 05:12:07 GMT","pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-03-08T05:12:06.845Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/bound-less-vu/versions  
+ {"config":{"rewrites":[{"glob":"**","path":"/index.html"}],"headers":[{"glob":"/service-worker.js","headers":{"Cache-Control":"no-cache"}}]},"labels":{"deployment-tool":"cli-firebase"}}

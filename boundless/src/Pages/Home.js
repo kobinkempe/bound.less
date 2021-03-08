@@ -12,15 +12,12 @@ export default function Home() {
     return (
         <div className="App">
             <header className="App-header">
-                <text>
-                    Hook/Redux State Example (below)
-                </text>
-                <p>
-                    {count}
-                </p>
-                <button onClick={()=>{dispatch(incrementByAmount(2))}}>
-                    Increment by 2
-                </button>
+                <div className="Welcome-message">
+                    <h2 className="">Welcome to bound.less!</h2>
+                    <h2>Start creating today!</h2>
+                </div>
+
+                <img src="https://digitalworkplace.global.fujitsu.com/wp-content/uploads/2018/07/image-for-spain-infographic-1200x968.jpg" className="Welcome-image"/>
             </header>
         </div>
     );
