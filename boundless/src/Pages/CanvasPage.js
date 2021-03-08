@@ -6,7 +6,7 @@ import TwoCanvas from "../Draw/TwoCanvas";
 
 
 export const CanvasPage = ({canvasID}) => {
-    let {canvasId} = useParams();
+    let canvasId = useParams().canvasid;
     return (
         <div>
             <h3>You are viewing canvas #{canvasID}</h3>
