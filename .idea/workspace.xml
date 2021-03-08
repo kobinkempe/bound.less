@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff...again">
-      <change beforePath="$PROJECT_DIR$/boundless/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

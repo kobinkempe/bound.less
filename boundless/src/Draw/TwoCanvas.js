@@ -74,8 +74,20 @@ const TwoCanvas = ({canvasID}) => {
 
 
     const toggleTool = useCallback( (event) => {
+        switch(event.key){
+            case 'c':
+                setToolInUse('circle');
+                break;
+            case 'p':
+                setToolInUse('pen');
+                break;
+            case 'r':
+                setToolInUse('rectangle');
+                break;
 
-    })
+        }
+
+    }, [setToolInUse, toolInUse])
 
 
     useEffect(() => {
@@ -87,11 +99,7 @@ const TwoCanvas = ({canvasID}) => {
         canvas.addEventListener('keypress', toggleTool);
         return () => {
             canvas.removeEventListener('keyPress', toggleTool);
-        };
-
-
-
-
+        }
         }, [toggleTool, two]);
 
     //Callback for when mouse is down
@@ -114,6 +122,7 @@ const TwoCanvas = ({canvasID}) => {
         }
             const canvas = two.renderer.domElement;
             //console.log("startPaint event added")
+
             canvas.addEventListener('mousedown', startPaint);
             return () => {
                 canvas.removeEventListener('mousedown', startPaint);
