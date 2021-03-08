@@ -20,7 +20,7 @@ export const CanvasPage = ({canvasID}) => {
         <div>
             <Box flexDirection={'row'}>
             <div>
-                <h3>You are viewing canvas #{canvasID}</h3>
+                <h3>You are viewing canvas #{canvasId}</h3>
             </div>
             <HexColorPicker className={styles.small}
                             color={selectColor}

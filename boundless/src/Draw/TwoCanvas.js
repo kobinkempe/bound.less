@@ -5,10 +5,11 @@ import {current} from "@reduxjs/toolkit";
 import ReactDOM from 'react-dom'
 import {useSelector} from "react-redux";
 import {selectRGB} from "../Redux/rSlicePenOptions";
+import svg from "two.js/src/renderers/svg";
 
 
 let TEXT_RENDERING_BOOL = true;
-const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
+const TwoCanvas = ({canvasID}) => {
     const svgRef = useRef(null);
     const penColor = useSelector(selectRGB)
 
@@ -24,7 +25,9 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
     const [mouse, setMouse] = useState([0,0]);
 
     //Boolean for if the mouse is currently down
-    const [isDrawing, setIsDrawing] = useState(false);
+    const [inUse, setInUse] = useState(false);
+
+    const [toolInUse, setToolInUse] = useState('pen');
 
 
 
@@ -40,6 +43,11 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
      *
      *
      * **/
+
+
+
+
+
 
     //Appends twoCanvas and approves loading
     useEffect(() => {
@@ -62,6 +70,29 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
             + Math.floor(Math.random() * 255) + ')';
     }
 
+    /** Shape Stuff**/
+
+
+    const toggleTool = useCallback( (event) => {
+
+    })
+
+
+    useEffect(() => {
+        if(!svgRef.current){
+            return;
+        }
+
+        const canvas = two.renderer.domElement;
+        canvas.addEventListener('keypress', toggleTool);
+        return () => {
+            canvas.removeEventListener('keyPress', toggleTool);
+        };
+
+
+
+
+        }, [toggleTool, two]);
 
     //Callback for when mouse is down
     const startPaint = useCallback((event) => {
@@ -70,12 +101,12 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
         //console.log("getsCoordiantes returned called")
         if (coordinates) {
             setMouse(coordinates);
-            setIsDrawing(true);
+            setInUse(true);
         }
     }, []);
 
     //useEffect for startPaint
-    const useMouseDown = useEffect(() => {
+     useEffect(() => {
         if (!svgRef.current) {
             //console.log("SVG Status: "+(svgRef.current != null));
             //console.log("two load status: "+isLoaded);
@@ -93,8 +124,8 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
     const paint = useCallback(
         (event ) => {
             //console.log("Paint Called")
-            if (isDrawing) {
-                //console.log("Paint Called w/isDrawing as true;")
+            if (inUse) {
+                //console.log("Paint Called w/inUse as true;")
                 const newMouse = getsCoordinates(event);
                 if (mouse && newMouse) {
                     drawLine(mouse, newMouse);
@@ -102,7 +133,7 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
                 }
             }
         },
-        [isDrawing, mouse]
+        [inUse, mouse]
     );
 
     //useEffect for paint
@@ -123,7 +154,7 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
 
     //Triggers when the mouse is up or off the screen
     const exitPaint = useCallback(() => {
-        setIsDrawing(false);
+        setInUse(false);
         setMouse(undefined);
     }, []);
 
