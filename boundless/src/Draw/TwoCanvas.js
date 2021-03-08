@@ -43,7 +43,10 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
             return;
         }
         console.log(("Loaded Two"));
-        setTwo(two.appendTo(svgRef.current));
+        setTwo(two.appendTo(svgRef.current)
+
+
+        );
         setIsLoaded(true);
     });
 
@@ -68,20 +71,18 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
     }, []);
 
     //useEffect for startPaint
-    useEffect(() => {
+    const useMouseDown = useEffect(() => {
         if (!svgRef.current) {
             //console.log("SVG Status: "+(svgRef.current != null));
             //console.log("two load status: "+isLoaded);
             return;
         }
-        //if(isLoaded) {
             const canvas = two.renderer.domElement;
             //console.log("startPaint event added")
             canvas.addEventListener('mousedown', startPaint);
             return () => {
                 canvas.removeEventListener('mousedown', startPaint);
             };
-        //}
     }, [startPaint, two]);
 
     //instantiates newMouse and draws lines

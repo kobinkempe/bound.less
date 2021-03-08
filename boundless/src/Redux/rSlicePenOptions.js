@@ -6,14 +6,14 @@ import Two from "two.js";
 
 export const slice = createSlice({
     // The name of the state piece. i.e., this is just a simple counter variable - KK
-    name: 'twoLoadState',
+    name: 'penColor',
     //The initial state of your redux state variable, in this case an object with a 'value' field that starts at 0 - KK
     initialState: {
-        value: null,
+        value: 'rgb(40,0,0)',
     },
     // These are all the actions you can take, and what they do. - KK
     reducers: {
-        save: (state, newSVG) => {
+        rgbPen: (state, newSVG) => {
             // Redux Toolkit allows us to write "mutating" logic in reducers. It
             // doesn't actually mutate the state because it uses the immer library,
             // which detects changes to a "draft state" and produces a brand new
@@ -25,19 +25,8 @@ export const slice = createSlice({
 });
 
 //Gotta export the actions
-export const { save } = slice.actions;
+export const { rgbPen } = slice.actions;
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched
-// This might be important when waiting for images to load, authentications to go
-// through, etc. -KK
-export const saveAsync = newSVG => dispatch => {
-    setTimeout(() => {
-        dispatch(save(newSVG));
-    }, 1000);
-};
 
 
 // And this exports a slice of the overall reducer - KK

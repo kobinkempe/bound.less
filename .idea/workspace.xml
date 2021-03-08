@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff...again">
+      <change afterPath="$PROJECT_DIR$/boundless/src/Redux/rSlicePenOptions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/boundless/src/Stylesheets/CanvasPage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/AdHoc/withPenTool.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvasScrap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Pages/CanvasRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/CanvasRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Pages/PaperTemplate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Redux/rSliceTwoLoading.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Redux/rSliceTwoLoading.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +16,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="TypeScript JSX File" />
+        <option value="CSS File" />
         <option value="JavaScript File" />
       </list>
     </option>
