@@ -1,12 +1,16 @@
+import React from "react";
 import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
 import Two from "two.js";
 import {current} from "@reduxjs/toolkit";
 import ReactDOM from 'react-dom'
+import {useSelector} from "react-redux";
+import {selectRGB} from "../Redux/rSlicePenOptions";
 
 
 let TEXT_RENDERING_BOOL = true;
 const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
     const svgRef = useRef(null);
+    const penColor = useSelector(selectRGB)
 
     //Creates the 'two' object w/o mounting it to the actual DOM
     const [two, setTwo] = useState(
@@ -181,7 +185,7 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
                     originalMousePosition[1],
                     newMouse[0],
                     newMouse[1]);
-        path.stroke = "rgb(40,0,0)";
+        path.stroke = penColor;
         path.curved = true;
         two.update();
         setTwo(two);

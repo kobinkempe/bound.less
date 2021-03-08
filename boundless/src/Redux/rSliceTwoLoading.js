@@ -19,13 +19,15 @@ export const slice = createSlice({
             // which detects changes to a "draft state" and produces a brand new
             // immutable state based off those changes
             // You can tell I didn't write that comment cuz I don't know what it means - KK
-            state.value = newSVG;
+            state.value = newSVG.value;
         },
     },
 });
 
 //Gotta export the actions
 export const { save } = slice.actions;
+
+export const selectLoadCanv = state => state.save.twoLoadState.value
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
