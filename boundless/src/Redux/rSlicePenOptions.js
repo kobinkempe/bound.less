@@ -13,20 +13,21 @@ export const slice = createSlice({
     },
     // These are all the actions you can take, and what they do. - KK
     reducers: {
-        rgbPen: (state, newSVG) => {
+        changeColorPen: (state, newSVG) => {
             // Redux Toolkit allows us to write "mutating" logic in reducers. It
             // doesn't actually mutate the state because it uses the immer library,
             // which detects changes to a "draft state" and produces a brand new
             // immutable state based off those changes
             // You can tell I didn't write that comment cuz I don't know what it means - KK
-            state.value = newSVG;
+            state.value = newSVG.payload;
         },
     },
 });
 
 //Gotta export the actions
-export const { rgbPen } = slice.actions;
+export const { changeColorPen } = slice.actions;
 
+export const selectRGB = state => state.penColor.value;
 
 
 // And this exports a slice of the overall reducer - KK

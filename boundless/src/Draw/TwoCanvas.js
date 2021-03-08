@@ -1,12 +1,20 @@
+import React from "react";
 import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
 import Two from "two.js";
 import {current} from "@reduxjs/toolkit";
 import ReactDOM from 'react-dom'
+import {useSelector} from "react-redux";
+import {selectRGB} from "../Redux/rSlicePenOptions";
+import svg from "two.js/src/renderers/svg";
 
+
+
+const radius = 40;
 
 let TEXT_RENDERING_BOOL = true;
-const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
+const TwoCanvas = ({canvasID}) => {
     const svgRef = useRef(null);
+    const penColor = useSelector(selectRGB)
 
     //Creates the 'two' object w/o mounting it to the actual DOM
     const [two, setTwo] = useState(
@@ -20,7 +28,12 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
     const [mouse, setMouse] = useState([0,0]);
 
     //Boolean for if the mouse is currently down
-    const [isDrawing, setIsDrawing] = useState(false);
+    const [inUse, setInUse] = useState(false);
+
+    /** TOOLS **/
+    const [isPenning, setIsPenning]  = useState(false);
+    const [isStickering, setIsStickering] = useState(false);
+    const [toolInUse, setToolInUse] = useState('pen');
 
 
 
@@ -36,6 +49,11 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
      *
      *
      * **/
+
+
+
+
+
 
     //Appends twoCanvas and approves loading
     useEffect(() => {
@@ -58,6 +76,52 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
             + Math.floor(Math.random() * 255) + ')';
     }
 
+    /** Shape Stuff**/
+
+
+
+    const toggleTool = useCallback( (event) => {
+        console.log("toggleTool triggered");
+        switch(event.key){
+            case 'c':
+                setToolInUse('circle');
+                setIsPenning(false);
+                setIsStickering(true);
+                break;
+            case 'p':
+                setToolInUse('pen');
+                setIsStickering(false);
+                setIsPenning(false);
+                break;
+            case 'r':
+                setToolInUse('rectangle');
+                setIsStickering(true);
+                setIsPenning(false)
+                break;
+            case 'd':
+                two.clear();
+                two.update();
+                setTwo(two);
+                break;
+
+        }
+
+    }, [toolInUse, isPenning, isStickering, two])
+
+
+    useEffect(() => {
+        if(!svgRef.current){
+            return;
+        }
+
+        document.addEventListener('keypress', toggleTool);
+        document.addEventListener('keydown', toggleTool);
+
+        return () => {
+            document.removeEventListener('keypress', toggleTool);
+            document.removeEventListener('keydown', toggleTool);
+        }
+        }, [toggleTool, two]);
 
     //Callback for when mouse is down
     const startPaint = useCallback((event) => {
@@ -66,12 +130,12 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
         //console.log("getsCoordiantes returned called")
         if (coordinates) {
             setMouse(coordinates);
-            setIsDrawing(true);
+            setInUse(true);
         }
     }, []);
 
     //useEffect for startPaint
-    const useMouseDown = useEffect(() => {
+     useEffect(() => {
         if (!svgRef.current) {
             //console.log("SVG Status: "+(svgRef.current != null));
             //console.log("two load status: "+isLoaded);
@@ -79,6 +143,7 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
         }
             const canvas = two.renderer.domElement;
             //console.log("startPaint event added")
+
             canvas.addEventListener('mousedown', startPaint);
             return () => {
                 canvas.removeEventListener('mousedown', startPaint);
@@ -89,16 +154,16 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
     const paint = useCallback(
         (event ) => {
             //console.log("Paint Called")
-            if (isDrawing) {
-                //console.log("Paint Called w/isDrawing as true;")
+            if (inUse) {
+                //console.log("Paint Called w/inUse as true;")
                 const newMouse = getsCoordinates(event);
-                if (mouse && newMouse) {
+                if (mouse && newMouse && (toolInUse === 'pen')) {
                     drawLine(mouse, newMouse);
                     setMouse(newMouse);
                 }
             }
         },
-        [isDrawing, mouse]
+        [inUse, mouse, toolInUse]
     );
 
     //useEffect for paint
@@ -119,9 +184,41 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
 
     //Triggers when the mouse is up or off the screen
     const exitPaint = useCallback(() => {
-        setIsDrawing(false);
-        setMouse(undefined);
+        if(toolInUse === 'pen') {
+            setInUse(false);
+            setMouse(undefined);
+        }
     }, []);
+
+
+    const dropShape = useCallback((event) => {
+        if(inUse) {
+            console.log('useCallback called while in use');
+                const newMouse = getsCoordinates(event);
+                if(newMouse){
+                    if(toolInUse === 'circle') {
+                        console.log('Circle tool triggered');
+                        const circ = two.makeCircle(newMouse[0], newMouse[1], radius);
+                        circ.fill = penColor;
+                        two.update();
+                        console.log(penColor);
+                        setTwo(two);
+
+                    } else if(toolInUse === 'rectangle'){
+                        console.log('Rectangle tool triggered')
+                        const rect = two.makeRectangle(newMouse[0], newMouse[1], radius, radius);
+                        rect.fill = penColor
+                        two.update();
+                        console.log(penColor);
+                        setTwo(two);
+                    }
+
+                }
+
+            }
+
+
+    }, [inUse, toolInUse, two, penColor]);
 
     //useEffect for exitPaint
     useEffect(() => {
@@ -133,14 +230,16 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
         }
             const canvas = two.renderer.domElement;
             //console.log("MouseUp & mouseLEave mounted");
-            canvas.addEventListener('mouseup', exitPaint);
-            canvas.addEventListener('mouseleave', exitPaint);
+                canvas.addEventListener('mouseup', exitPaint);
+                canvas.addEventListener('mouseleave', exitPaint);
+                canvas.addEventListener('mouseup', dropShape);
 
             return () => {
                 canvas.removeEventListener('mouseup', exitPaint);
                 canvas.removeEventListener('mouseleave', exitPaint);
+                canvas.addEventListener('mouseup', dropShape);
             };
-    }, [exitPaint, two]);
+    }, [exitPaint, two, dropShape]);
 
     //Gets the coordinates of the mouse event
     const getsCoordinates = (event) => {
@@ -181,7 +280,7 @@ const TwoCanvas = ({/** Where we're going? We don't need props**/}) => {
                     originalMousePosition[1],
                     newMouse[0],
                     newMouse[1]);
-        path.stroke = "rgb(40,0,0)";
+        path.stroke = penColor;
         path.curved = true;
         two.update();
         setTwo(two);

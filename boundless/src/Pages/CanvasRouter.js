@@ -1,8 +1,14 @@
 import {Link, Route, Switch, useRouteMatch, Redirect} from "react-router-dom";
 import {CanvasPage} from "./CanvasPage";
+import {BottomNavigation, Box} from "@material-ui/core";
+import {HexColorPicker} from "react-colorful";
+import {changeColorPen, selectRGB} from "../Redux/rSlicePenOptions";
+import {useDispatch, useSelector} from "react-redux";
 
 export const CanvasRouter = () => {
     let {path, url} = useRouteMatch();
+    const selectColor = useSelector(selectRGB);
+    const colorDispatch = useDispatch();
     console.log(path);
 
     return (
@@ -31,6 +37,7 @@ export const CanvasRouter = () => {
                 </Route>
             </Switch>
         </div>
+
     );
 }
 
