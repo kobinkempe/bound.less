@@ -14,12 +14,12 @@ function App() {
       <Router>
         <div>
           <div style={{lineHeight: 1.5}}>
-            <a href="/" className="Header-text">Home</a>
-            <a href="/canvas/1" className="Header-text">Start Creating!</a>
+            <Link to="/" className="Header-text">Home</Link>
+            <Link to="/canvas/1" className="Header-text">Start Creating!</Link>
           </div>
 
           <Switch>
-            <Route path="/canvas/:canvasid">
+            <Route path="/canvas/:canvasID">
               <CanvasRouter />
             </Route>
             <Route path='/profile/:username'>
