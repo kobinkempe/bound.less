@@ -1,67 +1,51 @@
 .App {
-  text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Welcome-image {
+  background-image: url('../Images/team.jpg');
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  height: 55vh;
+  display: flex;
+}
+
+.mask {
+  background-color: #0000005e;
+  flex-grow: 1;
+  display: flex;
+  padding: 10%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Button {
+  height: 4em;
+  padding: 1em;
+}
+
+.bottomWrapper {
+  background-color: #1a1a66;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.sideText {
+  width: 70vh;
+  max-width: 100%;
+}
+
+.text2 {
+  margin: 6% 3% 3%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: black;
-}
-
-.Welcome-message {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: black;
-  margin-left: 40px;
-}
-
-.Welcome-image {
-  max-width: 75%;
-  max-height: 75vh;
-  margin: auto;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.Header-text {
-  font-family: Roboto,sans-serif;
-  font-weight: 600;
-  text-rendering: optimizeLegibility;
-  color: rgba(0,0,0,.84);
-  text-decoration: none!important;
-  margin-right: 45px;
-}
-
-a:hover {
-  color: blue;
 }

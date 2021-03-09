@@ -1,16 +1,17 @@
 import '../Stylesheets/headerBar.css';
-import {Box, Button} from "@material-ui/core";
+import {Box, Button, Link} from "@material-ui/core";
 import {logIn, logOut} from "../Redux/loginState";
+import {useDispatch} from "react-redux";
+import {HashRouter} from "react-router-dom";
 
-export default function headerBar(){
+export default function HeaderBar(){
+    const dispatch = useDispatch();
     return(
-        <Box className='headerBar'>
-            <h1>Bound.less</h1>
-            <div>
-                <Button onClick={()=>{dispatch(logIn('johnDoe'))}}>Log In as John Doe</Button>
-                <Button onClick={()=>{dispatch(logIn('janeDoe'))}}>Log In as Jane Doe</Button>
-                <Button onClick={()=>{dispatch(logOut)}}>Log Out</Button>
-            </div>
-        </Box>
+        <div className='headerBar'>
+            <a className='imageContainer' href={'/'}>
+                <div className='logo'/>
+            </a>
+            <Button className='loginButton'>Log in/Sign Up</Button>
+        </div>
     )
 }
