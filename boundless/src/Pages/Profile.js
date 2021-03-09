@@ -1,3 +1,4 @@
+import '../Stylesheets/Profile.css'
 import {Link, useParams} from "react-router-dom";
 import HeaderBar from "../Components/headerBar";
 
@@ -6,18 +7,60 @@ export default function Profile(){
     return (
         <div>
             <HeaderBar/>
-            <h2>Welcome to your profile, {username}</h2>
-
-            <ul>
-                <li>
-                    <Link to={`/sheets/1`}>Canvas #1</Link>
-                </li>
-                <li>
-                    <Link to={`/sheets/2`}>
-                        Canvas #2
-                    </Link>
-                </li>
-            </ul>
+            <div className='screen'>
+                <div className='container'>
+                    <div className='topSection'>
+                        <div className='userImage'/>
+                        <div className='captionText'>
+                            <text>{username}</text>
+                        </div>
+                    </div>
+                    <div className='sheetSection'>
+                        <div className='heading'>
+                            <text>Your Bound.less Sheets</text>
+                            <text>View All</text>
+                        </div>
+                        <div className='sheetBox'>
+                            <div className='sheetCaptionImage'>
+                                <div className='sheetThumbnail'/>
+                                <text>New Sheet</text>
+                            </div>
+                            <div className='sheetCaptionImage'>
+                                <div className='sheetThumbnail'/>
+                                <text>New Sheet</text>
+                            </div>
+                            <div className='sheetCaptionImage'>
+                                <div className='sheetThumbnail'/>
+                                <text>New Sheet</text>
+                            </div>
+                            <div className='sheetCaptionImage'>
+                                <div className='sheetThumbnail'/>
+                                <text>New Sheet</text>
+                            </div>
+                            <div className='sheetCaptionImage'>
+                                <div className='sheetThumbnail'/>
+                                <text>New Sheet</text>
+                            </div>
+                            <div className='sheetCaptionImage'>
+                                <div className='sheetThumbnail'/>
+                                <text>New Sheet</text>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='sheetSection'>
+                        <div className='heading'>
+                            <text>Saved Bound.less Sheets</text>
+                            <text>View All</text>
+                        </div>
+                        <div className='sheetBox'>
+                            <div className='sheetCaptionImage'>
+                                <div className='sheetThumbnail'/>
+                                <text>New Sheet</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
