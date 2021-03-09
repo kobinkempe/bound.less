@@ -34,6 +34,6 @@
     background-image: url('../Images/Logotmp.png');
     background-size: contain;
     height: 100%;
-    width: 250px;
+    aspect-ratio: 2.91;
     background-repeat: no-repeat;
 }
