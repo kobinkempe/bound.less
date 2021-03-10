@@ -2,6 +2,9 @@ import React from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from '../Firebase.js';
 import '../Stylesheets/Home.css';
+import {logIn, logOut, selectLoggedIn, selectUsername} from "../Redux/loginState";
+
+import store from '../Redux/store.js';
 
 export default class SignInScreen extends React.Component {
 
@@ -17,11 +20,21 @@ export default class SignInScreen extends React.Component {
         // We will display Google as auth provider.
         signInOptions: [
             firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            firebase.auth.EmailAuthProvider.PROVIDER_ID
         ],
         callbacks: {
             // Avoid redirects after sign-in.
-            signInSuccessWithAuthResult: () => false
-        }
+            signInSuccessWithAuthResult: () => {
+                this.props.store.dispatch(logIn(firebase.auth().currentUser.displayName));
+                console.log(this.props.store.getState());
+                console.log(store.getState());
+                return false;
+            }
+        },
+        // Terms of service url.
+        tosUrl: '<your-tos-url>',
+        // Privacy policy url.
+        privacyPolicyUrl: '<your-privacy-policy-url>'
     };
 
     // Listen to the Firebase Auth state and set the local state.

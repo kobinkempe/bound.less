@@ -2,18 +2,19 @@ import '../Stylesheets/Home.css';
 import {useDispatch} from "react-redux";
 import {Link} from "react-router-dom";
 import {Button} from "@material-ui/core";
-import {logIn, logOut} from "../Redux/loginState";
+import reducer, {logIn, logOut} from "../Redux/loginState";
 import GoogleSignIn from "../Components/GoogleSignIn"
+import { createStore } from 'redux';
 
 export default function Home() {
-    const dispatch = useDispatch();
+    const store = createStore(reducer);
 
     return (
         <div className="App">
             <div style={{lineHeight: 1.5}}>
                 <Link to="/" className="Header-text">Home</Link>
                 <Link to="/sheets/1" className="Header-text">Start Creating!</Link>
-                <GoogleSignIn/>
+                <GoogleSignIn store={store}/>
             </div>
             <header className="App-header">
                 <div className="Welcome-message">

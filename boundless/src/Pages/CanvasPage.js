@@ -6,7 +6,6 @@ import {changeColorPen, selectRGB} from "../Redux/rSlicePenOptions";
 import {Box} from "@material-ui/core";
 import styles from "../Stylesheets/CanvasPage.css";
 
-
 export const CanvasPage = () => {
     let {canvasID} = useParams();
     const selectColor = useSelector(selectRGB);

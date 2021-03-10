@@ -3,7 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff...again">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Components/GoogleSignIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Components/GoogleSignIn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Pages/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/Profile.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +20,7 @@
       <list>
         <option value="TypeScript JSX File" />
         <option value="CSS File" />
+        <option value="HTML File" />
         <option value="JavaScript File" />
       </list>
     </option>
@@ -41,10 +47,12 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -83,6 +91,11 @@
       <workItem from="1615153944653" duration="1902000" />
       <workItem from="1615156127703" duration="179000" />
       <workItem from="1615156325571" duration="890000" />
+      <workItem from="1615243206642" duration="3654000" />
+      <workItem from="1615328941115" duration="5194000" />
+      <workItem from="1615335064178" duration="2357000" />
+      <workItem from="1615390283556" duration="17000" />
+      <workItem from="1615390301870" duration="2828000" />
     </task>
     <task id="LOCAL-00001" summary="initialzied firebase">
       <created>1613149769444</created>
