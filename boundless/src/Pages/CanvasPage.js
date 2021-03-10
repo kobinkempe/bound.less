@@ -1,4 +1,4 @@
-import {useHistory, useParams} from "react-router-dom";
+import {useHistory, useParams, Link} from "react-router-dom";
 import TwoCanvas from "../Draw/TwoCanvas";
 import {HexColorPicker} from "react-colorful";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,6 +14,7 @@ export const CanvasPage = () => {
     const selectColor = useSelector(selectRGB);
     const dispatch = useDispatch();
     const loggedIn = useSelector(selectLoggedIn);
+    const history = useHistory();
     const [loggingIn, setLoggingIn] = useState(false);
     let onPressButton;
     if(loggedIn){
@@ -52,7 +53,7 @@ export const CanvasPage = () => {
             {/*    </div>*/}
             {/*</Box>*/}
             <TwoCanvas/>
-            <a className='logoContainerC' href={'/#/'}>
+            <a className='logoContainerC' href={'/'}>
                 <div className='logoC'/>
             </a>
             <div className='loginButtonC'>

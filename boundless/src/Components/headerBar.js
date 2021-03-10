@@ -45,7 +45,7 @@ export default function HeaderBar(){
 
     return(
         <div className='headerBar'>
-            <a className='imageContainer' href={'/#/'}>
+            <a className='imageContainer' href='/'>
                 <div className='logo'/>
             </a>
             <Button

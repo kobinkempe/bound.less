@@ -1,19 +1,22 @@
 import '../Stylesheets/Home.css';
 import {useDispatch} from "react-redux";
 import HeaderBar from "../Components/headerBar";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {Box, Button} from "@material-ui/core";
 import {logIn, logOut} from "../Redux/loginState";
 
 export default function Home() {
-    const dispatch = useDispatch();
+    const history = useHistory();
 
     return (
         <div className="App">
             <HeaderBar/>
             <div className="Welcome-image">
                 <div className='mask'>
-                    <Button variant="contained" color='Primary' className="Button" href={'/#/sheets/new'}>
+                    <Button variant="contained"
+                            color='Primary'
+                            className="Button"
+                            onClick={()=>{history.push('/sheets/new')}}>
                         Start Creating!
                     </Button>
                 </div>
