@@ -1,6 +1,6 @@
 .headerBar {
     height: 13vh;
-    background: rgba(52, 65, 64, 0.83);
+    background: white;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -9,6 +9,9 @@
 }
 
 .imageContainer {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     height: 100%;
 }
 
@@ -31,7 +34,7 @@
 }
 
 .logo {
-    background-image: url('../Images/Logotmp.png');
+    background-image: url('../Images/Logo1.PNG');
     background-size: contain;
     height: 100%;
     aspect-ratio: 2.91;
