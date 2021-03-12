@@ -1,25 +1,24 @@
 import {Route, Switch, useRouteMatch, Redirect} from "react-router-dom";
-import {CanvasPage} from "./CanvasPage";
+import Profile from "./Profile";
 import {useSelector} from "react-redux";
 import {selectLoggedIn, selectUsername} from "../Redux/loginState";
-import RequestAccess from "./RequestAccess";
 
-export const CanvasRouter = () => {
+export const ProfileRouter = () => {
     let {path, url} = useRouteMatch();
-    const loggedIn = useSelector(selectLoggedIn);
     const username = useSelector(selectUsername);
-    const hasPermission = !(loggedIn && username === 'janeDoe')
+    const loggedIn = useSelector(selectLoggedIn)
+
     return (
         <div>
-
             <Switch>
-                <Route path={`/sheets/:canvasID`}>
-                    {hasPermission?
-                        <CanvasPage/>:
-                        <RequestAccess/>}
+                <Route path={`/profile/:username`}>
+                    <Profile/>
                 </Route>
                 <Route exact path={path}>
-                    <Redirect to='/profile' />
+                    {loggedIn?
+                        <Redirect to={'/profile/' + username} />:
+                        <Redirect to='/' />
+                    }
                 </Route>
             </Switch>
         </div>
