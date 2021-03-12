@@ -17,46 +17,26 @@ export default function Profile(){
                     </div>
                     <div className='sheetSection'>
                         <div className='heading'>
-                            <text>Your Bound.less Sheets</text>
+                            <text>Your bound.less Canvases</text>
                             <text>View All</text>
                         </div>
                         <div className='sheetBox'>
-                            <div className='sheetCaptionImage'>
-                                <div className='sheetThumbnail'/>
-                                <text>New Sheet</text>
-                            </div>
-                            <div className='sheetCaptionImage'>
-                                <div className='sheetThumbnail'/>
-                                <text>New Sheet</text>
-                            </div>
-                            <div className='sheetCaptionImage'>
-                                <div className='sheetThumbnail'/>
-                                <text>New Sheet</text>
-                            </div>
-                            <div className='sheetCaptionImage'>
-                                <div className='sheetThumbnail'/>
-                                <text>New Sheet</text>
-                            </div>
-                            <div className='sheetCaptionImage'>
-                                <div className='sheetThumbnail'/>
-                                <text>New Sheet</text>
-                            </div>
-                            <div className='sheetCaptionImage'>
-                                <div className='sheetThumbnail'/>
-                                <text>New Sheet</text>
-                            </div>
+                            <a className='sheetCaptionImage' href='/sheets/new'>
+                                <div className='newCanvas' />
+                            </a>
+                            <text>New Canvas</text>
                         </div>
                     </div>
                     <div className='sheetSection'>
                         <div className='heading'>
-                            <text>Saved Bound.less Sheets</text>
+                            <text>Saved bound.less Canvases</text>
                             <text>View All</text>
                         </div>
                         <div className='sheetBox'>
-                            <div className='sheetCaptionImage'>
-                                <div className='sheetThumbnail'/>
-                                <text>New Sheet</text>
-                            </div>
+                            <a className='sheetCaptionImage' href='/sheets/new'>
+                                <div className='likedCanvas' />
+                            </a>
+                            <text>Liked Canvas</text>
                         </div>
                     </div>
                 </div>

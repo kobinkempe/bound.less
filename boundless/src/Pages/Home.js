@@ -23,14 +23,11 @@ export default function Home() {
             </div>
             <div className='bottomWrapper'>
                 <div className='sideText'>
-                    <p className='text2'>   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent id augue
-                        nec erat congue blandit. Praesent tempus est erat, quis pellentesque justo semper eget. Quisque
-                        vitae lorem odio. Suspendisse potenti. Morbi non dapibus leo, nec placerat tortor. Nullam vitae
-                        vulputate erat. Proin ante diam, sodales id metus vel, tincidunt porta quam. Aliquam erat
-                        volutpat. Quisque eget lorem diam. Quisque pharetra turpis eget mi congue euismod. Fusce
-                        finibus, risus ac cursus faucibus, risus mauris interdum purus, sit amet sodales tellus ligula
-                        sit amet mi. Nullam non erat lobortis, aliquet quam in, feugiat dui. Pellentesque habitant morbi
-                        tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+                    <p className='text2'> bound.less is a new design tool to help you create your own designs
+                    and diagrams on an infinite canvas. Vector based images relieve the constraints of not being able
+                        to zoom into your design further, and our dynamic toolset can help you create the diagrams and
+                        drawings you want. So far, if you want squares or circles in your diagram, we got you covered.
+                        No more running out of paper - your design experience is bound.less. </p>
                 </div>
             </div>
 
