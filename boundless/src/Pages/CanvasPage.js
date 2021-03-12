@@ -52,17 +52,17 @@ export const CanvasPage = () => {
             {/*        <h3>You are viewing canvas #{canvasID}</h3>*/}
             {/*    </div>*/}
             {/*</Box>*/}
+            <ButtonGroup color={"primary"} className={'toolbar'} >
+            <Button className={'toolbarPencil'}>
+
+            </Button>
+
+
+            </ButtonGroup>
             <TwoCanvas/>
             <a className='logoContainerC' href={'/'}>
                 <div className='logoC'/>
             </a>
-            <ButtonGroup color={"primary"} className={'toolbar'} >
-                <Button className={'toolbarPencil'}>
-
-                </Button>
-
-
-            </ButtonGroup>
             <div className='loginButtonC'>
                 <Button
                     variant='contained'
