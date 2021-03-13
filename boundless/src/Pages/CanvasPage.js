@@ -9,10 +9,11 @@ import "../Stylesheets/CanvasToolBar.css";
 import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
 import {AllOut, BorderColor, BorderColorRounded, Close, FormatShapes, Palette, Work} from '@material-ui/icons'
+import Toolbar from "../Draw/CanvasToolBar";
 
 export const CanvasPage = () => {
     let {canvasID} = useParams();
-    const selectColor = useSelector(selectRGB);
+
     const dispatch = useDispatch();
     const loggedIn = useSelector(selectLoggedIn);
     const [loggingIn, setLoggingIn] = useState(false);
@@ -114,6 +115,7 @@ export const CanvasPage = () => {
             <div color={"primary"} className={'toolbar'} >
                 {toolBar()}
             </div>
+            <Toolbar/>
             <TwoCanvas/>
             <a className='logoContainerC' href={'/#/'}>
                 <div className='logoC'/>
