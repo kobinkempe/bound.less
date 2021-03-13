@@ -8,6 +8,7 @@ import styles from "../Stylesheets/CanvasPage.css";
 import "../Stylesheets/CanvasToolBar.css";
 import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
+import Toolbar from "../Draw/CanvasToolBar";
 
 
 export const CanvasPage = () => {
@@ -53,13 +54,7 @@ export const CanvasPage = () => {
             {/*        <h3>You are viewing canvas #{canvasID}</h3>*/}
             {/*    </div>*/}
             {/*</Box>*/}
-            <ButtonGroup color={"primary"} className={'toolbar'} >
-            <Button className={'toolbarPencil'}>
-
-            </Button>
-
-
-            </ButtonGroup>
+            <Toolbar/>
             <TwoCanvas/>
             <a className='logoContainerC' href={'/'}>
                 <div className='logoC'/>
