@@ -18,6 +18,7 @@ export const CanvasPage = () => {
     const loggedIn = useSelector(selectLoggedIn);
     const [loggingIn, setLoggingIn] = useState(false);
     const [toolDisplay, setToolDisplay] = useState('closed');
+    const selectColor = useSelector(selectRGB);
     let onPressButton;
     if(loggedIn){
         onPressButton = ()=>{
@@ -115,7 +116,7 @@ export const CanvasPage = () => {
             <div color={"primary"} className={'toolbar'} >
                 {toolBar()}
             </div>
-            <Toolbar/>
+            {/*<Toolbar/>*/}
             <TwoCanvas/>
             <a className='logoContainerC' href={'/#/'}>
                 <div className='logoC'/>

@@ -25,7 +25,7 @@ export const CanvasToolBar = () => {
 
 
     return (
-    <ButtonGroup color={"primary"} className={'toolbar'} >
+    <ButtonGroup color={"primary"} className={'toolbar2'} >
         <Button className={'toolbarSVG'}>
             <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 0 24 24" width="40">
                 <path d="M0 0h24v24H0z" fill="none"/>
