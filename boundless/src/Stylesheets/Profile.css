@@ -1,0 +1,80 @@
+.screen {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width:140vh;
+    max-width: 95%;
+    display: flex;
+    flex-direction: column;
+}
+
+.topSection {
+    flex-direction: row;
+    height: 25vh;
+    padding: 5% 0;
+    display: flex;
+}
+
+.userImage {
+    background-image: url('../Images/userIcon.png');
+    background-size: contain;
+    height: 100%;
+    aspect-ratio: 1;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.sheetSection {
+    flex-direction: column;
+    flex: 2;
+    display: flex;
+    margin-bottom: 6%;
+}
+
+.captionText {
+    flex-direction: column;
+    flex: 2;
+    display: flex;
+}
+
+.heading {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    display: flex;
+}
+
+.sheetBox {
+    flex-direction: column;
+    background-color: #d3d3d3;
+    padding: 1.3rem .5rem .8rem 1.8rem;
+    display: flex;
+    overflow-x: auto;
+}
+
+.sheetCaptionImage {
+    flex-direction: column;
+    display: flex;
+    color: dimgrey;
+    text-decoration: none;
+    z-index: 2;
+    margin: 0 1.3rem 0 0;
+}
+
+.newCanvas {
+    background-image: url('../Images/NewCanvas.png');
+    background-size: contain;
+    height: 10rem;
+    width: 16rem;
+    background-repeat: no-repeat;
+}
+
+.likedCanvas {
+    background-image: url('../Images/LikedCanvas.png');
+    background-size: contain;
+    height: 10rem;
+    width: 16rem;
+    background-repeat: no-repeat;
+}

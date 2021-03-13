@@ -9,6 +9,9 @@ import svg from "two.js/src/renderers/svg";
 
 
 
+//TODO: Look into reducing re-rendering
+
+
 const radius = 40;
 
 let TEXT_RENDERING_BOOL = true;
@@ -18,7 +21,7 @@ const TwoCanvas = ({canvasID}) => {
 
     //Creates the 'two' object w/o mounting it to the actual DOM
     const [two, setTwo] = useState(
-        new Two({height:window.innerHeight, width:window.innerWidth, autostart:true})
+        new Two({fullscreen:true, autostart:true})
     );
 
     //Determines whether TwoCanvas has been appended onto svgRef
@@ -231,12 +234,12 @@ const TwoCanvas = ({canvasID}) => {
             const canvas = two.renderer.domElement;
             //console.log("MouseUp & mouseLEave mounted");
                 canvas.addEventListener('mouseup', exitPaint);
-                canvas.addEventListener('mouseleave', exitPaint);
+                //canvas.addEventListener('mouseleave', exitPaint);
                 canvas.addEventListener('mouseup', dropShape);
 
             return () => {
                 canvas.removeEventListener('mouseup', exitPaint);
-                canvas.removeEventListener('mouseleave', exitPaint);
+                //canvas.removeEventListener('mouseleave', exitPaint);
                 canvas.addEventListener('mouseup', dropShape);
             };
     }, [exitPaint, two, dropShape]);
