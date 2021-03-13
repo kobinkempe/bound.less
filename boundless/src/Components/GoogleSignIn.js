@@ -3,7 +3,6 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from '../Firebase.js';
 import '../Stylesheets/Home.css';
 import {logIn, logOut, selectLoggedIn, selectUsername} from "../Redux/loginState";
-
 import store from '../Redux/store.js';
 
 export default class SignInScreen extends React.Component {
@@ -25,8 +24,7 @@ export default class SignInScreen extends React.Component {
         callbacks: {
             // Avoid redirects after sign-in.
             signInSuccessWithAuthResult: () => {
-                this.props.store.dispatch(logIn(firebase.auth().currentUser.displayName));
-                console.log(this.props.store.getState());
+                store.dispatch(logIn(firebase.auth().currentUser.displayName));
                 console.log(store.getState());
                 return false;
             }

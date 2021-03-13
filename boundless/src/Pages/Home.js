@@ -7,14 +7,13 @@ import GoogleSignIn from "../Components/GoogleSignIn"
 import { createStore } from 'redux';
 
 export default function Home() {
-    const store = createStore(reducer);
 
     return (
         <div className="App">
             <div style={{lineHeight: 1.5}}>
                 <Link to="/" className="Header-text">Home</Link>
                 <Link to="/sheets/1" className="Header-text">Start Creating!</Link>
-                <GoogleSignIn store={store}/>
+                <GoogleSignIn />
             </div>
             <header className="App-header">
                 <div className="Welcome-message">
