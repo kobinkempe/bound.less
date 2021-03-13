@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {changeColorPen, selectRGB} from "../Redux/rSlicePenOptions";
 import {Box, Button, ButtonGroup} from "@material-ui/core";
 import styles from "../Stylesheets/CanvasPage.css";
+import "../Stylesheets/CanvasToolBar.css";
 import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
 

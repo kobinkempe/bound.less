@@ -9,6 +9,9 @@ import svg from "two.js/src/renderers/svg";
 
 
 
+//TODO: Look into reducing re-rendering
+
+
 const radius = 40;
 
 let TEXT_RENDERING_BOOL = true;
