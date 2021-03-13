@@ -45,9 +45,11 @@ export default function HeaderBar(){
 
     return(
         <div className='headerBar'>
-            <a className='imageContainer' href='/'>
-                <div className='logo'/>
-            </a>
+            <div className={'centering'}>
+                <a className='imageContainer' href='/#/'>
+                    <div className='logo'/>
+                </a>
+            </div>
             <Button
                 className='loginButton'
                 variant='outlined'

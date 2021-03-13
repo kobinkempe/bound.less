@@ -2,17 +2,27 @@
     height: 13vh;
     background: white;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     display: flex;
     padding-right: 2%;
 }
 
+.centering {
+    display: flex;
+    width: 100%;
+    height: 0;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+}
+
 .imageContainer {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: 100%;
+    display: flex;
+    align-self: center;
+    height: 13vh;
+    position: absolute;
+    top: 0;
 }
 
 .mask2 {
@@ -37,6 +47,6 @@
     background-image: url('../Images/Logo1.PNG');
     background-size: contain;
     height: 100%;
-    aspect-ratio: 2.91;
+    aspect-ratio: 3.23;
     background-repeat: no-repeat;
 }

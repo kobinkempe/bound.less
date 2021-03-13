@@ -1,14 +1,4 @@
-.toolbar{
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    position: fixed;
-    z-index: 1;
-    left:10vh;
-    top: 40vh;
 
-
-}
 
 .toolbarPencilSVG{
     height: 24px;

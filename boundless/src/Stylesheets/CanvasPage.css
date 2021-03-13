@@ -54,3 +54,16 @@
     z-index: 1;
 }
 
+.toolbar{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 1;
+    left: 3vh;
+    top: 12vh;
+}
+
+.tool {
+    margin-bottom: 15% !important;
+    box-shadow: none !important;
+}
