@@ -3,8 +3,9 @@ import TwoCanvas from "../Draw/TwoCanvas";
 import {HexColorPicker} from "react-colorful";
 import {useDispatch, useSelector} from "react-redux";
 import {changeColorPen, selectRGB} from "../Redux/rSlicePenOptions";
-import {Box, Button} from "@material-ui/core";
+import {Box, Button, ButtonGroup} from "@material-ui/core";
 import styles from "../Stylesheets/CanvasPage.css";
+import "../Stylesheets/CanvasToolBar.css";
 import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
 
@@ -52,6 +53,13 @@ export const CanvasPage = () => {
             {/*        <h3>You are viewing canvas #{canvasID}</h3>*/}
             {/*    </div>*/}
             {/*</Box>*/}
+            <ButtonGroup color={"primary"} className={'toolbar'} >
+            <Button className={'toolbarPencil'}>
+
+            </Button>
+
+
+            </ButtonGroup>
             <TwoCanvas/>
             <a className='logoContainerC' href={'/'}>
                 <div className='logoC'/>
@@ -66,7 +74,9 @@ export const CanvasPage = () => {
                         'Log In/Sign Up'}
                 </Button>
             </div>
+
             <div className='colorPickerWrapperC'>
+
                 <HexColorPicker className={styles.small}
                                 color={selectColor}
                                 onChange={(c) => {dispatch(changeColorPen(c))}}/>

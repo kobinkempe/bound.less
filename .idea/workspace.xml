@@ -4,6 +4,7 @@
     <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff...again">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,8 +15,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript JSX File" />
-        <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -59,6 +60,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/boundless/src/Images/toolbarIcons" />
       <recent name="$PROJECT_DIR$/boundless/src/Resources" />
       <recent name="$PROJECT_DIR$/boundless/public" />
     </key>
@@ -83,6 +85,8 @@
       <workItem from="1615153944653" duration="1902000" />
       <workItem from="1615156127703" duration="179000" />
       <workItem from="1615156325571" duration="890000" />
+      <workItem from="1615568831678" duration="332000" />
+      <workItem from="1615588435230" duration="3721000" />
     </task>
     <task id="LOCAL-00001" summary="initialzied firebase">
       <created>1613149769444</created>
