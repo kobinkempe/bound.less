@@ -13,7 +13,7 @@ import Toolbar from "../Draw/CanvasToolBar";
 
 export const CanvasPage = () => {
     let {canvasID} = useParams();
-    const selectColor = useSelector(selectRGB);
+
     const dispatch = useDispatch();
     const loggedIn = useSelector(selectLoggedIn);
     const history = useHistory();
@@ -68,13 +68,6 @@ export const CanvasPage = () => {
                         'Log Out':
                         'Log In/Sign Up'}
                 </Button>
-            </div>
-
-            <div className='colorPickerWrapperC'>
-
-                <HexColorPicker className={styles.small}
-                                color={selectColor}
-                                onChange={(c) => {dispatch(changeColorPen(c))}}/>
             </div>
             {loginBox()}
         </div>

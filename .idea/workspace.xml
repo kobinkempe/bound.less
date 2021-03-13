@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff...again">
-      <change afterPath="$PROJECT_DIR$/boundless/src/Draw/CanvasToolBar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/boundless/src/Images/toolbarIcons/2026954.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Images/toolbarIcons/circle-24px.svg" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Images/toolbarIcons/circle-24px.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Images/toolbarIcons/format_color_fill-24px.svg" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Images/toolbarIcons/format_color_fill-24px.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/CanvasToolBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/CanvasToolBar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Stylesheets/CanvasToolBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Stylesheets/CanvasToolBar.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +88,7 @@
       <workItem from="1615568831678" duration="332000" />
       <workItem from="1615588435230" duration="3721000" />
       <workItem from="1615610994087" duration="34000" />
-      <workItem from="1615611033839" duration="4513000" />
+      <workItem from="1615611033839" duration="5444000" />
     </task>
     <task id="LOCAL-00001" summary="initialzied firebase">
       <created>1613149769444</created>
