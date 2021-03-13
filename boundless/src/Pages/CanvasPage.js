@@ -3,21 +3,21 @@ import TwoCanvas from "../Draw/TwoCanvas";
 import {HexColorPicker} from "react-colorful";
 import {useDispatch, useSelector} from "react-redux";
 import {changeColorPen, selectRGB} from "../Redux/rSlicePenOptions";
-import {Box, Button, ButtonGroup} from "@material-ui/core";
+import {Button, Fab} from "@material-ui/core";
 import styles from "../Stylesheets/CanvasPage.css";
 import "../Stylesheets/CanvasToolBar.css";
 import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
+import {AllOut, BorderColor, BorderColorRounded, Close, FormatShapes, Palette, Work} from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
-
 
 export const CanvasPage = () => {
     let {canvasID} = useParams();
 
     const dispatch = useDispatch();
     const loggedIn = useSelector(selectLoggedIn);
-    const history = useHistory();
     const [loggingIn, setLoggingIn] = useState(false);
+    const [toolDisplay, setToolDisplay] = useState('closed');
     let onPressButton;
     if(loggedIn){
         onPressButton = ()=>{
@@ -47,16 +47,77 @@ export const CanvasPage = () => {
         )
     }
 
+    let openToolBar = [
+        <Fab className={'tool'}
+             onClick={()=>{
+                 //TODO: set tools
+                 setToolDisplay('closed')
+             }}>
+            <BorderColorRounded/>
+        </Fab>,
+        <Fab className={'tool'}
+             onClick={()=>{
+                 if(toolDisplay === 'palette'){
+                     setToolDisplay('open');
+                 } else {
+                     setToolDisplay('palette');
+                 }
+             }}>
+            <Palette/>
+        </Fab>,
+        <Fab className={'tool'}
+             onClick={()=>{
+                 //TODO: set tools
+                 setToolDisplay('closed')
+             }}>
+            <FormatShapes/>
+        </Fab>,
+        <Fab className={'tool'}
+             onClick={()=>{
+                 //TODO: set tools
+                 setToolDisplay('closed')
+             }}>
+            <AllOut/>
+        </Fab>,
+        <Fab className={'tool'}
+             onClick={()=>{setToolDisplay('closed')}}>
+            <Close/>
+        </Fab>
+    ];
+
+    let colorPicker =
+        <div className='colorPickerWrapperC'>
+            <HexColorPicker className={styles.small}
+                            color={selectColor}
+                            onChange={(c) => {dispatch(changeColorPen(c))}}
+            />
+        </div>
+
+    let toolBar = () => {
+        switch (toolDisplay) {
+            case 'closed':
+                return (
+                    <Fab className={'tool'} onClick={()=>{setToolDisplay('open')}}>
+                        <Work/>
+                    </Fab>
+                )
+            case 'open':
+                return openToolBar;
+            case 'palette':
+                return [openToolBar, colorPicker];
+            default:
+                return;
+        }
+    }
+
     return (
         <div>
-            {/*<Box flexDirection={'row'}>*/}
-            {/*    <div>*/}
-            {/*        <h3>You are viewing canvas #{canvasID}</h3>*/}
-            {/*    </div>*/}
-            {/*</Box>*/}
+            <div color={"primary"} className={'toolbar'} >
+                {toolBar()}
+            </div>
             <Toolbar/>
             <TwoCanvas/>
-            <a className='logoContainerC' href={'/'}>
+            <a className='logoContainerC' href={'/#/'}>
                 <div className='logoC'/>
             </a>
             <div className='loginButtonC'>
