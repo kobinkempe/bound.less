@@ -229,6 +229,10 @@ const TwoCanvas = ({toolInUse}) => {
     }, [inUse, toolInUse, two, penColor]);
 
     const mouseUpCallback = useCallback( (event) => {
+
+
+        //NOTE: In current implementation, it is the tool-specific callback switches (mouseUpCallback,
+        // mouseDownCallback, etc) that exit out of other tools, not the actual toolbar.
         exitPaint()
         switch(toolInUse){
             case "pen":
