@@ -25,7 +25,7 @@ export const CanvasPage = () => {
     const [toolDisplay, setToolDisplay] = useState('closed');
     const [openPalette, setOpenPalette] = useState(false);
     const selectColor = useSelector(selectRGB);
-    const [toolInUse, setToolInUse] = useState('pen');
+    const [toolSelected, setToolSelected] = useState('pen');
 
     let onPressButton;
     if(loggedIn){
@@ -61,7 +61,7 @@ export const CanvasPage = () => {
         <Fab className={'tool'}
              onClick={()=>{
                  //TODO: set tools
-                 setToolInUse('pen')
+                 setToolSelected('pen')
              }}>
             <BorderColorRounded/>
         </Fab>,
@@ -82,7 +82,7 @@ export const CanvasPage = () => {
         //TextBox
         <Fab className={'tool'}
              onClick={()=>{
-                 setToolInUse('rectangle')
+                 setToolSelected('rectangle')
                  //TODO: set tools
              }}>
             <FormatShapes/>
@@ -91,7 +91,7 @@ export const CanvasPage = () => {
         //Weird Circle/Square thing
         <Fab className={'tool'}
              onClick={()=>{
-                 setToolInUse('square')
+                 setToolSelected('circle')
                  //TODO: set tools
              }}>
             <AllOut/>
@@ -133,7 +133,7 @@ export const CanvasPage = () => {
                 {toolBar()}
             </div>
             {/*<Toolbar/>*/}
-            <TwoCanvas toolSelected={toolInUse}/>
+            <TwoCanvas toolInUse={toolSelected}/>
             <a className='logoContainerC' href={'/#/'}>
                 <div className='logoC'/>
             </a>
