@@ -10,7 +10,12 @@ import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
 import {AllOut, BorderColor, BorderColorRounded, Close, FormatShapes, Palette, Work} from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
-
+function getRandomColor() {
+    return 'rgb('
+        + Math.floor(Math.random() * 255) + ','
+        + Math.floor(Math.random() * 255) + ','
+        + Math.floor(Math.random() * 255) + ')';
+}
 export const CanvasPage = () => {
     let {canvasID} = useParams();
 
@@ -18,7 +23,10 @@ export const CanvasPage = () => {
     const loggedIn = useSelector(selectLoggedIn);
     const [loggingIn, setLoggingIn] = useState(false);
     const [toolDisplay, setToolDisplay] = useState('closed');
+    const [openPalette, setOpenPalette] = useState(false);
     const selectColor = useSelector(selectRGB);
+    const [toolInUse, setToolInUse] = useState('pen');
+
     let onPressButton;
     if(loggedIn){
         onPressButton = ()=>{
@@ -49,37 +57,47 @@ export const CanvasPage = () => {
     }
 
     let openToolBar = [
+        //Pen
         <Fab className={'tool'}
              onClick={()=>{
                  //TODO: set tools
-                 setToolDisplay('closed')
+                 setToolInUse('pen')
              }}>
             <BorderColorRounded/>
         </Fab>,
+        //Palette
         <Fab className={'tool'}
              onClick={()=>{
-                 if(toolDisplay === 'palette'){
+                 if(openPalette){
+                     setOpenPalette(false);
                      setToolDisplay('open');
                  } else {
-                     setToolDisplay('palette');
+                     setOpenPalette(true);
+                     //setToolDisplay('palette');
                  }
              }}>
             <Palette/>
         </Fab>,
+
+        //TextBox
         <Fab className={'tool'}
              onClick={()=>{
+                 setToolInUse('rectangle')
                  //TODO: set tools
-                 setToolDisplay('closed')
              }}>
             <FormatShapes/>
         </Fab>,
+
+        //Weird Circle/Square thing
         <Fab className={'tool'}
              onClick={()=>{
+                 setToolInUse('square')
                  //TODO: set tools
-                 setToolDisplay('closed')
              }}>
             <AllOut/>
         </Fab>,
+
+        //X
         <Fab className={'tool'}
              onClick={()=>{setToolDisplay('closed')}}>
             <Close/>
@@ -103,9 +121,7 @@ export const CanvasPage = () => {
                     </Fab>
                 )
             case 'open':
-                return openToolBar;
-            case 'palette':
-                return [openToolBar, colorPicker];
+                return [openToolBar, (openPalette? colorPicker: null)];
             default:
                 return;
         }
@@ -117,7 +133,7 @@ export const CanvasPage = () => {
                 {toolBar()}
             </div>
             {/*<Toolbar/>*/}
-            <TwoCanvas/>
+            <TwoCanvas toolSelected={toolInUse}/>
             <a className='logoContainerC' href={'/#/'}>
                 <div className='logoC'/>
             </a>

@@ -195,6 +195,7 @@ const TwoCanvas = ({canvasID}) => {
 
 
     const dropShape = useCallback((event) => {
+        console.log("getting to dropshape")
         if(inUse) {
             console.log('useCallback called while in use');
                 const newMouse = getsCoordinates(event);
@@ -240,7 +241,7 @@ const TwoCanvas = ({canvasID}) => {
             return () => {
                 canvas.removeEventListener('mouseup', exitPaint);
                 //canvas.removeEventListener('mouseleave', exitPaint);
-                canvas.addEventListener('mouseup', dropShape);
+                canvas.removeEventListener('mouseup', dropShape);
             };
     }, [exitPaint, two, dropShape]);
 
@@ -255,7 +256,7 @@ const TwoCanvas = ({canvasID}) => {
             //console.log("getsCoordinates called");
             const canvas = two.renderer.domElement;
 
-        console.log("x: "+event.pageX +" y: "+event.offsetY);
+        //console.log("x: "+event.pageX +" y: "+event.offsetY);
 
         //Coordinate notes:
         // Don't use canvas or svgRef.current (which would normally make sense)
@@ -293,8 +294,11 @@ const TwoCanvas = ({canvasID}) => {
 
 
     return (
+        <div>
+            <text>{canvasID}</text>
             <div ref={svgRef}>
             </div>
+        </div>
     )
 }
 export default TwoCanvas;
