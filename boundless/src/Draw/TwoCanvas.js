@@ -31,6 +31,8 @@ const TwoCanvas = ({toolInUse}) => {
      *
      * **/
 
+        //TODO: make 'clear' tool a parameter that sets a new state -> triggers useEffect -> sets state as false
+        // in order to preserve last-used-tool
 
 
     const svgRef = useRef(null);
@@ -53,7 +55,6 @@ const TwoCanvas = ({toolInUse}) => {
     /** TOOLS **/
     const [isPenning, setIsPenning]  = useState(false);
     const [isStickering, setIsStickering] = useState(false);
-    //const [toolInUse, setToolInUse] = useState('pen');
 
 
 
@@ -88,6 +89,20 @@ const TwoCanvas = ({toolInUse}) => {
         setIsLoaded(true);
     });
 
+    //Checks if Delete was called
+    useEffect(()=>{
+        if(!svgRef.current){
+            return
+        }
+
+        if(toolInUse === 'wipeCanvas'){
+            two.clear();
+            two.update();
+            setTwo(two);
+            toolInUse = 'pen'
+        }
+    })
+
     //Currently not being used, but very fun
     function getRandomColor() {
         return 'rgb('
@@ -100,34 +115,6 @@ const TwoCanvas = ({toolInUse}) => {
 
 
 
-    useEffect( () => {
-        console.log("toggleTool triggered");
-        console.log(toolInUse);
-        switch(toolInUse){
-            case 'circle':
-                ////setToolInUse('circle');
-                setIsPenning(false);
-                setIsStickering(true);
-                break;
-            case 'pen':
-                //setToolInUse('pen');
-                setIsStickering(false);
-                setIsPenning(false);
-                break;
-            case 'rectangle':
-                //setToolInUse('rectangle');
-                setIsStickering(true);
-                setIsPenning(false)
-                break;
-            case 'clear':
-                two.clear();
-                two.update();
-                setTwo(two);
-                break;
-
-        }
-
-    }, [toolInUse, isPenning, isStickering, two])
 
 
     //Callback for when mouse is down
@@ -231,7 +218,7 @@ const TwoCanvas = ({toolInUse}) => {
     const mouseUpCallback = useCallback( (event) => {
 
 
-        //NOTE: In current implementation, it is the tool-specific callback switches (mouseUpCallback,
+        //NOTE: In current implementation, it is the tool callback switches (mouseUpCallback,
         // mouseDownCallback, etc) that exit out of other tools, not the actual toolbar.
         exitPaint()
         switch(toolInUse){

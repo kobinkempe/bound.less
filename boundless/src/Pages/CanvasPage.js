@@ -8,7 +8,7 @@ import styles from "../Stylesheets/CanvasPage.css";
 import "../Stylesheets/CanvasToolBar.css";
 import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
-import {AllOut, BorderColor, BorderColorRounded, Close, FormatShapes, Palette, Work} from '@material-ui/icons'
+import {AllOut, BorderColor, BorderColorRounded, Close, FormatShapes, Palette, Work, DeleteForever} from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
 function getRandomColor() {
     return 'rgb('
@@ -95,6 +95,14 @@ export const CanvasPage = () => {
                  //TODO: set tools
              }}>
             <AllOut/>
+        </Fab>,
+
+        //Wipe Canvas Button
+        <Fab className={'tool'}
+             onClick={()=>{
+                 setToolSelected('wipeCanvas')
+             }}>
+            <DeleteForever/>
         </Fab>,
 
         //X
