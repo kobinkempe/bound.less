@@ -2,13 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="UI Changes for Profile Page">
-      <change afterPath="$PROJECT_DIR$/src/Components/canvasThumbnail.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Images/toolbarIcons/logoSmall.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/profileCanvasLinks.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/canvasThumbnail.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Firebase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/CanvasRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasRouter.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stylesheets/Home.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/Home.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stylesheets/profileCanvasLinks.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Stylesheets/CanvasPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/CanvasPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +22,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -30,6 +34,13 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/Pages/CanvasPage.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/Profile.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/Home.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Images/toolbarIcons/logoSmall.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/CanvasRouter.js" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1oOJxJ7kGVTfjlQvH6pt1lMtcEu" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

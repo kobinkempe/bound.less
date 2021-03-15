@@ -44,7 +44,7 @@ export default function Home() {
                 <Button variant="contained"
                         color='Primary'
                         className="Button"
-                        onClick={()=>{history.push('/sheets/new')}}>
+                        onClick={()=>{history.push('/canvas/new')}}>
                     Start Creating!
                 </Button>
                 <div className='sideText'>
