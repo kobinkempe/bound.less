@@ -18,7 +18,9 @@ export default function Profile(){
                     <div className='sheetSection'>
                         <div className='heading'>
                             <text>Your bound.less Canvases</text>
-                            <text>View All</text>
+                            <a className='viewAll' href='#/profile/view-all'>
+                                View All
+                            </a>
                         </div>
                         <div className='sheetBox'>
                             <a className='sheetCaptionImage' href='/#/sheets/new'>
