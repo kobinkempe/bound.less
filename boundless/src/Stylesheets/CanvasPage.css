@@ -60,7 +60,8 @@
     position: fixed;
     z-index: 1;
     left: 3vh;
-    top: 12vh;
+    top: 3vh;
+    align-items: center;
 }
 
 .tool {

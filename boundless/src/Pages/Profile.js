@@ -23,7 +23,7 @@ export default function Profile(){
                             </a>
                         </div>
                         <div className='sheetBox'>
-                            <a className='sheetCaptionImage' href='/#/sheets/new'>
+                            <a className='sheetCaptionImage' href='/#/canvas/new'>
                                 <div className='newCanvas' />
                             </a>
                             <text>New Canvas</text>
@@ -35,7 +35,7 @@ export default function Profile(){
                             <text>View All</text>
                         </div>
                         <div className='sheetBox'>
-                            <a className='sheetCaptionImage' href='/#/sheets/new'>
+                            <a className='sheetCaptionImage' href='/#/canvas/new'>
                                 <div className='likedCanvas' />
                             </a>
                             <text>Liked Canvas</text>
