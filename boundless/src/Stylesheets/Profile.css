@@ -39,6 +39,14 @@
     display: flex;
 }
 
+.username {
+    font-size: 1.5em;
+}
+
+.caption {
+    font-size: 1.00em;
+}
+
 .heading {
     flex-direction: row;
     justify-content: space-between;
@@ -53,3 +61,4 @@
     display: flex;
     overflow-x: auto;
 }
+

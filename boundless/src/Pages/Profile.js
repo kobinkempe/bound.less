@@ -13,8 +13,14 @@ export default function Profile(){
                     <div className='topSection'>
                         <div className='userImage'/>
                         <div className='captionText'>
-                            <text>{username}</text>
+                            <div className='username'>
+                                <text>{username}</text>
+                            </div>
+                            <div className='caption'>
+                                <text>Science Teacher from Mars.</text>
+                            </div>
                         </div>
+
                     </div>
                     <div className='sheetSection'>
                         <div className='heading'>
