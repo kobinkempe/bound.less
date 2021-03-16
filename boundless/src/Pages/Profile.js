@@ -1,6 +1,7 @@
 import '../Stylesheets/Profile.css'
 import {Link, useParams} from "react-router-dom";
 import HeaderBar from "../Components/headerBar";
+import CanvasThumbnail from "../Components/canvasThumbnail";
 
 export default function Profile(){
     let {username} = useParams();
@@ -23,10 +24,10 @@ export default function Profile(){
                             </a>
                         </div>
                         <div className='sheetBox'>
-                            <a className='sheetCaptionImage' href='/#/canvas/new'>
-                                <div className='newCanvas' />
-                            </a>
-                            <text>New Canvas</text>
+                            <CanvasThumbnail
+                                href={'#/canvas/new'}
+                                text={'New Canvas'}
+                                newCanvas={true}/>
                         </div>
                     </div>
                     <div className='sheetSection'>
@@ -35,10 +36,10 @@ export default function Profile(){
                             <text>View All</text>
                         </div>
                         <div className='sheetBox'>
-                            <a className='sheetCaptionImage' href='/#/canvas/new'>
-                                <div className='likedCanvas' />
-                            </a>
-                            <text>Liked Canvas</text>
+                            <CanvasThumbnail
+                                href={'#/canvas/liked1'}
+                                text={'Liked Canvas 1'}
+                                newCanvas={false}/>
                         </div>
                     </div>
                 </div>
