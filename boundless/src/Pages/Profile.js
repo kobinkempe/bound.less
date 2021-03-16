@@ -6,7 +6,7 @@ export default function Profile(){
     let {username} = useParams();
     return (
         <div>
-            <HeaderBar/>
+            <HeaderBar profilePage={true}/>
             <div className='screen'>
                 <div className='container'>
                     <div className='topSection'>

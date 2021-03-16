@@ -6,7 +6,7 @@ export default function canvasThumbnail() {
     return (
 
         <div className='sheetBox'>
-            <a className='sheetCaptionImage' href='/#/sheets/new'>
+            <a className='sheetCaptionImage' href='/#/canvas/new'>
                 <div className='newCanvas' />
             </a>
             <text>New Canvas</text>

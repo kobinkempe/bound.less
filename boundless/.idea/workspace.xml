@@ -2,24 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="UI Changes for Profile Page">
-<<<<<<< HEAD
-      <change afterPath="$PROJECT_DIR$/src/Pages/ViewAllSheets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/ProfileRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/ProfileRouter.js" afterDir="false" />
-=======
-      <change afterPath="$PROJECT_DIR$/src/Images/toolbarIcons/logoSmall.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/canvasThumbnail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/canvasThumbnail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/headerBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/headerBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/CanvasRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pages/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Profile.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Stylesheets/CanvasPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/CanvasPage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
->>>>>>> main
+      <change beforePath="$PROJECT_DIR$/src/Stylesheets/Profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/Profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Stylesheets/headerBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/headerBar.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="Anuja" />
+        <entry key="$PROJECT_DIR$/.." value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -56,6 +48,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -109,7 +102,7 @@
       <workItem from="1614463104278" duration="10598000" />
       <workItem from="1615338941956" duration="10635000" />
       <workItem from="1615478096554" duration="31260000" />
-      <workItem from="1615605233453" duration="20949000" />
+      <workItem from="1615605233453" duration="17627000" />
     </task>
     <task id="LOCAL-00001" summary="UI Changes for Profile Page">
       <created>1615577398290</created>

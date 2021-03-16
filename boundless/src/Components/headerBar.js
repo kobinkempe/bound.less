@@ -1,11 +1,12 @@
 import '../Stylesheets/headerBar.css';
-import {Box, Button, Link} from "@material-ui/core";
+import {Box, Button, Fab, Link} from "@material-ui/core";
 import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useDispatch, useSelector} from "react-redux";
 import {HashRouter, useHistory} from "react-router-dom";
 import {useState} from "react";
+import {Person} from "@material-ui/icons";
 
-export default function HeaderBar(){
+export default function HeaderBar({profilePage = false}){
     const dispatch = useDispatch();
     const loggedIn = useSelector(selectLoggedIn);
     const history = useHistory();
@@ -59,6 +60,14 @@ export default function HeaderBar(){
                     'Log Out':
                     'Log In/Sign Up'}
             </Button>
+            {loggedIn && !profilePage?
+                <Fab className={'profileH'}
+                            onClick={()=>{
+                                history.push('/profile');
+                            }}>
+                    <Person fontSize={'large'}/>
+                </Fab>:
+                <div/>}
             {loginBox()}
         </div>
     )

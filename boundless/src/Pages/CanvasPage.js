@@ -8,7 +8,17 @@ import styles from "../Stylesheets/CanvasPage.css";
 import "../Stylesheets/CanvasToolBar.css";
 import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
-import {AllOut, BorderColorRounded, Close, FormatShapes, Palette, Work, DeleteForever} from '@material-ui/icons'
+import {
+    AllOut,
+    BorderColorRounded,
+    Close,
+    FormatShapes,
+    Palette,
+    Work,
+    DeleteForever,
+    AccountCircle,
+    Person
+} from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
 
@@ -152,6 +162,34 @@ export const CanvasPage = () => {
         }
     }
 
+    let loginButton = () => {
+        if(!loggedIn){
+            return <Button
+                className={'loginButtonItem'}
+                variant='contained'
+                color='primary'
+                onClick={onPressButton}>
+                {'Log In/Sign Up'}
+            </Button>;
+        } else {
+            return [
+                <Button
+                    className={'loginButtonItem'}
+                    variant='contained'
+                    color='primary'
+                    onClick={onPressButton}>
+                    {'Log Out'}
+                </Button>,
+                <Fab className={'profile'}
+                     onClick={()=>{
+                         history.push('/profile');
+                     }}>
+                    <Person fontSize={'large'}/>
+                </Fab>
+            ]
+        }
+    }
+
     return (
         <div>
             <div color={"primary"} className={'toolbar'} >
@@ -159,14 +197,7 @@ export const CanvasPage = () => {
             </div>
             <TwoCanvas toolInUse={toolSelected}/>
             <div className='loginButtonC'>
-                <Button
-                    variant='contained'
-                    color='primary'
-                    onClick={onPressButton}>
-                    {loggedIn?
-                        'Log Out':
-                        'Log In/Sign Up'}
-                </Button>
+                {loginButton()}
             </div>
             {loginBox()}
         </div>

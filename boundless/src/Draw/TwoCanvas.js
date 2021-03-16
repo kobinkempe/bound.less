@@ -312,7 +312,7 @@ const TwoCanvas = ({toolInUse}) => {
 
     return (
         <div>
-            <text>{toolInUse}</text>
+            {/*<text>{toolInUse}</text>*/}
             <div ref={svgRef}>
             </div>
         </div>
