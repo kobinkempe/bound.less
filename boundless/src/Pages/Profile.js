@@ -5,6 +5,7 @@ import CanvasThumbnail from "../Components/canvasThumbnail";
 
 export default function Profile(){
     let {username} = useParams();
+
     return (
         <div>
             <HeaderBar profilePage={true}/>
@@ -25,7 +26,7 @@ export default function Profile(){
                     <div className='sheetSection'>
                         <div className='heading'>
                             <text>Your bound.less Canvases</text>
-                            <a className='viewAll' href='#/profile/view-all'>
+                            <a className='viewAll' href={'#/profile/' + {username} + '/view-all'}>
                                 View All
                             </a>
                         </div>

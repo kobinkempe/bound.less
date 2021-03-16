@@ -12,6 +12,9 @@ export const ProfileRouter = () => {
     return (
         <div>
             <Switch>
+                <Route path={'/profile/:username/view-all'}>
+                    <ViewAllSheets/>
+                </Route>
                 <Route path={`/profile/:username`}>
                     <Profile/>
                 </Route>
@@ -20,9 +23,6 @@ export const ProfileRouter = () => {
                         <Redirect to={'/profile/' + username} />:
                         <Redirect to='/' />
                     }
-                </Route>
-                <Route path={'/profile/:username/view-all'}>
-                    <ViewAllSheets/>
                 </Route>
             </Switch>
         </div>
