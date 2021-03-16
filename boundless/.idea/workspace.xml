@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="Profile button">
-      <change afterPath="$PROJECT_DIR$/src/Stylesheets/ViewAllSheets.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/ProfileRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/ProfileRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/ViewAllSheets.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/ViewAllSheets.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
