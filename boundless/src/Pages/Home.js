@@ -4,9 +4,7 @@ import reducer, {logIn, logOut} from "../Redux/loginState";
 import GoogleSignIn from "../Components/GoogleSignIn"
 import HeaderBar from "../Components/headerBar";
 import {useHistory} from "react-router-dom";
-import HeaderBar from "../Components/headerBar";
-import {Link, useHistory} from "react-router-dom";
-import {Box, Button} from "@material-ui/core";
+import {Button} from "@material-ui/core";
 export default function Home() {
     const history = useHistory();
     return (
