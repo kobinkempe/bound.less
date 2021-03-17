@@ -15,7 +15,7 @@ import svg from "two.js/src/renderers/svg";
 const radius = 40;
 
 let TEXT_RENDERING_BOOL = true;
-const TwoCanvas = ({toolInUse}) => {
+const TwoCanvas = ({toolInUse, wipe=false}) => {
 
 
 
@@ -35,12 +35,24 @@ const TwoCanvas = ({toolInUse}) => {
         // in order to preserve last-used-tool
 
 
+
+
+        /**
+         * BUG LIST:
+         * Create
+         *
+         *
+         *
+         * **/
+
+
+
     const svgRef = useRef(null);
     const penColor = useSelector(selectRGB)
 
     //Creates the 'two' object w/o mounting it to the actual DOM
     const [two, setTwo] = useState(
-        new Two({fullscreen:true, autostart:true})
+        new Two({width:window.innerWidth, height:window.innerHeight, autostart:true})
     );
 
     //Determines whether TwoCanvas has been appended onto svgRef
@@ -51,6 +63,10 @@ const TwoCanvas = ({toolInUse}) => {
 
     //Boolean for if the mouse is currently down
     const [inUse, setInUse] = useState(false);
+
+    //const [justCleaned, setJustCleaned] = useState(!wipe);
+
+    const [tool, setTool] = useState(toolInUse);
 
     /** TOOLS **/
     const [isPenning, setIsPenning]  = useState(false);
@@ -95,13 +111,13 @@ const TwoCanvas = ({toolInUse}) => {
             return
         }
 
-        if(toolInUse === 'wipeCanvas'){
+        if(wipe){
             two.clear();
             two.update();
             setTwo(two);
-            toolInUse = 'pen'
+            //wipe=false;
         }
-    })
+    }, [two, svgRef, wipe])
 
     //Currently not being used, but very fun
     function getRandomColor() {
@@ -126,7 +142,7 @@ const TwoCanvas = ({toolInUse}) => {
             setMouse(coordinates);
             setInUse(true);
         }
-    }, []);
+    }, [toolInUse]);
 
     //useEffect for startPaint
      useEffect(() => {
@@ -139,10 +155,12 @@ const TwoCanvas = ({toolInUse}) => {
             //console.log("startPaint event added")
 
             canvas.addEventListener('mousedown', startPaint);
+            canvas.addEventListener('touchstart', startPaint);
             return () => {
+                canvas.removeEventListener('touchstart', startPaint);
                 canvas.removeEventListener('mousedown', startPaint);
             };
-    }, [startPaint, two]);
+    }, [startPaint, two, toolInUse]);
 
     //instantiates newMouse and draws lines
     const paint = useCallback(
@@ -171,18 +189,20 @@ const TwoCanvas = ({toolInUse}) => {
             //console.log("mouseMove event added")
             const canvas = two.renderer.domElement;
             canvas.addEventListener('mousemove', paint);
-            return () => {
+            canvas.addEventListener('touchmove', paint);
+        return () => {
+                canvas.removeEventListener('touchmove', paint);
                 canvas.removeEventListener('mousemove', paint);
             };
-    }, [paint, two]);
+    }, [paint, two, toolInUse]);
 
     //Triggers when the mouse is up or off the screen
     const exitPaint = useCallback(() => {
-        if(toolInUse === 'pen') {
-            setInUse(false);
-            setMouse(undefined);
-        }
-    }, []);
+
+
+        setMouse(undefined);
+        setInUse(false);
+    }, [toolInUse]);
 
 
     const dropShape = useCallback((event) => {
@@ -236,7 +256,7 @@ const TwoCanvas = ({toolInUse}) => {
                 dropShape(event);
                 break;
         }
-    }, [inUse, setInUse, dropShape, exitPaint]);
+    }, [inUse, toolInUse]);
 
     //useEffect for exitPaint
     useEffect(() => {
@@ -254,13 +274,15 @@ const TwoCanvas = ({toolInUse}) => {
                 //canvas.addEventListener('mouseleave', exitPaint);
                 //canvas.addEventListener('mouseup', dropShape);
 
-            return () => {
+                canvas.addEventListener('touchend', mouseUpCallback);
+        return () => {
                 canvas.removeEventListener('mouseup', mouseUpCallback);
-                //canvas.removeEventListener('mouseup', exitPaint);
+                canvas.removeEventListener('touchend', mouseUpCallback);
+            //canvas.removeEventListener('mouseup', exitPaint);
                 //canvas.removeEventListener('mouseleave', exitPaint);
                 //canvas.removeEventListener('mouseup', dropShape);
             };
-    }, [exitPaint, two, dropShape]);
+    }, [mouseUpCallback, two, toolInUse]);
 
     //Gets the coordinates of the mouse event
     const getsCoordinates = (event) => {
@@ -311,7 +333,7 @@ const TwoCanvas = ({toolInUse}) => {
 
 
     return (
-        <div>
+        <div style={{"overflow":"hidden"}}>
             <text>{toolInUse}</text>
             <div ref={svgRef}>
             </div>

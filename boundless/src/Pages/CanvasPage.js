@@ -28,6 +28,7 @@ export const CanvasPage = () => {
     const [openPalette, setOpenPalette] = useState(false);
     const selectColor = useSelector(selectRGB);
     const [toolSelected, setToolSelected] = useState('pen');
+    const [wipe, setWipe] = useState(false);
 
     let onPressButton;
     if(loggedIn){
@@ -38,6 +39,16 @@ export const CanvasPage = () => {
         onPressButton = ()=>{
             setLoggingIn(true);
         }
+    }
+
+
+
+    /** I have a feeling that a lot of extra setting are going to be needed to be cleared between tools, so I've
+     * started a "cleanup" function that's called whenever tools are switched**/
+
+    let cleanup = () => {
+        setWipe(false);
+
     }
 
     let loginBox = () => {
@@ -92,6 +103,7 @@ export const CanvasPage = () => {
         //TextBox
         <Fab className={'tool'}
              onClick={()=>{
+                 cleanup();
                  setToolSelected('rectangle')
              }}>
             <FormatShapes/>
@@ -100,6 +112,7 @@ export const CanvasPage = () => {
         //Weird Circle/Square thing
         <Fab className={'tool'}
              onClick={()=>{
+                 cleanup();
                  setToolSelected('circle')
              }}>
             <AllOut/>
@@ -108,14 +121,16 @@ export const CanvasPage = () => {
         //Wipe Canvas Button
         <Fab className={'tool'}
              onClick={()=>{
-                 setToolSelected('wipeCanvas')
+                 setWipe(true);
              }}>
             <DeleteForever/>
         </Fab>,
 
         //X
         <Fab className={'tool'} size={'small'}
-             onClick={()=>{setToolDisplay('closed')}}>
+             onClick={()=>{
+                 cleanup();
+                 setToolDisplay('closed')}}>
             <Close/>
         </Fab>
     ];
@@ -157,7 +172,7 @@ export const CanvasPage = () => {
             <div color={"primary"} className={'toolbar'} >
                 {toolBar()}
             </div>
-            <TwoCanvas toolInUse={toolSelected}/>
+            <TwoCanvas toolInUse={toolSelected} wipe={wipe}/>
             <div className='loginButtonC'>
                 <Button
                     variant='contained'
