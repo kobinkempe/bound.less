@@ -1,10 +1,16 @@
 import '../Stylesheets/Profile.css'
 import {Link, useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {selectLoggedIn, selectUsername} from "../Redux/loginState";
 import HeaderBar from "../Components/headerBar";
 import CanvasThumbnail from "../Components/canvasThumbnail";
 
-export default function Profile(){
-    let {username} = useParams();
+export default function Profile() {
+    let profileUsername = useParams().username;
+    const loggedIn = useSelector(selectLoggedIn);
+    const username = useSelector(selectUsername);
+    const isOwnProfile = loggedIn && username === profileUsername;
+    console.log(username);
 
     return (
         <div>
