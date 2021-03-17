@@ -64,13 +64,9 @@ const TwoCanvas = ({toolInUse, wipe=false}) => {
     //Boolean for if the mouse is currently down
     const [inUse, setInUse] = useState(false);
 
-    //const [justCleaned, setJustCleaned] = useState(!wipe);
 
-    const [tool, setTool] = useState(toolInUse);
 
     /** TOOLS **/
-    const [isPenning, setIsPenning]  = useState(false);
-    const [isStickering, setIsStickering] = useState(false);
 
 
 
@@ -215,6 +211,7 @@ const TwoCanvas = ({toolInUse, wipe=false}) => {
                         console.log('Circle tool triggered');
                         const circ = two.makeCircle(newMouse[0], newMouse[1], radius);
                         circ.fill = penColor;
+                        circ.noStroke();
                         two.update();
                         console.log(penColor);
                         setTwo(two);
@@ -222,7 +219,8 @@ const TwoCanvas = ({toolInUse, wipe=false}) => {
                     } else if(toolInUse === 'rectangle'){
                         console.log('Rectangle tool triggered')
                         const rect = two.makeRectangle(newMouse[0], newMouse[1], radius, radius);
-                        rect.fill = penColor
+                        rect.fill = penColor;
+                        rect.noStroke();
                         two.update();
                         console.log(penColor);
                         setTwo(two);

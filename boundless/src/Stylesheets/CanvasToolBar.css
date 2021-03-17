@@ -1,20 +1,12 @@
-.toolbar2{
+
+.toolbar{
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     position: fixed;
     z-index: 1;
-    left:5vh;
+    left: 23vh;
     top: 20vh;
-}
-
-.toolbarSVG{
-    height: 9vh;
-    width: 9vh;
     align-items: center;
-    position:fixed;
-    z-index:1;
-
 }
 
 

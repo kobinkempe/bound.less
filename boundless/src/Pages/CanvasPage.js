@@ -17,10 +17,18 @@ import {
     Work,
     DeleteForever,
     AccountCircle,
-    Person
+    Person,
+    Height,
 } from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
+
+import WidthSlider from "../Draw/Toolbar/WidthSlider";
+
+
+
+
+
 
 function getRandomColor() {
     return 'rgb('
@@ -32,13 +40,26 @@ export const CanvasPage = () => {
     let {canvasID} = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
+
+
+    //Login States
     const loggedIn = useSelector(selectLoggedIn);
     const [loggingIn, setLoggingIn] = useState(false);
+
+    //Toolbar States
     const [toolDisplay, setToolDisplay] = useState('closed');
+    const [toolSelected, setToolSelected] = useState('pen');
+
+    //Palette
     const [openPalette, setOpenPalette] = useState(false);
     const selectColor = useSelector(selectRGB);
-    const [toolSelected, setToolSelected] = useState('pen');
+
+    //Clear Screen
     const [wipe, setWipe] = useState(false);
+
+    //Height parameter
+    const [lineWidth, setLineWidth] = useState(10);
+    const [openHeight, setOpenHeight] = useState(false);
 
     let onPressButton;
     if(loggedIn){
@@ -101,7 +122,6 @@ export const CanvasPage = () => {
              onClick={()=>{
                  if(openPalette){
                      setOpenPalette(false);
-                     setToolDisplay('open');
                  } else {
                      setOpenPalette(true);
                      //setToolDisplay('palette');
@@ -128,6 +148,20 @@ export const CanvasPage = () => {
             <AllOut/>
         </Fab>,
 
+
+        <Fab className={'tool'}
+             onClick={() => {
+                 cleanup();
+                 if(openHeight) {
+                     setOpenHeight(false);
+                 }else {
+                    setOpenHeight(true);
+                    }
+                 }
+             }>
+            <Height/>
+        </Fab>,
+
         //Wipe Canvas Button
         <Fab className={'tool'}
              onClick={()=>{
@@ -145,6 +179,7 @@ export const CanvasPage = () => {
         </Fab>
     ];
 
+    //The different popups being used in the toolbar
     let colorPicker =
         <ClickAwayListener onClickAway={()=>{setOpenPalette(false)}}>
             <div className='colorPickerWrapperC'>
@@ -154,6 +189,10 @@ export const CanvasPage = () => {
                 />
             </div>
         </ClickAwayListener>
+
+    let heightSlider = <WidthSlider onClick={setLineWidth}/>
+
+
 
     let toolBar = () => {
         switch (toolDisplay) {
@@ -170,7 +209,8 @@ export const CanvasPage = () => {
                 return [
                     logoIcon,
                     openToolBar,
-                    (openPalette? colorPicker: null)
+                    (openPalette? colorPicker: null),
+                    (openHeight? heightSlider:null)
                 ];
             default:
                 return;
