@@ -341,6 +341,3 @@ const TwoCanvas = ({toolInUse, wipe=false}) => {
     )
 }
 export default TwoCanvas;
-
-
-

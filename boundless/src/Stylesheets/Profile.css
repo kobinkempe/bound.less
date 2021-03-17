@@ -39,6 +39,14 @@
     display: flex;
 }
 
+.username {
+    font-size: 1.5em;
+}
+
+.caption {
+    font-size: 1.00em;
+}
+
 .heading {
     flex-direction: row;
     justify-content: space-between;
@@ -47,34 +55,10 @@
 }
 
 .sheetBox {
-    flex-direction: column;
+    flex-direction: row;
     background-color: #d3d3d3;
     padding: 1.3rem .5rem .8rem 1.8rem;
     display: flex;
     overflow-x: auto;
 }
 
-.sheetCaptionImage {
-    flex-direction: column;
-    display: flex;
-    color: dimgrey;
-    text-decoration: none;
-    z-index: 2;
-    margin: 0 1.3rem 0 0;
-}
-
-.newCanvas {
-    background-image: url('../Images/NewCanvas.png');
-    background-size: contain;
-    height: 10rem;
-    width: 16rem;
-    background-repeat: no-repeat;
-}
-
-.likedCanvas {
-    background-image: url('../Images/LikedCanvas.png');
-    background-size: contain;
-    height: 10rem;
-    width: 16rem;
-    background-repeat: no-repeat;
-}

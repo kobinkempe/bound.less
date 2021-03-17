@@ -1,15 +1,18 @@
 import '../Stylesheets/canvasThumbnail.css'
 import firebase from "../Firebase";
 
-export default function canvasThumbnail() {
+export default function CanvasThumbnail({href, text, newCanvas=true}) {
 
     return (
 
-        <div className='sheetBox'>
-            <a className='sheetCaptionImage' href='/#/sheets/new'>
-                <div className='newCanvas' />
+        <div className='sheetCaptionImage'>
+            <a href={href}>
+                {newCanvas?
+                    <div className='newCanvas'/>:
+                    <div className='likedCanvas'/>
+                }
             </a>
-            <text>New Canvas</text>
+            <text>{text}</text>
         </div>
 
     )

@@ -48,10 +48,19 @@
 
 .loginButtonC {
     position: fixed;
-    top: 2vh;
-    right: 2vh;
+    top: 1vh;
+    right: 1vh;
     max-width: 50%;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.loginButtonItem {
+    margin: 1vh !important;
 }
 
 .toolbar{
@@ -67,4 +76,9 @@
 .tool {
     margin-bottom: 15% !important;
     box-shadow: none !important;
+}
+
+.profile {
+    box-shadow: none !important;
+    margin: 1vh !important;
 }

@@ -9,13 +9,15 @@ export const slice = createSlice({
     //The initial state of your redux state variable, in this case an object with a 'value' field that starts at 0 - KK
     initialState: {
         loggedIn: false,
-        username: ''
+        username: '',
+        loggingIn: false
     },
     // These are all the actions you can take, and what they do. - KK
     reducers: {
         logIn: (state, action) => {
             state.loggedIn = true;
             state.username = action.payload;
+            state.loggingIn = false;
         },
         logOut: state => {
             state.loggedIn = false;
@@ -23,17 +25,24 @@ export const slice = createSlice({
         changeUser: (state, action) => {
             state.username = action.payload;
         },
+        startLogin: (state, action) => {
+            state.loggingIn = true;
+        },
+        stopLogin: (state, action) => {
+            state.loggingIn = false;
+        },
     },
 });
 
 //Gotta export the actions
-export const { logIn, logOut, changeUser } = slice.actions;
+export const { logIn, logOut, changeUser, startLogin, stopLogin } = slice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
 export const selectLoggedIn = state => state.loginState.loggedIn;
 export const selectUsername = state => state.loginState.username;
+export const selectLoggingIn = state => state.loginState.loggingIn;
 
 // And this exports a slice of the overall reducer - KK
 export default slice.reducer;

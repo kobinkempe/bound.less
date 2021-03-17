@@ -1,48 +1,47 @@
 import '../Stylesheets/headerBar.css';
-import {Box, Button, Link} from "@material-ui/core";
-import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
+import {Box, Button, Fab, Link, PropTypes} from "@material-ui/core";
+import {logIn, logOut, selectLoggedIn, selectUsername, selectLoggingIn, startLogin, stopLogin} from "../Redux/loginState";
 import {useDispatch, useSelector} from "react-redux";
 import {HashRouter, useHistory} from "react-router-dom";
 import {useState} from "react";
+import {Person} from "@material-ui/icons";
+import GoogleSignIn from "./GoogleSignIn"
+import firebase from '../Firebase.js';
 
-export default function HeaderBar(){
+export default function HeaderBar({profilePage = false}){
     const dispatch = useDispatch();
-    const loggedIn = useSelector(selectLoggedIn);
     const history = useHistory();
-    const [loggingIn, setLoggingIn] = useState(false);
-    const navigate = () => {
-        history.push('/profile')
+    const [val, setVal] = useState(0); //dummy value updated to force re-render
+
+    if(firebase.auth().currentUser) { //helps with situation where user is already logged into Google account in browser
+        dispatch(logIn(firebase.auth().currentUser.displayName));
     }
+    let loggedIn = useSelector(selectLoggedIn);
+    let loggingIn = useSelector(selectLoggingIn) && !loggedIn;
+
     let onPressButton;
     if(loggedIn){
         onPressButton = ()=>{
-            dispatch(logOut());
-            navigate();
+            firebase.auth().signOut().then(() => {
+                dispatch(logOut());
+                loggedIn = false;
+                setVal(val + 1);
+            }).catch((error) => {
+                console.log(error);
+            });
         }
     } else {
         onPressButton = ()=>{
-            setLoggingIn(true);
+            dispatch(startLogin());
         }
     }
 
-    let loginBox = () => {
-        if(!loggingIn){
-            return;
-        }
-        return (
-            <div className='mask2'>
-                <div className='loginBox'>
-                    <Button onClick={()=>{
-                        dispatch(logIn('John Doe'));
-                        navigate();
-                    }}>
-                        Log In as John Doe
-                    </Button>
-                </div>
-            </div>
-        )
-    }
+    let closeButton = () => {
+        dispatch(stopLogin())
+        setVal(val + 1);
+    };
 
+    // @ts-ignore
     return(
         <div className='headerBar'>
             <div className={'centering'}>
@@ -59,7 +58,24 @@ export default function HeaderBar(){
                     'Log Out':
                     'Log In/Sign Up'}
             </Button>
-            {loginBox()}
+            {loggedIn && !profilePage?
+                <Fab className={'profileH'}
+                            onClick={()=>{
+                                history.push('/profile');
+                            }}>
+                    <Person fontSize={'large'}/>
+                </Fab>:
+                <div/>}
+            {loggingIn ?
+                <div className='mask2'>
+                    <div className='loginBox'>
+                        <GoogleSignIn />
+                        <Button onClick={closeButton}>
+                            Close Window
+                        </Button>
+                    </div>
+                </div> :
+                <div/>}
         </div>
     )
 }
