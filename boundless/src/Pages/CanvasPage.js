@@ -3,22 +3,42 @@ import TwoCanvas from "../Draw/TwoCanvas";
 import {HexColorPicker} from "react-colorful";
 import {useDispatch, useSelector} from "react-redux";
 import {changeColorPen, selectRGB} from "../Redux/rSlicePenOptions";
-import {Button, Fab} from "@material-ui/core";
+import {Button, Fab, ClickAwayListener} from "@material-ui/core";
 import styles from "../Stylesheets/CanvasPage.css";
 import "../Stylesheets/CanvasToolBar.css";
 import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
-import {AllOut, BorderColor, BorderColorRounded, Close, FormatShapes, Palette, Work} from '@material-ui/icons'
+import {
+    AllOut,
+    BorderColorRounded,
+    Close,
+    FormatShapes,
+    Palette,
+    Work,
+    DeleteForever,
+    AccountCircle,
+    Person
+} from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
+import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
 
+function getRandomColor() {
+    return 'rgb('
+        + Math.floor(Math.random() * 255) + ','
+        + Math.floor(Math.random() * 255) + ','
+        + Math.floor(Math.random() * 255) + ')';
+}
 export const CanvasPage = () => {
     let {canvasID} = useParams();
-
+    const history = useHistory();
     const dispatch = useDispatch();
     const loggedIn = useSelector(selectLoggedIn);
     const [loggingIn, setLoggingIn] = useState(false);
     const [toolDisplay, setToolDisplay] = useState('closed');
+    const [openPalette, setOpenPalette] = useState(false);
     const selectColor = useSelector(selectRGB);
+    const [toolSelected, setToolSelected] = useState('pen');
+
     let onPressButton;
     if(loggedIn){
         onPressButton = ()=>{
@@ -48,66 +68,125 @@ export const CanvasPage = () => {
         )
     }
 
+    let logoIcon =
+        <Fab className={'tool'}
+             onClick={()=>{
+                 history.push('/');
+             }}>
+            <LogoSmallIcon/>
+        </Fab>;
+
     let openToolBar = [
+        //Pen
         <Fab className={'tool'}
              onClick={()=>{
                  //TODO: set tools
-                 setToolDisplay('closed')
+                 setToolSelected('pen')
              }}>
             <BorderColorRounded/>
         </Fab>,
+        //Palette
         <Fab className={'tool'}
              onClick={()=>{
-                 if(toolDisplay === 'palette'){
+                 if(openPalette){
+                     setOpenPalette(false);
                      setToolDisplay('open');
                  } else {
-                     setToolDisplay('palette');
+                     setOpenPalette(true);
+                     //setToolDisplay('palette');
                  }
              }}>
             <Palette/>
         </Fab>,
+
+        //TextBox
         <Fab className={'tool'}
              onClick={()=>{
-                 //TODO: set tools
-                 setToolDisplay('closed')
+                 setToolSelected('rectangle')
              }}>
             <FormatShapes/>
         </Fab>,
+
+        //Weird Circle/Square thing
         <Fab className={'tool'}
              onClick={()=>{
-                 //TODO: set tools
-                 setToolDisplay('closed')
+                 setToolSelected('circle')
              }}>
             <AllOut/>
         </Fab>,
+
+        //Wipe Canvas Button
         <Fab className={'tool'}
+             onClick={()=>{
+                 setToolSelected('wipeCanvas')
+             }}>
+            <DeleteForever/>
+        </Fab>,
+
+        //X
+        <Fab className={'tool'} size={'small'}
              onClick={()=>{setToolDisplay('closed')}}>
             <Close/>
         </Fab>
     ];
 
     let colorPicker =
-        <div className='colorPickerWrapperC'>
-            <HexColorPicker className={styles.small}
-                            color={selectColor}
-                            onChange={(c) => {dispatch(changeColorPen(c))}}
-            />
-        </div>
+        <ClickAwayListener onClickAway={()=>{setOpenPalette(false)}}>
+            <div className='colorPickerWrapperC'>
+                <HexColorPicker className={styles.small}
+                                color={selectColor}
+                                onChange={(c) => {dispatch(changeColorPen(c))}}
+                />
+            </div>
+        </ClickAwayListener>
 
     let toolBar = () => {
         switch (toolDisplay) {
             case 'closed':
                 return (
-                    <Fab className={'tool'} onClick={()=>{setToolDisplay('open')}}>
-                        <Work/>
-                    </Fab>
+                    [
+                        logoIcon,
+                        <Fab className={'tool'} onClick={()=>{setToolDisplay('open')}}>
+                            <Work/>
+                        </Fab>
+                    ]
                 )
             case 'open':
-                return openToolBar;
-            case 'palette':
-                return [openToolBar, colorPicker];
+                return [
+                    logoIcon,
+                    openToolBar,
+                    (openPalette? colorPicker: null)
+                ];
             default:
                 return;
+        }
+    }
+
+    let loginButton = () => {
+        if(!loggedIn){
+            return <Button
+                className={'loginButtonItem'}
+                variant='contained'
+                color='primary'
+                onClick={onPressButton}>
+                {'Log In/Sign Up'}
+            </Button>;
+        } else {
+            return [
+                <Button
+                    className={'loginButtonItem'}
+                    variant='contained'
+                    color='primary'
+                    onClick={onPressButton}>
+                    {'Log Out'}
+                </Button>,
+                <Fab className={'profile'}
+                     onClick={()=>{
+                         history.push('/profile');
+                     }}>
+                    <Person fontSize={'large'}/>
+                </Fab>
+            ]
         }
     }
 
@@ -116,20 +195,9 @@ export const CanvasPage = () => {
             <div color={"primary"} className={'toolbar'} >
                 {toolBar()}
             </div>
-            {/*<Toolbar/>*/}
-            <TwoCanvas/>
-            <a className='logoContainerC' href={'/#/'}>
-                <div className='logoC'/>
-            </a>
+            <TwoCanvas toolInUse={toolSelected}/>
             <div className='loginButtonC'>
-                <Button
-                    variant='contained'
-                    color='primary'
-                    onClick={onPressButton}>
-                    {loggedIn?
-                        'Log Out':
-                        'Log In/Sign Up'}
-                </Button>
+                {loginButton()}
             </div>
             {loginBox()}
         </div>

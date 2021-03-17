@@ -1,0 +1,25 @@
+.sheetCaptionImage {
+    flex-direction: column;
+    display: flex;
+    color: dimgrey;
+    text-decoration: none;
+    z-index: 1;
+    margin: 0 1.3rem 0 0;
+    width: min-content;
+}
+
+.newCanvas {
+    background-image: url('../Images/NewCanvas.png');
+    background-size: contain;
+    height: 10rem;
+    width: 16rem;
+    background-repeat: no-repeat;
+}
+
+.likedCanvas {
+    background-image: url('../Images/LikedCanvas.png');
+    background-size: contain;
+    height: 10rem;
+    width: 16rem;
+    background-repeat: no-repeat;
+}

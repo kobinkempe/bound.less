@@ -1,5 +1,6 @@
 import {Route, Switch, useRouteMatch, Redirect} from "react-router-dom";
 import Profile from "./Profile";
+import ViewAllSheets from "./ViewAllSheets"
 import {useSelector} from "react-redux";
 import {selectLoggedIn, selectUsername} from "../Redux/loginState";
 
@@ -11,6 +12,9 @@ export const ProfileRouter = () => {
     return (
         <div>
             <Switch>
+                <Route path={'/profile/:username/view-all'}>
+                    <ViewAllSheets/>
+                </Route>
                 <Route path={`/profile/:username`}>
                     <Profile/>
                 </Route>

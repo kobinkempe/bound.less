@@ -13,7 +13,7 @@ export const CanvasRouter = () => {
         <div>
 
             <Switch>
-                <Route path={`/sheets/:canvasID`}>
+                <Route path={`/canvas/:canvasID`}>
                     {hasPermission?
                         <CanvasPage/>:
                         <RequestAccess/>}

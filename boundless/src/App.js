@@ -14,7 +14,7 @@ function App() {
       <Router>
         <div>
           <Switch>
-            <Route path="/sheets">
+            <Route path="/canvas">
               <CanvasRouter />
             </Route>
             <Route path='/profile'>

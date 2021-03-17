@@ -15,7 +15,26 @@ import svg from "two.js/src/renderers/svg";
 const radius = 40;
 
 let TEXT_RENDERING_BOOL = true;
-const TwoCanvas = ({canvasID}) => {
+const TwoCanvas = ({toolInUse}) => {
+
+
+
+
+    /** Currently supported Tools:
+     *  Pen
+     *  All-Canvas Delete
+     *  Place Circle
+     *  Place Rectangle
+     *  Change Color (implemented in CanvasPage)
+     *
+     *
+     *
+     * **/
+
+        //TODO: make 'clear' tool a parameter that sets a new state -> triggers useEffect -> sets state as false
+        // in order to preserve last-used-tool
+
+
     const svgRef = useRef(null);
     const penColor = useSelector(selectRGB)
 
@@ -36,7 +55,6 @@ const TwoCanvas = ({canvasID}) => {
     /** TOOLS **/
     const [isPenning, setIsPenning]  = useState(false);
     const [isStickering, setIsStickering] = useState(false);
-    const [toolInUse, setToolInUse] = useState('pen');
 
 
 
@@ -71,6 +89,20 @@ const TwoCanvas = ({canvasID}) => {
         setIsLoaded(true);
     });
 
+    //Checks if Delete was called
+    useEffect(()=>{
+        if(!svgRef.current){
+            return
+        }
+
+        if(toolInUse === 'wipeCanvas'){
+            two.clear();
+            two.update();
+            setTwo(two);
+            toolInUse = 'pen'
+        }
+    })
+
     //Currently not being used, but very fun
     function getRandomColor() {
         return 'rgb('
@@ -83,48 +115,7 @@ const TwoCanvas = ({canvasID}) => {
 
 
 
-    const toggleTool = useCallback( (event) => {
-        console.log("toggleTool triggered");
-        switch(event.key){
-            case 'c':
-                setToolInUse('circle');
-                setIsPenning(false);
-                setIsStickering(true);
-                break;
-            case 'p':
-                setToolInUse('pen');
-                setIsStickering(false);
-                setIsPenning(false);
-                break;
-            case 'r':
-                setToolInUse('rectangle');
-                setIsStickering(true);
-                setIsPenning(false)
-                break;
-            case 'd':
-                two.clear();
-                two.update();
-                setTwo(two);
-                break;
 
-        }
-
-    }, [toolInUse, isPenning, isStickering, two])
-
-
-    useEffect(() => {
-        if(!svgRef.current){
-            return;
-        }
-
-        document.addEventListener('keypress', toggleTool);
-        document.addEventListener('keydown', toggleTool);
-
-        return () => {
-            document.removeEventListener('keypress', toggleTool);
-            document.removeEventListener('keydown', toggleTool);
-        }
-        }, [toggleTool, two]);
 
     //Callback for when mouse is down
     const startPaint = useCallback((event) => {
@@ -195,7 +186,8 @@ const TwoCanvas = ({canvasID}) => {
 
 
     const dropShape = useCallback((event) => {
-        if(inUse) {
+        console.log("getting to dropshape")
+        //if(inUse) {
             console.log('useCallback called while in use');
                 const newMouse = getsCoordinates(event);
                 if(newMouse){
@@ -218,10 +210,33 @@ const TwoCanvas = ({canvasID}) => {
 
                 }
 
-            }
+            //}
 
 
     }, [inUse, toolInUse, two, penColor]);
+
+    const mouseUpCallback = useCallback( (event) => {
+
+
+        //NOTE: In current implementation, it is the tool callback switches (mouseUpCallback,
+        // mouseDownCallback, etc) that exit out of other tools, not the actual toolbar.
+        exitPaint()
+        switch(toolInUse){
+            case "pen":
+                //exitPaint();
+                break;
+                //Note: if stickers ever get online, this is where they should be thrown into
+                // the callback functions
+            case "circle":
+                setInUse(true)
+                dropShape(event);
+                break;
+            case "rectangle":
+                setInUse(true)
+                dropShape(event);
+                break;
+        }
+    }, [inUse, setInUse, dropShape, exitPaint]);
 
     //useEffect for exitPaint
     useEffect(() => {
@@ -233,14 +248,17 @@ const TwoCanvas = ({canvasID}) => {
         }
             const canvas = two.renderer.domElement;
             //console.log("MouseUp & mouseLEave mounted");
-                canvas.addEventListener('mouseup', exitPaint);
+
+                canvas.addEventListener('mouseup', mouseUpCallback);
+                //canvas.addEventListener('mouseup', exitPaint);
                 //canvas.addEventListener('mouseleave', exitPaint);
-                canvas.addEventListener('mouseup', dropShape);
+                //canvas.addEventListener('mouseup', dropShape);
 
             return () => {
-                canvas.removeEventListener('mouseup', exitPaint);
+                canvas.removeEventListener('mouseup', mouseUpCallback);
+                //canvas.removeEventListener('mouseup', exitPaint);
                 //canvas.removeEventListener('mouseleave', exitPaint);
-                canvas.addEventListener('mouseup', dropShape);
+                //canvas.removeEventListener('mouseup', dropShape);
             };
     }, [exitPaint, two, dropShape]);
 
@@ -255,7 +273,7 @@ const TwoCanvas = ({canvasID}) => {
             //console.log("getsCoordinates called");
             const canvas = two.renderer.domElement;
 
-        console.log("x: "+event.pageX +" y: "+event.offsetY);
+        //console.log("x: "+event.pageX +" y: "+event.offsetY);
 
         //Coordinate notes:
         // Don't use canvas or svgRef.current (which would normally make sense)
@@ -293,8 +311,11 @@ const TwoCanvas = ({canvasID}) => {
 
 
     return (
+        <div>
+            {/*<text>{toolInUse}</text>*/}
             <div ref={svgRef}>
             </div>
+        </div>
     )
 }
 export default TwoCanvas;
