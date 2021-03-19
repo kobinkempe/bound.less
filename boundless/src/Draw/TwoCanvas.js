@@ -320,7 +320,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
                     originalMousePosition[1],
                     newMouse[0],
                     newMouse[1]);
-        path.scale = radius
+        path.linewidth = radius
         path.stroke = penColor;
         path.curved = true;
         //path.fill = true;
@@ -332,9 +332,9 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
 
 
     return (
-        <div style={{"overflow":"hidden"}}>
+        <div style={{overflow :"hidden" , height:'100vh', width:'100vh'}} >
             <text>{toolInUse}</text>
-            <div ref={svgRef}>
+            <div ref={svgRef} style={{"overflow":"hidden"}}>
             </div>
         </div>
     )
