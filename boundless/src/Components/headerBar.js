@@ -3,7 +3,7 @@ import {Box, Button, Fab, Link, PropTypes} from "@material-ui/core";
 import {logIn, logOut, selectLoggedIn, selectUsername, selectLoggingIn, startLogin, stopLogin} from "../Redux/loginState";
 import {useDispatch, useSelector} from "react-redux";
 import {HashRouter, useHistory} from "react-router-dom";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Person} from "@material-ui/icons";
 import GoogleSignIn from "./GoogleSignIn"
 import firebase from '../Firebase.js';
@@ -25,6 +25,7 @@ export default function HeaderBar({profilePage = false}){
             firebase.auth().signOut().then(() => {
                 dispatch(logOut());
                 loggedIn = false;
+                sessionStorage.removeItem('loggedIn');
                 setVal(val + 1);
             }).catch((error) => {
                 console.log(error);
@@ -37,9 +38,16 @@ export default function HeaderBar({profilePage = false}){
     }
 
     let closeButton = () => {
-        dispatch(stopLogin())
+        dispatch(stopLogin());
         setVal(val + 1);
     };
+
+    useEffect(() => {
+        if (!loggedIn && sessionStorage.getItem('loggedIn') !== null) {
+            dispatch(startLogin());
+            dispatch(stopLogin());
+        }
+    });
 
     // @ts-ignore
     return(

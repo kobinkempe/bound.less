@@ -25,7 +25,7 @@ export default class SignInScreen extends React.Component {
             // Avoid redirects after sign-in.
             signInSuccessWithAuthResult: () => {
                 store.dispatch(logIn(firebase.auth().currentUser.displayName));
-                console.log(store.getState());
+                sessionStorage.setItem('loggedIn', 'true');
                 return false;
             }
         },
