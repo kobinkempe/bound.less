@@ -21,6 +21,7 @@ import {
 } from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
+import {addCanvas, hasCanvas} from "../Firebase";
 
 function getRandomColor() {
     return 'rgb('
@@ -39,6 +40,7 @@ export const CanvasPage = () => {
     const selectColor = useSelector(selectRGB);
     const [toolSelected, setToolSelected] = useState('pen');
     const [wipe, setWipe] = useState(false);
+    const [i, update] = useState(0);
 
     let onPressButton;
     if(loggedIn){
@@ -131,6 +133,9 @@ export const CanvasPage = () => {
         //Wipe Canvas Button
         <Fab className={'tool'}
              onClick={()=>{
+                 addCanvas(i);
+                 console.log(i, ": ", hasCanvas(i), "nope", ": ", hasCanvas("nope"))
+                 update(i + 1);
                  setWipe(true);
              }}>
             <DeleteForever/>
