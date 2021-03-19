@@ -8,15 +8,16 @@ import {Slider} from "@material-ui/core";
 
 
 
-export default function ContinuousSlider({onClick}) {
-    const [value, setValue] = React.useState(ref);
+export default function WidthSlider({onClick, lineWidth}) {
+    const [value, setValue] = React.useState(lineWidth);
 
     const handleChange = (event, newValue) => {
+        setValue(lineWidth);
         onClick(newValue);
     };
 
     return (
-        <div className={'toolbar'}>
+        <div>
             <Typography id="continuous-slider" gutterBottom>
                 {value}
             </Typography>
@@ -24,7 +25,7 @@ export default function ContinuousSlider({onClick}) {
                 <Grid item>
                 </Grid>
                 <Grid item xs>
-                    <Slider value={value} onChange={handleChange} aria-labelledby="continuous-slider" />
+                    <Slider style={{'width': 40}} value={value} onChange={handleChange} aria-labelledby="continuous-slider" />
                 </Grid>
                 <Grid item>
                 </Grid>

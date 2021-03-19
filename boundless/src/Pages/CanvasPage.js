@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {changeColorPen, selectRGB} from "../Redux/rSlicePenOptions";
 import {Button, Fab, ClickAwayListener} from "@material-ui/core";
 import styles from "../Stylesheets/CanvasPage.css";
-import "../Stylesheets/CanvasToolBar.css";
+import "../Stylesheets/CanvasToolBar.css"
 import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
 import {
@@ -190,7 +190,11 @@ export const CanvasPage = () => {
             </div>
         </ClickAwayListener>
 
-    let heightSlider = <WidthSlider onClick={setLineWidth}/>
+    let heightSlider =
+        <div className={'hSlider'}>
+            <WidthSlider onClick={setLineWidth} lineWidth={lineWidth}/>
+        </div>
+
 
 
 
@@ -250,7 +254,11 @@ export const CanvasPage = () => {
             <div color={"primary"} className={'toolbar'} >
                 {toolBar()}
             </div>
-            <TwoCanvas toolInUse={toolSelected} wipe={wipe}/>
+            <TwoCanvas
+                toolInUse={toolSelected}
+                wipe={wipe}
+                radius={lineWidth}
+            />
             <div className='loginButtonC'>
                 {loginButton()}
             </div>

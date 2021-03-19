@@ -12,10 +12,9 @@ import svg from "two.js/src/renderers/svg";
 //TODO: Look into reducing re-rendering
 
 
-const radius = 40;
 
 let TEXT_RENDERING_BOOL = true;
-const TwoCanvas = ({toolInUse, wipe=false}) => {
+const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
 
 
 
@@ -321,8 +320,10 @@ const TwoCanvas = ({toolInUse, wipe=false}) => {
                     originalMousePosition[1],
                     newMouse[0],
                     newMouse[1]);
+        path.scale = radius
         path.stroke = penColor;
         path.curved = true;
+        //path.fill = true;
         two.update();
         setTwo(two);
 

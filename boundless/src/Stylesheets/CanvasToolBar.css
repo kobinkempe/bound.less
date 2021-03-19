@@ -1,12 +1,10 @@
 
-.toolbar{
-    display: flex;
-    flex-direction: column;
+.hSlider{
     position: fixed;
     z-index: 1;
-    left: 23vh;
-    top: 20vh;
-    align-items: center;
+    left: 10vh;
+    top: 35vh;
+/*    align-items: center;*/
 }
 
 
