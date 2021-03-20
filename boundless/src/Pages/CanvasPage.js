@@ -40,7 +40,7 @@ export const CanvasPage = () => {
     const selectColor = useSelector(selectRGB);
     const [toolSelected, setToolSelected] = useState('pen');
     const [wipe, setWipe] = useState(false);
-    const [i, update] = useState(0);
+    // const [i, update] = useState(0);
 
     let onPressButton;
     if(loggedIn){
@@ -133,19 +133,19 @@ export const CanvasPage = () => {
         //Wipe Canvas Button
         <Fab className={'tool'}
              onClick={()=>{
-                 addCanvas(i);
-                 addCanvas(i + 'private', "John Doe", false);
-                 setTimeout(()=>{
-                     canAccessCanvas(i + 'private', (ret)=>{console.log(ret)});
-                     canAccessCanvas(i, ret => console.log(ret), 'Fred');
-                 }, 500);
-                 setTimeout(()=>{
-                     makeCanvasPrivate(i, "John Doe", ()=>console.log("pass1"), ()=>console.log("fail1"))
-                 }, 5000);
-                 setTimeout(()=>{
-                     removeCanvas(i, "John Doe", ()=>{console.log("pass2")}, ()=>{console.log("fail2")})
-                 }, 10000);
-                 update(i + 1);
+                 // addCanvas(i);
+                 // addCanvas(i + 'private', "John Doe", false);
+                 // setTimeout(()=>{
+                 //     canAccessCanvas(i + 'private', (ret)=>{console.log(ret)});
+                 //     canAccessCanvas(i, ret => console.log(ret), 'Fred');
+                 // }, 500);
+                 // setTimeout(()=>{
+                 //     makeCanvasPrivate(i, "John Doe", ()=>console.log("pass1"), ()=>console.log("fail1"))
+                 // }, 5000);
+                 // setTimeout(()=>{
+                 //     removeCanvas(i, "John Doe", ()=>{console.log("pass2")}, ()=>{console.log("fail2")})
+                 // }, 10000);
+                 // update(i + 1);
                  setWipe(true);
              }}>
             <DeleteForever/>
