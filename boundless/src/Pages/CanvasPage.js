@@ -21,7 +21,7 @@ import {
 } from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
-import {addCanvas, hasCanvas} from "../Firebase";
+import {addCanvas, canAccessCanvas, makeCanvasPrivate, removeCanvas} from "../Firebase";
 
 function getRandomColor() {
     return 'rgb('
@@ -134,7 +134,17 @@ export const CanvasPage = () => {
         <Fab className={'tool'}
              onClick={()=>{
                  addCanvas(i);
-                 console.log(i, ": ", hasCanvas(i), "nope", ": ", hasCanvas("nope"))
+                 addCanvas(i + 'private', "John Doe", false);
+                 setTimeout(()=>{
+                     canAccessCanvas(i + 'private', (ret)=>{console.log(ret)});
+                     canAccessCanvas(i, ret => console.log(ret), 'Fred');
+                 }, 500);
+                 setTimeout(()=>{
+                     makeCanvasPrivate(i, "John Doe", ()=>console.log("pass1"), ()=>console.log("fail1"))
+                 }, 5000);
+                 setTimeout(()=>{
+                     removeCanvas(i, "John Doe", ()=>{console.log("pass2")}, ()=>{console.log("fail2")})
+                 }, 10000);
                  update(i + 1);
                  setWipe(true);
              }}>

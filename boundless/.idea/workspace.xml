@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="Profile button">
-      <change afterPath="$PROJECT_DIR$/src/Stylesheets/toolbarAnimate.scss" afterDir="false" />
+    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="database sorta">
       <change beforePath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Firebase.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasPage.js" afterDir="false" />
     </list>
@@ -110,7 +108,7 @@
       <workItem from="1616012616158" duration="1817000" />
       <workItem from="1616079391171" duration="10137000" />
       <workItem from="1616183662130" duration="9000" />
-      <workItem from="1616183878800" duration="3774000" />
+      <workItem from="1616183878800" duration="11670000" />
     </task>
     <task id="LOCAL-00001" summary="UI Changes for Profile Page">
       <created>1615577398290</created>
@@ -133,7 +131,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615857839213</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="database sorta">
+      <created>1616187882934</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1616187882934</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,6 +159,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="UI Changes for Profile Page" />
     <MESSAGE value="Profile button" />
-    <option name="LAST_COMMIT_MESSAGE" value="Profile button" />
+    <MESSAGE value="database sorta" />
+    <option name="LAST_COMMIT_MESSAGE" value="database sorta" />
   </component>
 </project>
