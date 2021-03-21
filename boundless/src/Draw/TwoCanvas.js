@@ -7,6 +7,9 @@ import {useSelector} from "react-redux";
 import {selectRGB} from "../Redux/rSlicePenOptions";
 import svg from "two.js/src/renderers/svg";
 
+//I get by with a little help(er) from my friends (me)
+import {makePoint} from "./TwoHelpers";
+
 
 
 //TODO: Look into reducing re-rendering
@@ -30,6 +33,9 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
      *
      * **/
 
+
+    // Circle line-drawing where circles move out in opacity to edges
+
         //TODO: make 'clear' tool a parameter that sets a new state -> triggers useEffect -> sets state as false
         // in order to preserve last-used-tool
 
@@ -51,7 +57,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
 
     //Creates the 'two' object w/o mounting it to the actual DOM
     const [two, setTwo] = useState(
-        new Two({width:window.innerWidth, height:window.innerHeight, autostart:true})
+        new Two({width:window.innerWidth, height:window.innerHeight, autostart:true, resolution:40})
     );
 
     //Determines whether TwoCanvas has been appended onto svgRef
@@ -315,15 +321,24 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
             //console.log("SVG Status: "+(svgRef.current != null));
             return;
         }
-        const path = two.makeLine(
-                    originalMousePosition[0],
-                    originalMousePosition[1],
-                    newMouse[0],
-                    newMouse[1]);
-        path.linewidth = radius
-        path.stroke = penColor;
+        const m1 = makePoint(originalMousePosition);
+        const m2 = makePoint(newMouse);
+        const path = two.makeCurve([m1, m2], true);
+        //path.scale = .5 + (radius/100);
+        path.fill = penColor;
         path.curved = true;
-        //path.fill = true;
+        path.vertices.forEach(function(anchor){
+            let j = two.makeCircle(anchor.x, anchor.y, radius);
+            j.fill = penColor;
+
+            }
+
+        )
+
+
+        //path.linewidth = radius;
+        //document.querySelector('#two-'+path.id);
+
         two.update();
         setTwo(two);
 
@@ -332,7 +347,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
 
 
     return (
-        <div style={{overflow :"hidden" , height:'100vh', width:'100vh'}} >
+        <div style={{overflow :"hidden" , height:'100vh', width:'100vw'}} >
             <text>{toolInUse}</text>
             <div ref={svgRef} style={{"overflow":"hidden"}}>
             </div>

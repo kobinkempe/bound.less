@@ -25,7 +25,13 @@ export default function WidthSlider({onClick, lineWidth}) {
                 <Grid item>
                 </Grid>
                 <Grid item xs>
-                    <Slider style={{'width': 40}} value={value} onChange={handleChange} aria-labelledby="continuous-slider" />
+                    <Slider style={{'width': 40}}
+                            min={10}
+                            max={100}
+                            value={value}
+                            onChange={handleChange}
+                            aria-labelledby="continuous-slider" />
+
                 </Grid>
                 <Grid item>
                 </Grid>
