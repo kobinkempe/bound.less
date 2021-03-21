@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="Profile button">
-      <change beforePath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="fixed database stuff" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,10 +32,11 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/Pages/Home.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Pages/Profile.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Pages/CanvasRouter.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Pages/CanvasPage.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/Profile.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/Home.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Images/toolbarIcons/logoSmall.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/CanvasRouter.js" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1oOJxJ7kGVTfjlQvH6pt1lMtcEu" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -51,8 +49,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Images" />
-    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../(Fall Semester)/Software Developing/Development stuff/atbaypestcontrol/app/AtBayPestControl/assets/Data/Storage.ts" />
+    <property name="list.type.of.created.stylesheet" value="SCSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -60,7 +58,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="ts.external.directory.path" value="C:\Users\anuja\Git Projects\software-engineering-project-bound.less\boundless\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="C:\Users\kobin\Documents\Vanderbilt\Senior year\Software Engineering Project\bound.less\software-engineering-project-bound.less\boundless\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -102,6 +100,10 @@
       <workItem from="1615338941956" duration="10635000" />
       <workItem from="1615478096554" duration="31260000" />
       <workItem from="1615605233453" duration="17627000" />
+      <workItem from="1616012616158" duration="1817000" />
+      <workItem from="1616079391171" duration="10137000" />
+      <workItem from="1616183662130" duration="9000" />
+      <workItem from="1616183878800" duration="11894000" />
     </task>
     <task id="LOCAL-00001" summary="UI Changes for Profile Page">
       <created>1615577398290</created>
@@ -117,7 +119,28 @@
       <option name="project" value="LOCAL" />
       <updated>1615854596779</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Profile button">
+      <created>1615857839213</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1615857839213</updated>
+    </task>
+    <task id="LOCAL-00004" summary="database sorta">
+      <created>1616187882934</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1616187882934</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fixed database stuff">
+      <created>1616269104145</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1616269104145</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,6 +161,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="UI Changes for Profile Page" />
     <MESSAGE value="Profile button" />
-    <option name="LAST_COMMIT_MESSAGE" value="Profile button" />
+    <MESSAGE value="database sorta" />
+    <MESSAGE value="fixed database stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed database stuff" />
   </component>
 </project>

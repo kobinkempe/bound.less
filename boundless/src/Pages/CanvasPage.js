@@ -22,6 +22,7 @@ import {
 } from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
+import {addCanvas, canAccessCanvas, makeCanvasPrivate, removeCanvas} from "../Firebase";
 
 import WidthSlider from "../Draw/Toolbar/WidthSlider";
 
@@ -56,6 +57,7 @@ export const CanvasPage = () => {
 
     //Clear Screen
     const [wipe, setWipe] = useState(false);
+    // const [i, update] = useState(0);
 
     //Height parameter
     const [lineWidth, setLineWidth] = useState(2);
@@ -165,6 +167,19 @@ export const CanvasPage = () => {
         //Wipe Canvas Button
         <Fab className={'tool'}
              onClick={()=>{
+                 // addCanvas(i);
+                 // addCanvas(i + 'private', "John Doe", false);
+                 // setTimeout(()=>{
+                 //     canAccessCanvas(i + 'private', (ret)=>{console.log(ret)});
+                 //     canAccessCanvas(i, ret => console.log(ret), 'Fred');
+                 // }, 500);
+                 // setTimeout(()=>{
+                 //     makeCanvasPrivate(i, "John Doe", ()=>console.log("pass1"), ()=>console.log("fail1"))
+                 // }, 5000);
+                 // setTimeout(()=>{
+                 //     removeCanvas(i, "John Doe", ()=>{console.log("pass2")}, ()=>{console.log("fail2")})
+                 // }, 10000);
+                 // update(i + 1);
                  setWipe(true);
              }}>
             <DeleteForever/>
