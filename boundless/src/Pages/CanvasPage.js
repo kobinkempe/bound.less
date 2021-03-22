@@ -61,7 +61,7 @@ export const CanvasPage = () => {
 
     //Height parameter
     const [lineWidth, setLineWidth] = useState(2);
-    const [openHeight, setOpenHeight] = useState(false);
+    const [openLineWidth, setOpenLineWidth] = useState(false);
 
     let onPressButton;
     if(loggedIn){
@@ -151,13 +151,14 @@ export const CanvasPage = () => {
         </Fab>,
 
 
+        //LineWidth
         <Fab className={'tool'}
              onClick={() => {
                  cleanup();
-                 if(openHeight) {
-                     setOpenHeight(false);
+                 if(openLineWidth) {
+                     setOpenLineWidth(false);
                  }else {
-                    setOpenHeight(true);
+                    setOpenLineWidth(true);
                     }
                  }
              }>
@@ -167,6 +168,7 @@ export const CanvasPage = () => {
         //Wipe Canvas Button
         <Fab className={'tool'}
              onClick={()=>{
+                 setOpenLineWidth(false);
                  // addCanvas(i);
                  // addCanvas(i + 'private', "John Doe", false);
                  // setTimeout(()=>{
@@ -229,7 +231,7 @@ export const CanvasPage = () => {
                     logoIcon,
                     openToolBar,
                     (openPalette? colorPicker: null),
-                    (openHeight? heightSlider:null)
+                    (openLineWidth? heightSlider:null)
                 ];
             default:
                 return;

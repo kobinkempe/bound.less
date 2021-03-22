@@ -18,7 +18,7 @@ export default function WidthSlider({onClick, lineWidth}) {
 
     return (
         <div>
-            <Typography id="continuous-slider" gutterBottom>
+            <Typography id="continuous-slider" gutterBottom align={'center'}>
                 {value}
             </Typography>
             <Grid container spacing={2}>
@@ -30,6 +30,7 @@ export default function WidthSlider({onClick, lineWidth}) {
                             max={100}
                             value={value}
                             onChange={handleChange}
+                            color = 'rgb(0,0,0)'
                             aria-labelledby="continuous-slider" />
 
                 </Grid>
