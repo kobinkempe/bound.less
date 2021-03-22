@@ -8,7 +8,7 @@ import {selectRGB} from "../Redux/rSlicePenOptions";
 import svg from "two.js/src/renderers/svg";
 
 //I get by with a little help(er) from my friends (me)
-import {makePoint} from "./TwoHelpers";
+import {fillLine, makePoint} from "./TwoHelpers";
 
 
 
@@ -290,15 +290,9 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
     //Gets the coordinates of the mouse event
     const getsCoordinates = (event) => {
         if (!svgRef.current) {
-            //console.log("getsCoordinates failed")
-            //console.log("SVG Status: "+(svgRef.current != null));
-            //console.log("two load status: "+isLoaded);
             return;
         }
-            //console.log("getsCoordinates called");
             const canvas = two.renderer.domElement;
-
-        //console.log("x: "+event.pageX +" y: "+event.offsetY);
 
         //Coordinate notes:
         // Don't use canvas or svgRef.current (which would normally make sense)
@@ -308,9 +302,6 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
 
 
         //COORDINATES THAT WORK (3/7) (for some reason)
-        //
-        //
-        //
         // x: event.pageX, y: event.offsetY
         return [event.pageX,  event.offsetY]
     };
@@ -326,17 +317,10 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
         const path = two.makeCurve([m1, m2], true);
         //path.scale = .5 + (radius/100);
         path.fill = penColor;
+        path.stroke = penColor;
         path.curved = true;
-        path.vertices.forEach(function(anchor){
-            let j = two.makeCircle(anchor.x, anchor.y, radius);
-            j.fill = penColor;
-
-            }
-
-        )
-
-
-        //path.linewidth = radius;
+        setTwo(fillLine(two, originalMousePosition, newMouse, penColor, radius/2));
+        path.linewidth = radius;
         //document.querySelector('#two-'+path.id);
 
         two.update();

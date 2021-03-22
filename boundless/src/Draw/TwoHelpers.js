@@ -17,6 +17,22 @@ export function makePoint(mouse){
 
 }
 
+const LINE_RES = 16;
+
+export function fillLine(two, m1, m2, penColor, r){
+    const xD = m2[0]-m1[0];
+    const yD = m2[1]-m1[1];
+
+    for(let i = 0; i<LINE_RES; ++i){
+        let j = two.makeCircle(m1[0]+xD/16, m1[1]+yD/16,r);
+        j.noStroke();
+        j.fill = penColor;
+    }
+    two.update();
+    return two;
+
+}
+
 /**
 function createGrid(s) {
 
