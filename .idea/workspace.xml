@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff...again">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/Toolbar/WidthSlider.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/Toolbar/WidthSlider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/TwoHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/TwoHelpers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/src/Stylesheets/CanvasToolBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Stylesheets/CanvasToolBar.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +104,9 @@
       <workItem from="1616168988162" duration="3376000" />
       <workItem from="1616358269015" duration="714000" />
       <workItem from="1616365786187" duration="10903000" />
-      <workItem from="1616426944995" duration="3630000" />
+      <workItem from="1616426944995" duration="7084000" />
+      <workItem from="1616445858840" duration="4146000" />
+      <workItem from="1616525965557" duration="4338000" />
     </task>
     <task id="LOCAL-00001" summary="initialzied firebase">
       <created>1613149769444</created>

@@ -17,7 +17,7 @@ import {fillLine, makePoint} from "./TwoHelpers";
 
 
 let TEXT_RENDERING_BOOL = true;
-const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
+const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
 
 
@@ -53,7 +53,6 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
 
 
     const svgRef = useRef(null);
-    const penColor = useSelector(selectRGB)
 
     //Creates the 'two' object w/o mounting it to the actual DOM
     const [two, setTwo] = useState(
@@ -68,6 +67,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
 
     //Boolean for if the mouse is currently down
     const [inUse, setInUse] = useState(false);
+
+
 
 
 
@@ -99,10 +100,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
             return;
         }
         console.log(("Loaded Two"));
-        setTwo(two.appendTo(svgRef.current)
+        setTwo(two.appendTo(svgRef.current));
 
-
-        );
         setIsLoaded(true);
     });
 
@@ -214,20 +213,20 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
                 if(newMouse){
                     if(toolInUse === 'circle') {
                         console.log('Circle tool triggered');
-                        const circ = two.makeCircle(newMouse[0], newMouse[1], radius);
-                        circ.fill = penColor;
+                        const circ = two.makeCircle(newMouse[0], newMouse[1], radius/2);
+                        circ.fill = color;
                         circ.noStroke();
                         two.update();
-                        console.log(penColor);
+                        console.log(color);
                         setTwo(two);
 
                     } else if(toolInUse === 'rectangle'){
                         console.log('Rectangle tool triggered')
-                        const rect = two.makeRectangle(newMouse[0], newMouse[1], radius, radius);
-                        rect.fill = penColor;
+                        const rect = two.makeRectangle(newMouse[0], newMouse[1], radius/2, radius/2);
+                        rect.fill = color;
                         rect.noStroke();
                         two.update();
-                        console.log(penColor);
+                        console.log(color);
                         setTwo(two);
                     }
 
@@ -236,7 +235,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
             //}
 
 
-    }, [inUse, toolInUse, two, penColor]);
+    }, [inUse, toolInUse, two, radius, color]);
 
     const mouseUpCallback = useCallback( (event) => {
 
@@ -274,7 +273,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
 
                 canvas.addEventListener('mouseup', mouseUpCallback);
                 //canvas.addEventListener('mouseup', exitPaint);
-                //canvas.addEventListener('mouseleave', exitPaint);
+                canvas.addEventListener('mouseleave', exitPaint);
                 //canvas.addEventListener('mouseup', dropShape);
 
                 canvas.addEventListener('touchend', mouseUpCallback);
@@ -282,7 +281,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
                 canvas.removeEventListener('mouseup', mouseUpCallback);
                 canvas.removeEventListener('touchend', mouseUpCallback);
             //canvas.removeEventListener('mouseup', exitPaint);
-                //canvas.removeEventListener('mouseleave', exitPaint);
+                canvas.removeEventListener('mouseleave', exitPaint);
                 //canvas.removeEventListener('mouseup', dropShape);
             };
     }, [mouseUpCallback, two, toolInUse]);
@@ -316,10 +315,10 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
         const m2 = makePoint(newMouse);
         const path = two.makeCurve([m1, m2], true);
         //path.scale = .5 + (radius/100);
-        path.fill = penColor;
-        path.stroke = penColor;
+        path.fill = color;
+        path.stroke = color;
         path.curved = true;
-        setTwo(fillLine(two, originalMousePosition, newMouse, penColor, radius/2));
+        setTwo(fillLine(two, originalMousePosition, newMouse, color, radius/2));
         path.linewidth = radius;
         //document.querySelector('#two-'+path.id);
 
@@ -332,7 +331,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius}) => {
 
     return (
         <div style={{overflow :"hidden" , height:'100vh', width:'100vw'}} >
-            <text>{toolInUse}</text>
+            <text>{color}</text>
             <div ref={svgRef} style={{"overflow":"hidden"}}>
             </div>
         </div>

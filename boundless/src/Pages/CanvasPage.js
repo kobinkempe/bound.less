@@ -53,7 +53,8 @@ export const CanvasPage = () => {
 
     //Palette
     const [openPalette, setOpenPalette] = useState(false);
-    const selectColor = useSelector(selectRGB);
+    const [selectColor, setSelectColor] = useState('rgb(0,0,0)');
+    //const selectColor = useSelector(selectRGB);
 
     //Clear Screen
     const [wipe, setWipe] = useState(false);
@@ -202,7 +203,7 @@ export const CanvasPage = () => {
             <div className='colorPickerWrapperC'>
                 <HexColorPicker className={styles.small}
                                 color={selectColor}
-                                onChange={(c) => {dispatch(changeColorPen(c))}}
+                                onChange={setSelectColor}
                 />
             </div>
         </ClickAwayListener>
@@ -275,6 +276,7 @@ export const CanvasPage = () => {
                 toolInUse={toolSelected}
                 wipe={wipe}
                 radius={lineWidth}
+                color={selectColor}
             />
             <div className='loginButtonC'>
                 {loginButton()}
