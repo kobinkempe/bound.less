@@ -18,7 +18,7 @@ import {
     DeleteForever,
     AccountCircle,
     Person,
-    Height,
+    Height, Undo,
 } from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
@@ -59,6 +59,9 @@ export const CanvasPage = () => {
     //Clear Screen
     const [wipe, setWipe] = useState(false);
     // const [i, update] = useState(0);
+
+    //undo
+    const [undoState, setUndoState] = useState(false);
 
     //Height parameter
     const [lineWidth, setLineWidth] = useState(2);
@@ -112,10 +115,19 @@ export const CanvasPage = () => {
         </Fab>;
 
     let openToolBar = [
+        //Undo
+        <Fab className={'tool'}
+             onClick={()=>{
+                setUndoState(true)
+             }}>
+            <Undo/>
+        </Fab>,
+
+
+
         //Pen
         <Fab className={'tool'}
              onClick={()=>{
-                 //TODO: set tools
                  setToolSelected('pen')
              }}>
             <BorderColorRounded/>
