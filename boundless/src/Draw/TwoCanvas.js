@@ -12,12 +12,17 @@ import {fillLine, makePoint} from "./TwoHelpers";
 
 
 
-//TODO: Look into reducing re-rendering
+
+
+const UNDO_LIMIT = 10;
+
+const undoStack = [];
+
+//TODO: Look into Two.Group serializable
 
 
 
-let TEXT_RENDERING_BOOL = true;
-const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
+const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
 
 
 
@@ -60,13 +65,20 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
     );
 
     //Determines whether TwoCanvas has been appended onto svgRef
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [isTwoLoaded, setIsTwoLoaded] = useState(false);
 
     //Stores mouse coordinates
     const [mouse, setMouse] = useState([0,0]);
 
+
     //Boolean for if the mouse is currently down
     const [inUse, setInUse] = useState(false);
+
+    //Undo variables
+    const [isUndoLoaded, setIsUndoLoaded] = useState([new Two.Group()]);
+
+    const [group, setGroup] = useState(null);
+    const [lastGroup, setLastGroup] = useState( );
 
 
 
@@ -96,15 +108,23 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
     //Appends twoCanvas and approves loading
     useEffect(() => {
-        if (!svgRef.current || isLoaded) {
+        if(!svgRef.current || isTwoLoaded) {
             return;
         }
         console.log(("Loaded Two"));
+        const two = new Two();
         setTwo(two.appendTo(svgRef.current));
+        setLastGroup(two.scene);
 
-        setIsLoaded(true);
+        setIsTwoLoaded(true);
     });
 
+    /*
+    //Loads in Undo array
+    useEffect(() =>{
+        if(!svgRef.current)
+    })
+*/
     //Checks if Delete was called
     useEffect(()=>{
         if(!svgRef.current){
@@ -112,20 +132,34 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         }
 
         if(wipe){
+            lastGroup.add(two.scene);
+            setLastGroup(lastGroup);
+            undoStack.push(lastGroup);
             two.clear();
+            two.update();
+            setTwo(two);
+            //wipe=false;
+        }
+    }, [two, svgRef, wipe, lastGroup, undoStack])
+
+
+
+    //Checks if undo was called
+    useEffect(()=>{
+        if(!svgRef.current){
+            return
+        }
+
+        if(undo && isTwoLoaded && undoStack.length > 0){
+            undoStack.pop();
+            two.scene=undoStack[undoStack.length-1];
             two.update();
             setTwo(two);
             //wipe=false;
         }
     }, [two, svgRef, wipe])
 
-    //Currently not being used, but very fun
-    function getRandomColor() {
-        return 'rgb('
-            + Math.floor(Math.random() * 255) + ','
-            + Math.floor(Math.random() * 255) + ','
-            + Math.floor(Math.random() * 255) + ')';
-    }
+
 
     /** Shape Stuff**/
 
@@ -148,7 +182,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
      useEffect(() => {
         if (!svgRef.current) {
             //console.log("SVG Status: "+(svgRef.current != null));
-            //console.log("two load status: "+isLoaded);
+            //console.log("two load status: "+isTwoLoaded);
             return;
         }
             const canvas = two.renderer.domElement;
@@ -183,7 +217,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         if (!svgRef.current) {
             //console.log("paint Ev. Handle notGood")
             //console.log("SVG Status: "+(svgRef.current != null));
-            //console.log("two load status: "+isLoaded);
+            //console.log("two load status: "+isTwoLoaded);
             return;
         }
             //console.log("mouseMove event added")
@@ -202,13 +236,22 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
         setMouse(undefined);
         setInUse(false);
-    }, [toolInUse]);
+
+        if(isUndoLoaded.length > 0 && isTwoLoaded){
+            setLastGroup(two.scene);
+            undoStack.push(lastGroup);
+
+            setLastGroup(new Two.Group());
+            if(undoStack.length > 10){
+                undoStack.shift();
+            }
+            setIsUndoLoaded(undoStack);
+        }
+    }, [toolInUse, lastGroup, undoStack]);
 
 
     const dropShape = useCallback((event) => {
-        console.log("getting to dropshape")
         //if(inUse) {
-            console.log('useCallback called while in use');
                 const newMouse = getsCoordinates(event);
                 if(newMouse){
                     if(toolInUse === 'circle') {
@@ -219,6 +262,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
                         two.update();
                         console.log(color);
                         setTwo(two);
+                        undoStack.push(lastGroup);
+                        setLastGroup(two.scene);
 
                     } else if(toolInUse === 'rectangle'){
                         console.log('Rectangle tool triggered')
@@ -228,6 +273,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
                         two.update();
                         console.log(color);
                         setTwo(two);
+                        undoStack.push(lastGroup);
+                        setLastGroup(two.scene);
                     }
 
                 }
@@ -235,7 +282,10 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
             //}
 
 
-    }, [inUse, toolInUse, two, radius, color]);
+    },
+        // So many dependencies!
+        // It makes me wonder if ever just using old ES6 React would be better
+        [inUse, toolInUse, two, radius, color, lastGroup]);
 
     const mouseUpCallback = useCallback( (event) => {
 
@@ -250,6 +300,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
                 //Note: if stickers ever get online, this is where they should be thrown into
                 // the callback functions
             case "circle":
+
                 setInUse(true)
                 dropShape(event);
                 break;
@@ -265,7 +316,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         if (!svgRef.current) {
             //console.log("MouseUp or MouseLeave Ev. Handle notGood")
             //console.log("SVG Status: "+(svgRef.current != null));
-            //console.log("two load status: "+isLoaded);
+            //console.log("two load status: "+isTwoLoaded);
             return;
         }
             const canvas = two.renderer.domElement;
@@ -314,6 +365,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         const m1 = makePoint(originalMousePosition);
         const m2 = makePoint(newMouse);
         const path = two.makeCurve([m1, m2], true);
+
         //path.scale = .5 + (radius/100);
         path.fill = color;
         path.stroke = color;
@@ -324,6 +376,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
         two.update();
         setTwo(two);
+        lastGroup.add(path);
+        setLastGroup(lastGroup);
 
     };
 
@@ -331,7 +385,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
     return (
         <div style={{overflow :"hidden" , height:'100vh', width:'100vw'}} >
-            <text>{color}</text>
+            <text>{lastGroup.length}</text>
             <div ref={svgRef} style={{"overflow":"hidden"}}>
             </div>
         </div>

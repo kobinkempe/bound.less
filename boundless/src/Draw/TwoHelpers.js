@@ -8,6 +8,22 @@ import {selectRGB} from "../Redux/rSlicePenOptions";
 import svg from "two.js/src/renderers/svg";
 
 
+
+
+
+
+
+function UndoStack(){
+
+}
+//Currently not being used, but very fun
+function getRandomColor() {
+    return 'rgb('
+        + Math.floor(Math.random() * 255) + ','
+        + Math.floor(Math.random() * 255) + ','
+        + Math.floor(Math.random() * 255) + ')';
+}
+
 export function makePoint(mouse){
 
 
