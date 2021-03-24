@@ -76,10 +76,10 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
     //const [wipeState, setWipeState] = useState(false);
 
     //Undo variables
-    const [isUndoLoaded, setIsUndoLoaded] = useState([new Two.Group()]);
+    const [isUndoLoaded, setIsUndoLoaded] = useState(false);
 
     const [group, setGroup] = useState(null);
-    const [lastGroup, setLastGroup] = useState( );
+    const [lineGroup, setLineGroup] = useState( null);
 
 
 
@@ -115,17 +115,24 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
         console.log(("Loaded Two"));
         const two = new Two();
         setTwo(two.appendTo(svgRef.current));
-        setLastGroup(two.scene);
+        setLineGroup(two.scene);
 
         setIsTwoLoaded(true);
     });
 
-    /*
+
     //Loads in Undo array
     useEffect(() =>{
-        if(!svgRef.current)
-    })
-    */
+        if(!svgRef.current || isUndoLoaded || !isTwoLoaded){
+            return;
+        }
+
+        setLineGroup(two.makeGroup());
+
+        console.log(("Loaded UndoStack"))
+
+    }, [two, lineGroup, isTwoLoaded, isUndoLoaded]);
+
     //Checks if Delete was called
     useEffect(()=>{
         if(!svgRef.current){
@@ -133,15 +140,15 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
         }
 
         if(wipe){
-            lastGroup.add(two.scene);
-            setLastGroup(lastGroup);
-            undoStack.push(lastGroup);
+            lineGroup.add(two.scene);
+            setLineGroup(lineGroup);
+            undoStack.push(lineGroup);
             two.clear();
             two.update();
             setTwo(two);
 
         }
-    }, [two, svgRef, wipe, lastGroup, undoStack])
+    }, [two, svgRef, wipe, lineGroup, undoStack])
 
 
 
@@ -239,16 +246,16 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
         setInUse(false);
 
         if(isUndoLoaded.length > 0 && isTwoLoaded){
-            setLastGroup(two.scene);
-            undoStack.push(lastGroup);
+            setLineGroup(two.scene);
+            undoStack.push(lineGroup);
 
-            setLastGroup(new Two.Group());
+            setLineGroup(new Two.Group());
             if(undoStack.length > 10){
                 undoStack.shift();
             }
             setIsUndoLoaded(undoStack);
         }
-    }, [toolInUse, lastGroup, undoStack]);
+    }, [toolInUse, lineGroup, undoStack]);
 
 
     const dropShape = useCallback((event) => {
@@ -263,8 +270,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
                         two.update();
                         console.log(color);
                         setTwo(two);
-                        undoStack.push(lastGroup);
-                        setLastGroup(two.scene);
+                        undoStack.push(lineGroup);
+                        setLineGroup(two.scene);
 
                     } else if(toolInUse === 'rectangle'){
                         console.log('Rectangle tool triggered')
@@ -272,10 +279,11 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
                         rect.fill = color;
                         rect.noStroke();
                         two.update();
+                        Two
                         console.log(color);
                         setTwo(two);
-                        undoStack.push(lastGroup);
-                        setLastGroup(two.scene);
+                        undoStack.push(lineGroup);
+                        setLineGroup(two.scene);
                     }
 
                 }
@@ -286,7 +294,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
     },
         // So many dependencies!
         // It makes me wonder if ever just using old ES6 React would be better
-        [inUse, toolInUse, two, radius, color, lastGroup]);
+        [inUse, toolInUse, two, radius, color, lineGroup]);
 
     const mouseUpCallback = useCallback( (event) => {
 
@@ -377,8 +385,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
 
         two.update();
         setTwo(two);
-        lastGroup.add(path);
-        setLastGroup(lastGroup);
+        lineGroup.add(path);
+        setLineGroup(lineGroup);
 
     };
 
@@ -386,7 +394,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
 
     return (
         <div style={{overflow :"hidden" , height:'100vh', width:'100vw'}} >
-            <text>{lastGroup.length}</text>
+            <text>{lineGroup.length}</text>
             <div ref={svgRef} style={{"overflow":"hidden"}}>
             </div>
         </div>
