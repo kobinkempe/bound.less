@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="fixed database stuff">
+    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="default line width">
       <change beforePath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Draw/CanvasToolBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/CanvasToolBar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +143,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616269104145</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="default line width">
+      <created>1616612595652</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1616612595652</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,6 +173,7 @@
     <MESSAGE value="Profile button" />
     <MESSAGE value="database sorta" />
     <MESSAGE value="fixed database stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed database stuff" />
+    <MESSAGE value="default line width" />
+    <option name="LAST_COMMIT_MESSAGE" value="default line width" />
   </component>
 </project>
