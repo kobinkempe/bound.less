@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff...again">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

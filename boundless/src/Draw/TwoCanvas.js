@@ -113,9 +113,10 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
             return;
         }
         console.log(("Loaded Two"));
-        const two = new Two();
-        setTwo(two.appendTo(svgRef.current));
-        setLineGroup(two.scene);
+        two.appendTo(svgRef.current);
+        const lineGroup = two.makeGroup();
+        setTwo(two);
+        setLineGroup(lineGroup.id);
 
         setIsTwoLoaded(true);
     });
@@ -127,8 +128,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
             return;
         }
 
-        setLineGroup(two.makeGroup());
-
+        undoStack.push(two.scene);
         console.log(("Loaded UndoStack"))
 
     }, [two, lineGroup, isTwoLoaded, isUndoLoaded]);
@@ -253,7 +253,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
             if(undoStack.length > 10){
                 undoStack.shift();
             }
-            setIsUndoLoaded(undoStack);
+
+
         }
     }, [toolInUse, lineGroup, undoStack]);
 
