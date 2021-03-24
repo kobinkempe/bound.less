@@ -40,14 +40,13 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
 
 
     // Circle line-drawing where circles move out in opacity to edges
-
-        //TODO: make 'clear' tool a parameter that sets a new state -> triggers useEffect -> sets state as false
-        // in order to preserve last-used-tool
+    //
 
 
 
 
-        /**
+
+    /**
          * BUG LIST:
          * Create
          *
@@ -126,7 +125,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
     useEffect(() =>{
         if(!svgRef.current)
     })
-*/
+    */
     //Checks if Delete was called
     useEffect(()=>{
         if(!svgRef.current){
