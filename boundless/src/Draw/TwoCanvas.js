@@ -57,6 +57,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
 
 
 
+
     const svgRef = useRef(null);
 
     //Creates the 'two' object w/o mounting it to the actual DOM
@@ -73,6 +74,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
 
     //Boolean for if the mouse is currently down
     const [inUse, setInUse] = useState(false);
+    //const [wipeState, setWipeState] = useState(false);
 
     //Undo variables
     const [isUndoLoaded, setIsUndoLoaded] = useState([new Two.Group()]);
@@ -138,7 +140,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
             two.clear();
             two.update();
             setTwo(two);
-            //wipe=false;
+
         }
     }, [two, svgRef, wipe, lastGroup, undoStack])
 
