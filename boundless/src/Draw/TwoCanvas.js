@@ -52,6 +52,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
 
 
+
     const svgRef = useRef(null);
 
     //Creates the 'two' object w/o mounting it to the actual DOM
@@ -67,6 +68,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
     //Boolean for if the mouse is currently down
     const [inUse, setInUse] = useState(false);
+    //const [wipeState, setWipeState] = useState(false);
 
 
 
@@ -103,6 +105,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         setTwo(two.appendTo(svgRef.current));
 
         setIsLoaded(true);
+        //setWipeState(wipe);
     });
 
     //Checks if Delete was called
@@ -115,9 +118,9 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
             two.clear();
             two.update();
             setTwo(two);
-            //wipe=false;
+
         }
-    }, [two, svgRef, wipe])
+    }, [two, svgRef, wipe /*,wipeState*/])
 
     //Currently not being used, but very fun
     function getRandomColor() {
@@ -202,6 +205,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
         setMouse(undefined);
         setInUse(false);
+        //setWipeState(wipe);
     }, [toolInUse]);
 
 

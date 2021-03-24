@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff...again">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boundless/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/TwoCanvas.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -107,6 +107,7 @@
       <workItem from="1616426944995" duration="7084000" />
       <workItem from="1616445858840" duration="4146000" />
       <workItem from="1616525965557" duration="5185000" />
+      <workItem from="1616605473979" duration="665000" />
     </task>
     <task id="LOCAL-00001" summary="initialzied firebase">
       <created>1613149769444</created>

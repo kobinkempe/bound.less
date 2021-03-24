@@ -128,6 +128,7 @@ export const CanvasPage = () => {
         //Pen
         <Fab className={'tool'}
              onClick={()=>{
+                 cleanup();
                  setToolSelected('pen')
              }}>
             <BorderColorRounded/>
