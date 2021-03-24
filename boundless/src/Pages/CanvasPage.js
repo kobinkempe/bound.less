@@ -64,7 +64,7 @@ export const CanvasPage = () => {
     const [undoState, setUndoState] = useState(false);
 
     //Height parameter
-    const [lineWidth, setLineWidth] = useState(2);
+    const [lineWidth, setLineWidth] = useState(10);
     const [openLineWidth, setOpenLineWidth] = useState(false);
 
     let onPressButton;
