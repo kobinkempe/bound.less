@@ -68,6 +68,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
     //Boolean for if the mouse is currently down
     const [inUse, setInUse] = useState(false);
+    const [touchInUse, setTouchInUse] = useState(false);
+    const [touchID, setTouchID] = useState(-1);
     //const [wipeState, setWipeState] = useState(false);
 
 
@@ -133,8 +135,55 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
     /** Shape Stuff**/
 
 
+    const startTouch = useCallback((event) => {
+        event.preventDefault();
+        if(!touchInUse){
+            setTouchInUse(true);
+            let thisTouch = event.changedTouches[0];
+            setTouchID(thisTouch.identifier);
+            let coordinates = getTouchCoords(thisTouch);
+            if (coordinates) {
+                setMouse(coordinates);
+                //TODO: draw a circle
+            }
+        }
+    }, [toolInUse, touchInUse]);
 
+    const moveTouch = useCallback(
+        (event) => {
+            event.preventDefault();
+            if (touchInUse) {
+                for(let activeTouch of event.changedTouches){
+                    if(activeTouch.identifier === touchID){
+                        const newMouse = getTouchCoords(activeTouch);
+                        if (mouse && newMouse && (toolInUse === 'pen')) {
+                            drawLine(mouse, newMouse);
+                            setMouse(newMouse);
+                        }
+                    }
+                }
 
+            }
+        },
+        [touchInUse, mouse, toolInUse]
+    );
+
+    const endTouch = useCallback((event) => {
+        event.preventDefault();
+        if(event.targetTouches.length === 0){
+            setMouse(undefined);
+            setTouchInUse(false);
+        } else {
+            for(let endingTouch of event.changedTouches) {
+                if (endingTouch.identifier === touchID) {
+                    setTouchInUse(true);
+                    setMouse(getTouchCoords(event.targetTouches[0]));
+                    setTouchID(event.targetTouches[0].identifier);
+                }
+            }
+        }
+        //setWipeState(wipe);
+    }, [toolInUse]);
 
         //Callback for when mouse is down
     const startPaint = useCallback((event) => {
@@ -144,6 +193,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
             if (coordinates) {
                 setMouse(coordinates);
                 setInUse(true);
+                //TODO: draw a circle
             }
         }, [toolInUse]);
 
@@ -158,12 +208,12 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         //console.log("startPaint event added")
 
         canvas.addEventListener('mousedown', startPaint);
-        canvas.addEventListener('touchstart', startPaint);
+        canvas.addEventListener('touchstart', startTouch);
         return () => {
-            canvas.removeEventListener('touchstart', startPaint);
+            canvas.removeEventListener('touchstart', startTouch);
             canvas.removeEventListener('mousedown', startPaint);
         };
-    }, [startPaint, two, toolInUse]);
+    }, [startPaint, startTouch, two, toolInUse]);
 
     //instantiates newMouse and draws lines
     const paint = useCallback(
@@ -192,12 +242,12 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         //console.log("mouseMove event added")
         const canvas = two.renderer.domElement;
         canvas.addEventListener('mousemove', paint);
-        canvas.addEventListener('touchmove', paint);
+        canvas.addEventListener('touchmove', moveTouch);
         return () => {
-            canvas.removeEventListener('touchmove', paint);
+            canvas.removeEventListener('touchmove', moveTouch);
             canvas.removeEventListener('mousemove', paint);
         };
-    }, [paint, two, toolInUse]);
+    }, [paint, moveTouch, two, toolInUse]);
 
     //Triggers when the mouse is up or off the screen
     const exitPaint = useCallback(() => {
@@ -280,15 +330,15 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         canvas.addEventListener('mouseleave', exitPaint);
         //canvas.addEventListener('mouseup', dropShape);
 
-        canvas.addEventListener('touchend', mouseUpCallback);
+        canvas.addEventListener('touchend', endTouch);
         return () => {
             canvas.removeEventListener('mouseup', mouseUpCallback);
-            canvas.removeEventListener('touchend', mouseUpCallback);
+            canvas.removeEventListener('touchend', endTouch);
             //canvas.removeEventListener('mouseup', exitPaint);
             canvas.removeEventListener('mouseleave', exitPaint);
             //canvas.removeEventListener('mouseup', dropShape);
         };
-    }, [mouseUpCallback, two, toolInUse]);
+    }, [mouseUpCallback, endTouch, exitPaint, two, toolInUse]);
 
     //Gets the coordinates of the mouse event
     const getsCoordinates = (event) => {
@@ -308,6 +358,13 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         // x: event.pageX, y: event.offsetY
         return [event.pageX,  event.offsetY]
     };
+
+    const getTouchCoords = (touch) => {
+        if (!svgRef.current) {
+            return;
+        }
+        return [touch.pageX, touch.pageY]
+    }
 
     const drawLine = (originalMousePosition,  newMouse) => {
         if (!svgRef.current) {
@@ -335,7 +392,6 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
     return (
         <div style={{overflow :"hidden" , height:'100vh', width:'100vw'}} >
-            <text>{color}</text>
             <div ref={svgRef} style={{"overflow":"hidden"}}>
             </div>
         </div>
