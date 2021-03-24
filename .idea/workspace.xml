@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff...again" />
+    <list default="true" id="bb4f7264-ddf9-4963-b945-856f19a4b878" name="Default Changelist" comment="tried to implement some stuff...again">
+      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/Toolbar/WidthSlider.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/Toolbar/WidthSlider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Draw/TwoHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Draw/TwoHelpers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/boundless/src/Pages/CanvasPage.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -104,6 +108,7 @@
       <workItem from="1616445858840" duration="4146000" />
       <workItem from="1616525965557" duration="5185000" />
       <workItem from="1616605473979" duration="665000" />
+      <workItem from="1616609050298" duration="289000" />
     </task>
     <task id="LOCAL-00001" summary="initialzied firebase">
       <created>1613149769444</created>
