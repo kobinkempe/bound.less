@@ -124,7 +124,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         }
     }, [two, svgRef, wipe /*,wipeState*/])
 
-    //Currently not being used, but very fun
+    //Currently not being used, but ***VERY*** fun
     function getRandomColor() {
         return 'rgb('
             + Math.floor(Math.random() * 255) + ','
@@ -134,10 +134,29 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
     /** Shape Stuff**/
 
+    const dropShape = useCallback((coord) => {
+        if (coord) {
+            if (toolInUse === 'circle') {
+                const circ = two.makeCircle(coord[0], coord[1], radius / 2);
+                circ.fill = color;
+                circ.noStroke();
+                two.update();
+                setTwo(two);
+            } else if (toolInUse === 'rectangle') {
+                console.log('Rectangle tool triggered')
+                const rect = two.makeRectangle(coord[0], coord[1], radius, radius);
+                rect.fill = color;
+                rect.noStroke();
+                two.update();
+                setTwo(two);
+            }
+
+        }
+    }, [color, radius, toolInUse, two])
 
     const startTouch = useCallback((event) => {
         event.preventDefault();
-        if(!touchInUse){
+        if(toolInUse === 'pen' && !touchInUse){
             setTouchInUse(true);
             let thisTouch = event.changedTouches[0];
             setTouchID(thisTouch.identifier);
@@ -146,8 +165,10 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
                 setMouse(coordinates);
                 //TODO: draw a circle
             }
+        } else if(toolInUse === 'circle' || toolInUse === 'rectangle'){
+            dropShape(getTouchCoords(event.changedTouches[0]));
         }
-    }, [toolInUse, touchInUse]);
+    }, [toolInUse, touchInUse, dropShape]);
 
     const moveTouch = useCallback(
         (event) => {
@@ -165,7 +186,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
             }
         },
-        [touchInUse, mouse, toolInUse]
+        [touchInUse, touchID, mouse, toolInUse]
     );
 
     const endTouch = useCallback((event) => {
@@ -183,19 +204,21 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
             }
         }
         //setWipeState(wipe);
-    }, [toolInUse]);
+    }, [toolInUse, touchID]);
 
         //Callback for when mouse is down
     const startPaint = useCallback((event) => {
             //console.log("startPaint CAlled");
             const coordinates = getsCoordinates(event);
             //console.log("getsCoordiantes returned called")
-            if (coordinates) {
+            if (toolInUse === 'pen' && coordinates) {
                 setMouse(coordinates);
                 setInUse(true);
                 //TODO: draw a circle
+            } else if(toolInUse === 'circle' || toolInUse === 'rectangle'){
+                dropShape(getsCoordinates(event));
             }
-        }, [toolInUse]);
+        }, [toolInUse, dropShape]);
 
     //useEffect for startPaint
     useEffect(() => {
@@ -217,7 +240,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
     //instantiates newMouse and draws lines
     const paint = useCallback(
-        (event ) => {
+        (event) => {
             //console.log("Paint Called")
             if (inUse) {
                 //console.log("Paint Called w/inUse as true;")
@@ -258,61 +281,28 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         //setWipeState(wipe);
     }, [toolInUse]);
 
-
-    const dropShape = useCallback((event) => {
-        console.log("getting to dropshape")
-        //if(inUse) {
-        console.log('useCallback called while in use');
-        const newMouse = getsCoordinates(event);
-        if(newMouse){
-            if(toolInUse === 'circle') {
-                console.log('Circle tool triggered');
-                const circ = two.makeCircle(newMouse[0], newMouse[1], radius/2);
-                circ.fill = color;
-                circ.noStroke();
-                two.update();
-                console.log(color);
-                setTwo(two);
-
-            } else if(toolInUse === 'rectangle'){
-                console.log('Rectangle tool triggered')
-                const rect = two.makeRectangle(newMouse[0], newMouse[1], radius/2, radius/2);
-                rect.fill = color;
-                rect.noStroke();
-                two.update();
-                console.log(color);
-                setTwo(two);
-            }
-
-        }
-
-        //}
-
-
-    }, [inUse, toolInUse, two, radius, color]);
-
-    const mouseUpCallback = useCallback( (event) => {
-
-
-        //NOTE: In current implementation, it is the tool callback switches (mouseUpCallback,
-        // mouseDownCallback, etc) that exit out of other tools, not the actual toolbar.
-        exitPaint()
-        switch(toolInUse){
-            case "pen":
-                //exitPaint();
-                break;
-            //Note: if stickers ever get online, this is where they should be thrown into
-            // the callback functions
-            case "circle":
-                setInUse(true)
-                dropShape(event);
-                break;
-            case "rectangle":
-                setInUse(true)
-                dropShape(event);
-                break;
-        }
-    }, [inUse, toolInUse]);
+    // const mouseUpCallback = useCallback( (event) => {
+    //
+    //
+    //     //NOTE: In current implementation, it is the tool callback switches (mouseUpCallback,
+    //     // mouseDownCallback, etc) that exit out of other tools, not the actual toolbar.
+    //     exitPaint()
+    //     switch(toolInUse){
+    //         case "pen":
+    //             //exitPaint();
+    //             break;
+    //         //Note: if stickers ever get online, this is where they should be thrown into
+    //         // the callback functions
+    //         case "circle":
+    //             setInUse(true)
+    //             dropShape(event);
+    //             break;
+    //         case "rectangle":
+    //             setInUse(true)
+    //             dropShape(event);
+    //             break;
+    //     }
+    // }, [inUse, toolInUse]);
 
     //useEffect for exitPaint
     useEffect(() => {
@@ -325,20 +315,20 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         const canvas = two.renderer.domElement;
         //console.log("MouseUp & mouseLEave mounted");
 
-        canvas.addEventListener('mouseup', mouseUpCallback);
+        canvas.addEventListener('mouseup', exitPaint);
         //canvas.addEventListener('mouseup', exitPaint);
         canvas.addEventListener('mouseleave', exitPaint);
         //canvas.addEventListener('mouseup', dropShape);
 
         canvas.addEventListener('touchend', endTouch);
         return () => {
-            canvas.removeEventListener('mouseup', mouseUpCallback);
+            //canvas.removeEventListener('mouseup', mouseUpCallback);
             canvas.removeEventListener('touchend', endTouch);
             //canvas.removeEventListener('mouseup', exitPaint);
             canvas.removeEventListener('mouseleave', exitPaint);
             //canvas.removeEventListener('mouseup', dropShape);
         };
-    }, [mouseUpCallback, endTouch, exitPaint, two, toolInUse]);
+    }, [endTouch, touchID, exitPaint, two, toolInUse]);
 
     //Gets the coordinates of the mouse event
     const getsCoordinates = (event) => {
