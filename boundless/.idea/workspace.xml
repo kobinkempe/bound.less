@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="default line width">
-      <change beforePath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
+    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="finish touchscreen">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +21,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="main" />
+        <entry key="$PROJECT_DIR$/.." value="canvasPage" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -107,6 +107,7 @@
       <workItem from="1616079391171" duration="10137000" />
       <workItem from="1616183662130" duration="9000" />
       <workItem from="1616183878800" duration="11894000" />
+      <workItem from="1616626652515" duration="6076000" />
     </task>
     <task id="LOCAL-00001" summary="UI Changes for Profile Page">
       <created>1615577398290</created>
@@ -150,7 +151,28 @@
       <option name="project" value="LOCAL" />
       <updated>1616612595652</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="pushable to main">
+      <created>1616613404571</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1616613404571</updated>
+    </task>
+    <task id="LOCAL-00008" summary="touchscreen">
+      <created>1616622995047</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1616622995047</updated>
+    </task>
+    <task id="LOCAL-00009" summary="finish touchscreen">
+      <created>1616685397069</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1616685397069</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,6 +196,9 @@
     <MESSAGE value="database sorta" />
     <MESSAGE value="fixed database stuff" />
     <MESSAGE value="default line width" />
-    <option name="LAST_COMMIT_MESSAGE" value="default line width" />
+    <MESSAGE value="pushable to main" />
+    <MESSAGE value="touchscreen" />
+    <MESSAGE value="finish touchscreen" />
+    <option name="LAST_COMMIT_MESSAGE" value="finish touchscreen" />
   </component>
 </project>
