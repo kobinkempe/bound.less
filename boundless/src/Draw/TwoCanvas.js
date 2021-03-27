@@ -39,7 +39,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
 
     //Creates the 'two' object w/o mounting it to the actual DOM
     const [two, setTwo] = useState(
-        new Two({width:window.innerWidth, height:window.innerHeight, autostart:true, resolution:40})
+        new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40})
     );
 
     //Determines whether TwoCanvas has been appended onto svgRef
