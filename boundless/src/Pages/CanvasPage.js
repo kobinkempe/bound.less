@@ -25,7 +25,12 @@ import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
 import {addCanvas, canAccessCanvas, makeCanvasPrivate, removeCanvas} from "../Firebase";
 
 import WidthSlider from "../Draw/Toolbar/WidthSlider";
+
+
+
+
 import CanvasToolbar from "../Draw/CanvasToolBar";
+import {useUndoCount} from "../Draw/TwoHelpers";
 
 // function getRandomColor() {
 //     return 'rgb('

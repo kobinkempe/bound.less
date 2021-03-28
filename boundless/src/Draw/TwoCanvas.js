@@ -1,16 +1,12 @@
-import React from "react";
-import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import Two from "two.js";
-import {current} from "@reduxjs/toolkit";
-import ReactDOM from 'react-dom'
-import {useSelector} from "react-redux";
-import {selectRGB} from "../Redux/rSlicePenOptions";
-import svg from "two.js/src/renderers/svg";
+import {useDispatch, useSelector} from "react-redux";
 
 //I get by with a little help(er) from my friends (me)
-import {fillLine, makePoint} from "./TwoHelpers";
+import {fillLine, makePoint, useUndoQueue} from "./TwoHelpers";
+import {getUndoTop, getUQLength, loadUndo, popUndo} from "../Redux/UndoQueueState";
 
-const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
+const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
     /** Currently supported Tools:
      *  Pen
      *  All-Canvas Delete
@@ -36,11 +32,23 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
      * **/
 
     const svgRef = useRef(null);
+    /*
+    const undoTop = useSelector(getUndoTop)
+    const undoL = useSelector(getUQLength);
+     */
+
+
+    const dispatch = useDispatch();
 
     //Creates the 'two' object w/o mounting it to the actual DOM
     const [two, setTwo] = useState(
         new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40})
     );
+
+    //Keeps track of the # of shapes that need to be removed from two
+    const [PGroup, setPGroup] = useState(0);
+
+    const [undoQueue, pushUndoQueue, queueAction] = useUndoQueue();
 
     //Determines whether TwoCanvas has been appended onto svgRef
     const [isLoaded, setIsLoaded] = useState(false);
@@ -52,6 +60,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
     const [inUse, setInUse] = useState(false);
     const [touchInUse, setTouchInUse] = useState(false);
     const [touchID, setTouchID] = useState(-1);
+
+    const [shouldUndo, setShouldUndo] = useState(true);
 
     /** TOOLS **/
 
@@ -77,7 +87,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         setTwo(two.appendTo(svgRef.current));
 
         setIsLoaded(true);
-    });
+    }, []);
 
     //Wipe Tool
     useEffect(()=>{
@@ -90,7 +100,30 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
             two.update();
             setTwo(two);
         }
-    }, [two, svgRef, wipe /*,wipeState*/])
+    }, [two, wipe])
+
+    useEffect(() =>{
+        if(!svgRef.current){
+            return
+        }
+
+
+        if(undo){
+
+            //This number is the # of paths that need to be stripped to undo this action
+            const lastPath = queueAction('pop');
+            for(let j = 0; j<lastPath; ++j) {
+                const l = two.scene.children.length;
+                two.remove(two.scene.children[l - 1]);
+                console.log("# of TwoSceneChild: " + two.scene.children.length)
+            }
+            console.log("Undo: "+undo+", undoTop: "+lastPath+", Remaining Children: "+two.scene.children.length);
+            two.update();
+            setTwo(two);
+
+
+        }
+    }, [undo])
 
     const dropShape = useCallback((coord) => {
         if (coord) {
@@ -106,9 +139,31 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
                 rect.noStroke();
                 two.update();
                 setTwo(two);
+                //dispatch(loadUndo( 1))
             }
+
+
+            pushUndoQueue(1);
         }
-    }, [color, radius, toolInUse, two])
+    }, [color, radius, toolInUse, two, dispatch])
+
+
+    /**
+     * Stuff that's done when the mouse/touch leaves the canvas
+     * Most importantly, the lineGroup needs to be passed to
+     * the undo stack
+     *
+     */
+    const exitCanvasRoutine = useCallback(()=>{
+        setMouse(undefined);
+        setTouchInUse(false);
+        pushUndoQueue(PGroup);
+        //dispatch(loadUndo( PGroup));
+        setPGroup(0);
+
+
+
+    }, [PGroup])
 
     const startTouch = useCallback((event) => {
         event.preventDefault();
@@ -146,6 +201,8 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         if(event.targetTouches.length === 0){
             setMouse(undefined);
             setTouchInUse(false);
+            exitCanvasRoutine();
+            console.log("ExitCanvas Called");
         } else {
             for(let endingTouch of event.changedTouches) {
                 if (endingTouch.identifier === touchID) {
@@ -155,7 +212,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
                 }
             }
         }
-    }, [toolInUse, touchID]);
+    }, [toolInUse, touchID, exitCanvasRoutine]);
 
     const startMouse = useCallback((event) => {
             const coordinates = getsCoordinates(event);
@@ -178,9 +235,9 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
     },[inUse, mouse, toolInUse]);
 
     const endMouse = useCallback(() => {
-        setMouse(undefined);
-        setInUse(false);
-    }, [toolInUse]);
+        exitCanvasRoutine();
+        console.log("EndMouse Called")
+    }, [exitCanvasRoutine]);
 
     //useEffect for startMouse
     useEffect(() => {
@@ -266,6 +323,9 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color}) => {
         const m1 = makePoint(originalMousePosition);
         const m2 = makePoint(newMouse);
         const path = two.makeCurve([m1, m2], true);
+
+        //Every new shape's gotta be recorded
+        setPGroup(PGroup+1);
         //path.scale = .5 + (radius/100);
         path.fill = color;
         path.stroke = color;

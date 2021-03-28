@@ -18,6 +18,8 @@ import {useState} from "react";
 import {useHistory} from "react-router-dom";
 
 
+
+
 export default function CanvasToolbar({setToolSelected,
                                       selectColor,
                                       setSelectColor,
@@ -42,6 +44,7 @@ export default function CanvasToolbar({setToolSelected,
 
     let cleanup = () => {
         setWipe(false);
+        setUndoState(false);
 
     }
 
@@ -57,7 +60,9 @@ export default function CanvasToolbar({setToolSelected,
         //Undo
         <Fab className={'tool'}
              onClick={()=>{
-                 setUndoState(true)
+                 setWipe(false);
+                 setUndoState(true);
+                 console.log("Button Clicked");
              }}>
             <Undo/>
         </Fab>,
@@ -122,6 +127,7 @@ export default function CanvasToolbar({setToolSelected,
         <Fab className={'tool'}
              onClick={()=>{
                  setOpenLineWidth(false);
+                 setUndoState(false);
                  // addCanvas(i);
                  // addCanvas(i + 'private', "John Doe", false);
                  // setTimeout(()=>{

@@ -8,14 +8,50 @@ import {selectRGB} from "../Redux/rSlicePenOptions";
 import svg from "two.js/src/renderers/svg";
 
 
+/**
+ *
+ * @param params
+ */
 
 
 
 
+const UNDO_LIMIT = 10;
+export const useUndoQueue = () => {
+    const [uArr, setUArr] = useState([]);
 
-function UndoStack(){
+
+    function queueAction(command) {
+        if(command === 'top'){
+            return uArr[uArr.length-1];
+        } else if(command === 'pop'){
+            const j = uArr.pop();
+            setUArr(uArr);
+            console.log("Next Undo is: "+j+" paths long");
+            return j;
+        }
+    }
+
+    const pushQueue = (data) => {
+        if(data !== 0){
+            uArr.push(data);
+        }
+
+        console.log("Trying to push \""+data+"\" onto the undoQueue");
+        if(uArr.length > UNDO_LIMIT){
+            uArr.shift();
+        }
+        setUArr(uArr);
+    }
+
+
+
+    return [uArr, pushQueue, queueAction];
 
 }
+
+
+
 //Currently not being used, but very fun
 function getRandomColor() {
     return 'rgb('
@@ -39,9 +75,13 @@ const LINE_RES = 4;
 export function fillLine(two, m1, m2, penColor, r){
     const xD = m2[0]-m1[0];
     const yD = m2[1]-m1[1];
+    let x = m1[0];
+    let y = m1[1];
 
     for(let i = 0; i<LINE_RES; ++i){
-        let j = two.makeCircle(m1[0]+xD/LINE_RES, m1[1]+yD/LINE_RES,r);
+        x = x+ xD/LINE_RES;
+        y = y+ yD/LINE_RES;
+        let j = two.makeCircle(x, y,r);
         j.noStroke();
         j.fill = penColor;
     }
