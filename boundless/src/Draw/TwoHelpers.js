@@ -54,35 +54,40 @@ export const useUndoQueue = () => {
 export const useTwo = () => {
     const [two, setTwo] = useState(new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40}))
 
+    let s = new XMLSerializer();
+
     useEffect(() => {
-        //document.querySelector()
-        let s = new XMLSerializer();
-        let d = two.renderer.domElement;
-        let str = s.serializeToString(d);
+        const interval = setInterval(() => {
 
-        let storageRef = firebase.storage().ref();
-        let canvasRef = storageRef.child("canvas1.svg");
+            let d = two.renderer.domElement;
+            let str = s.serializeToString(d);
 
-        canvasRef.putString(str).then((snapshot) => {
-            console.log('Uploaded string');
-        }).catch((error) => {
-            switch (error.code) {
-                case 'storage/unauthorized':
-                    console.log("You're not authorized");
-                    break;
-                case 'storage/canceled':
-                    console.log("User canceled upload");
-                    break;
-                case 'storage/unknown':
-                    console.log("Unknown error");
-                    break;
-            }
-        })
-    }, [two])
+            let storageRef = firebase.storage().ref();
+            let canvasRef = storageRef.child("canvas1.svg");
 
-    return [two, setTwo];
+            canvasRef.putString(str).then((snapshot) => {
+                console.log('Uploaded string');
+            }).catch((error) => {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        console.log("You're not authorized");
+                        break;
+                    case 'storage/canceled':
+                        console.log("User canceled upload");
+                        break;
+                    case 'storage/unknown':
+                        console.log("Unknown error");
+                        break;
+                }
+            })
+            console.log('This will run every 10 seconds!');
+        }, 10000);
+
+        return () => clearInterval(interval);
+    }, [two]);
+
+    return [two, setTwo]
 }
-
 
 
 //Currently not being used, but very fun
