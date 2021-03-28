@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom'
 import {useSelector} from "react-redux";
 import {selectRGB} from "../Redux/rSlicePenOptions";
 import svg from "two.js/src/renderers/svg";
+import firebase from "firebase";
 
 
 /**
@@ -59,17 +60,27 @@ export const useTwo = () => {
         let d = two.renderer.domElement;
         let str = s.serializeToString(d);
 
-        //Save str??
-        alert(str);
+        let storageRef = firebase.storage().ref();
+        let canvasRef = storageRef.child("canvas1.svg");
 
-        //** save soemthing here**/
-
+        canvasRef.putString(str).then((snapshot) => {
+            console.log('Uploaded string');
+        }).catch((error) => {
+            switch (error.code) {
+                case 'storage/unauthorized':
+                    console.log("You're not authorized");
+                    break;
+                case 'storage/canceled':
+                    console.log("User canceled upload");
+                    break;
+                case 'storage/unknown':
+                    console.log("Unknown error");
+                    break;
+            }
+        })
     }, [two])
 
     return [two, setTwo];
-
-
-
 }
 
 
