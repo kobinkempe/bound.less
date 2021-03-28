@@ -44,6 +44,7 @@ export default function CanvasToolbar({setToolSelected,
 
     let cleanup = () => {
         setWipe(false);
+        //setUndoState(false);
 
     }
 
@@ -59,7 +60,7 @@ export default function CanvasToolbar({setToolSelected,
         //Undo
         <Fab className={'tool'}
              onClick={()=>{
-                 setWipe(false);
+                 cleanup();
                  setUndoState(true);
                  console.log("Button Clicked");
              }}>
