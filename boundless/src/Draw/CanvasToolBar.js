@@ -44,7 +44,6 @@ export default function CanvasToolbar({setToolSelected,
 
     let cleanup = () => {
         setWipe(false);
-        setUndoState(false);
 
     }
 

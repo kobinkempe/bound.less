@@ -44,9 +44,29 @@ export const useUndoQueue = () => {
         setUArr(uArr);
     }
 
-
-
     return [uArr, pushQueue, queueAction];
+
+}
+
+export const useTwo = () => {
+    const [two, setTwo] = useState(new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40}))
+
+    useEffect(() => {
+        //document.querySelector()
+        let s = new XMLSerializer();
+        let d = two.renderer.domElement;
+        let str = s.serializeToString(d);
+
+        //Save str??
+        alert(str);
+
+        //** save soemthing here**/
+
+    }, [two])
+
+    return [two, setTwo];
+
+
 
 }
 

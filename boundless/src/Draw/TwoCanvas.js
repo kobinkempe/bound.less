@@ -3,7 +3,7 @@ import Two from "two.js";
 import {useDispatch, useSelector} from "react-redux";
 
 //I get by with a little help(er) from my friends (me)
-import {fillLine, LINE_RES, makePoint, useUndoQueue} from "./TwoHelpers";
+import {fillLine, LINE_RES, makePoint, useTwo, useUndoQueue} from "./TwoHelpers";
 import {getUndoTop, getUQLength, loadUndo, popUndo} from "../Redux/UndoQueueState";
 
 const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
@@ -41,9 +41,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
     const dispatch = useDispatch();
 
     //Creates the 'two' object w/o mounting it to the actual DOM
-    const [two, setTwo] = useState(
-        new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40})
-    );
+    const [two, setTwo] = useTwo();
 
     //Keeps track of the # of shapes that need to be removed from two
     const [PGroup, setPGroup] = useState(0);
