@@ -18,6 +18,16 @@ import svg from "two.js/src/renderers/svg";
 
 const UNDO_LIMIT = 10;
 
+export const useNumUndos = (initialAmount) => {
+    const [num, setNum] = useState(initialAmount);
+
+    const inc = () => {
+        setNum(num+1);
+    }
+
+    return [num, inc];
+}
+
 
 export const useUndoQueue = () => {
     const [uArr, setUArr] = useState([]);

@@ -30,7 +30,7 @@ import WidthSlider from "../Draw/Toolbar/WidthSlider";
 
 
 import CanvasToolbar from "../Draw/CanvasToolBar";
-import {useUndoCount} from "../Draw/TwoHelpers";
+import {useNumUndos, useUndoCount} from "../Draw/TwoHelpers";
 
 // function getRandomColor() {
 //     return 'rgb('
@@ -54,6 +54,7 @@ export const CanvasPage = () => {
     const [wipe, setWipe] = useState(false);
     const [lineWidth, setLineWidth] = useState(5);
     const [undoState, setUndoState] = useState(false);
+    const [undos, incUndos] = useNumUndos(0);
 
     let onPressButton;
     if(loggedIn){
@@ -120,7 +121,7 @@ export const CanvasPage = () => {
                                lineWidth={lineWidth}
                                setToolSelected={setToolSelected}
                                setSelectColor={setSelectColor}
-                               setUndoState={setUndoState}
+                               setUndoState={incUndos}
                                setWipe={setWipe}/>
             </div>
             <TwoCanvas
