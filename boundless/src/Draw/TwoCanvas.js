@@ -3,7 +3,7 @@ import Two from "two.js";
 import {useDispatch, useSelector} from "react-redux";
 
 //I get by with a little help(er) from my friends (me)
-import {fillLine, makePoint, useUndoQueue} from "./TwoHelpers";
+import {fillLine, LINE_RES, makePoint, useUndoQueue} from "./TwoHelpers";
 import {getUndoTop, getUQLength, loadUndo, popUndo} from "../Redux/UndoQueueState";
 
 const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
@@ -237,7 +237,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
     const endMouse = useCallback(() => {
         exitCanvasRoutine();
         console.log("EndMouse Called")
-    }, [exitCanvasRoutine]);
+    }, []);
 
     //useEffect for startMouse
     useEffect(() => {
@@ -290,6 +290,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
         return () => {
             canvas.removeEventListener('touchend', endTouch);
             canvas.removeEventListener('mouseleave', endMouse);
+            canvas.removeEventListener('mouseup', endMouse);
         };
     }, [endTouch, touchID, endMouse, two, toolInUse]);
 
@@ -325,8 +326,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
         const path = two.makeCurve([m1, m2], true);
 
         //Every new shape's gotta be recorded
-        setPGroup(PGroup+1);
-        //path.scale = .5 + (radius/100);
+        setPGroup(PGroup+(1+LINE_RES));
         path.fill = color;
         path.stroke = color;
         path.curved = true;

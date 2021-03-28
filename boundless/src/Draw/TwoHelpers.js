@@ -34,10 +34,10 @@ export const useUndoQueue = () => {
 
     const pushQueue = (data) => {
         if(data !== 0){
+            console.log("Trying to push \""+data+"\" onto the undoQueue");
             uArr.push(data);
         }
 
-        console.log("Trying to push \""+data+"\" onto the undoQueue");
         if(uArr.length > UNDO_LIMIT){
             uArr.shift();
         }
@@ -70,7 +70,7 @@ export function makePoint(mouse){
 }
 
 //
-const LINE_RES = 4;
+export const LINE_RES = 1;
 
 export function fillLine(two, m1, m2, penColor, r){
     const xD = m2[0]-m1[0];
