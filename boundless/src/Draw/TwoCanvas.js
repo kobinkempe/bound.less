@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 //I get by with a little help(er) from my friends (me)
 import {fillLine, LINE_RES, makePoint, useNumUndos, useTwo, useUndoQueue} from "./TwoHelpers";
 import {getUndoTop, getUQLength, loadUndo, popUndo} from "../Redux/UndoQueueState";
+import {PEN_TYPES} from "../Pages/CanvasPage";
 
 
 
@@ -162,7 +163,7 @@ const TwoCanvas = ({toolInUse,
                 setTwo(two);
                 //dispatch(loadUndo( 1))
             } else if (toolInUse === 'star'){
-                const star = two.makeStar(coord[0], coord[1], radius/2);
+                const star = two.makeStar(coord[0], coord[1], radius, radius*2/5, 5);
                 star.fill = color;
                 star.noStroke();
                 two.update();
@@ -357,7 +358,7 @@ const TwoCanvas = ({toolInUse,
 
 
 
-        const path = penType === 'straight'? two.makeLine([m1, m2]):two.makeCurve([m1, m2], true);
+        const path = penType === PEN_TYPES[2]? two.makeLine([m1, m2]):two.makeCurve([m1, m2], true);
 
         //Every new shape's gotta be recorded
         setPGroup(PGroup+(1+LINE_RES));
@@ -366,10 +367,10 @@ const TwoCanvas = ({toolInUse,
 
 
 
-        if(penType === 'dotted'){
+        if(penType === PEN_TYPES[1]){
             path.noStroke();
         }
-        if(penType === 'freehand') {
+        if(penType === PEN_TYPES[0]) {
             path.curved = true;
             setTwo(fillLine(two, originalMousePosition, newMouse, color, radius/2));
         }
