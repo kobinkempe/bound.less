@@ -3,7 +3,7 @@ import Two from "two.js";
 import {useDispatch, useSelector} from "react-redux";
 
 //I get by with a little help(er) from my friends (me)
-import {fillLine, LINE_RES, makePoint, useTwo, useUndoQueue} from "./TwoHelpers";
+import {fillLine, LINE_RES, makePoint, useNumUndos, useTwo, useUndoQueue} from "./TwoHelpers";
 import {getUndoTop, getUQLength, loadUndo, popUndo} from "../Redux/UndoQueueState";
 
 const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
@@ -60,6 +60,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
     const [touchID, setTouchID] = useState(-1);
 
     const [shouldUndo, setShouldUndo] = useState(true);
+
 
     /** TOOLS **/
 

@@ -6,7 +6,7 @@ import {changeColorPen, selectRGB} from "../Redux/rSlicePenOptions";
 import {Button, Fab, ClickAwayListener} from "@material-ui/core";
 import styles from "../Stylesheets/CanvasPage.css";
 import "../Stylesheets/CanvasToolBar.css"
-import {logIn, logOut, selectLoggedIn, selectLoggingIn, startLogin, stopLogin} from "../Redux/loginState";
+import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
 import {useState} from "react";
 import {
     AllOut,
@@ -22,7 +22,7 @@ import {
 } from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
-import firebase, {addCanvas, canAccessCanvas, makeCanvasPrivate, removeCanvas} from "../Firebase";
+import {addCanvas, canAccessCanvas, makeCanvasPrivate, removeCanvas} from "../Firebase";
 
 import WidthSlider from "../Draw/Toolbar/WidthSlider";
 
@@ -30,8 +30,7 @@ import WidthSlider from "../Draw/Toolbar/WidthSlider";
 
 
 import CanvasToolbar from "../Draw/CanvasToolBar";
-import {useUndoCount} from "../Draw/TwoHelpers";
-import GoogleSignIn from "../Components/GoogleSignIn";
+import {useNumUndos, useUndoCount} from "../Draw/TwoHelpers";
 
 // function getRandomColor() {
 //     return 'rgb('
@@ -45,13 +44,9 @@ export const CanvasPage = () => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    //Login States and Variables
-    let loggedIn = useSelector(selectLoggedIn);
-    const [val, setVal] = useState(0);
-    if(firebase.auth().currentUser) { //helps with situation where user is already logged into Google account in browser
-        dispatch(logIn(firebase.auth().currentUser.displayName));
-    }
-    let loggingIn = useSelector(selectLoggingIn) && !loggedIn;
+    //Login States
+    const loggedIn = useSelector(selectLoggedIn);
+    const [loggingIn, setLoggingIn] = useState(false);
 
     //Tool States
     const [toolSelected, setToolSelected] = useState('pen');
@@ -59,23 +54,35 @@ export const CanvasPage = () => {
     const [wipe, setWipe] = useState(false);
     const [lineWidth, setLineWidth] = useState(5);
     const [undoState, setUndoState] = useState(false);
+    const [undos, incUndos] = useNumUndos(0);
 
     let onPressButton;
     if(loggedIn){
         onPressButton = ()=>{
-            firebase.auth().signOut().then(() => {
-                dispatch(logOut());
-                loggedIn = false;
-                sessionStorage.removeItem('loggedIn');
-                setVal(val + 1);
-            }).catch((error) => {
-                console.log(error);
-            });
+            dispatch(logOut());
         }
     } else {
         onPressButton = ()=>{
-            dispatch(startLogin());
+            setLoggingIn(true);
         }
+    }
+
+    let loginBox = () => {
+        if(!loggingIn){
+            return;
+        }
+        return (
+            <div className='mask2c'>
+                <div className='loginBoxC'>
+                    <Button onClick={()=>{
+                        dispatch(logIn('John Doe'));
+                        setLoggingIn(false);
+                    }}>
+                        Log In as John Doe
+                    </Button>
+                </div>
+            </div>
+        )
     }
 
     let loginButton = () => {
@@ -106,11 +113,6 @@ export const CanvasPage = () => {
         }
     }
 
-    let closeButton = () => {
-        dispatch(stopLogin());
-        setVal(val + 1);
-    };
-
     return (
         <div>
             <div color={"primary"} className={'toolbar'} >
@@ -119,7 +121,7 @@ export const CanvasPage = () => {
                                lineWidth={lineWidth}
                                setToolSelected={setToolSelected}
                                setSelectColor={setSelectColor}
-                               setUndoState={setUndoState}
+                               setUndoState={incUndos}
                                setWipe={setWipe}/>
             </div>
             <TwoCanvas
@@ -132,16 +134,7 @@ export const CanvasPage = () => {
             <div className='loginButtonC'>
                 {loginButton()}
             </div>
-            {loggingIn ?
-                <div className='mask2'>
-                    <div className='loginBox'>
-                        <GoogleSignIn />
-                        <Button onClick={closeButton}>
-                            Close Window
-                        </Button>
-                    </div>
-                </div> :
-                <div/>}
+            {loginBox()}
         </div>
     )
 }

@@ -7,6 +7,7 @@ import {useSelector} from "react-redux";
 import {selectRGB} from "../Redux/rSlicePenOptions";
 import svg from "two.js/src/renderers/svg";
 import firebase from "firebase";
+import {selectLoggedIn} from "../Redux/loginState";
 
 
 /**
@@ -18,6 +19,16 @@ import firebase from "firebase";
 
 
 const UNDO_LIMIT = 10;
+
+export const useNumUndos = (initialAmount) => {
+    const [num, setNum] = useState(initialAmount);
+
+    const inc = () => {
+        setNum(num+1);
+    }
+
+    return [num, inc];
+}
 
 
 export const useUndoQueue = () => {
@@ -51,10 +62,19 @@ export const useUndoQueue = () => {
 
 }
 
+
+const CANV_NAME = 1;
 export const useTwo = () => {
     const [two, setTwo] = useState(new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40}))
 
     let s = new XMLSerializer();
+    let userName;
+
+    if(selectLoggedIn) {
+        userName = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + CANV_NAME + ".svg";
+    } else {
+        userName = "/public/" + "canvas_" + CANV_NAME + ".svg";
+    }
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -63,7 +83,7 @@ export const useTwo = () => {
             let str = s.serializeToString(d);
 
             let storageRef = firebase.storage().ref();
-            let canvasRef = storageRef.child("canvas1.svg");
+            let canvasRef = storageRef.child(userName);
 
             canvasRef.putString(str).then((snapshot) => {
                 console.log('Uploaded string');
