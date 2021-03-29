@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="start">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Draw/CanvasToolBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/CanvasToolBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/headerBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/headerBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Stylesheets/headerBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/headerBar.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
