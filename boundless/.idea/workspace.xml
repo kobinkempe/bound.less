@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="Profile button">
-      <change afterPath="$PROJECT_DIR$/src/Components/toolButton.js" afterDir="false" />
+    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="start">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Draw/CanvasToolBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/CanvasToolBar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stylesheets/CanvasPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/CanvasPage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stylesheets/CanvasToolBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/CanvasToolBar.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stylesheets/toolbarAnimate.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/toolbarAnimate.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,7 +172,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616685397069</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="start">
+      <created>1617009965053</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1617009965053</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -203,6 +206,7 @@
     <MESSAGE value="pushable to main" />
     <MESSAGE value="touchscreen" />
     <MESSAGE value="finish touchscreen" />
-    <option name="LAST_COMMIT_MESSAGE" value="finish touchscreen" />
+    <MESSAGE value="start" />
+    <option name="LAST_COMMIT_MESSAGE" value="start" />
   </component>
 </project>

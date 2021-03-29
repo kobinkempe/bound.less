@@ -163,7 +163,7 @@ const TwoCanvas = ({toolInUse,
                 setTwo(two);
                 //dispatch(loadUndo( 1))
             } else if (toolInUse === 'star'){
-                const star = two.makeStar(coord[0], coord[1], radius/2);
+                const star = two.makeStar(coord[0], coord[1], radius/2, radius/5, 5);
                 star.fill = color;
                 star.noStroke();
                 two.update();
