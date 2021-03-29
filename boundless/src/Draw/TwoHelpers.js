@@ -35,16 +35,6 @@ export const useUndoQueue = () => {
     const [uArr, setUArr] = useState([]);
 
 
-    function queueAction(command) {
-        if(command === 'top'){
-            return uArr[uArr.length-1];
-        } else if(command === 'pop'){
-            const j = uArr.pop();
-            setUArr(uArr);
-            console.log("Next Undo is: "+j+" paths long");
-            return j;
-        }
-    }
 
     const pushQueue = (data) => {
         if(data !== 0){
@@ -58,12 +48,23 @@ export const useUndoQueue = () => {
         setUArr(uArr);
     }
 
-    return [uArr, pushQueue, queueAction];
+    return [uArr, pushQueue, setUArr];
 
 }
 
 
 const CANV_NAME = 1;
+/**
+ *
+ * useTwo:
+ *
+ * This component saves the Two instance that is drawing everything as a state, which is then
+ * loaded up into the firebase to a unique folder name with the logged-in user's name.
+ *
+ *
+ *
+ * @returns {[Two, ((value: (((prevState: Two) => Two) | Two)) => void)]}
+ */
 export const useTwo = () => {
     const [two, setTwo] = useState(new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40}))
 

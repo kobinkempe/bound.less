@@ -9,7 +9,16 @@ import {getUndoTop, getUQLength, loadUndo, popUndo} from "../Redux/UndoQueueStat
 
 
 //
-const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false, penType="freehand"}) => {
+const TwoCanvas = ({toolInUse,
+                       wipe=false,
+                       radius,
+                       color,
+                       undo,
+                       penType="freehand",
+                   }) => {
+
+
+
     /** Currently supported Tools:
      *  Pen
      *  All-Canvas Delete
@@ -49,7 +58,9 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false, penType="f
     //Keeps track of the # of shapes that need to be removed from two
     const [PGroup, setPGroup] = useState(0);
 
-    const [undoQueue, pushUndoQueue, queueAction] = useUndoQueue();
+    //Keeps track of the # of undos completed;
+    const [doneUndos, setdoneUndos] = useState(0);
+    const [undoQueue, pushUndoQueue, setUndoQueue] = useUndoQueue();
 
     //Determines whether TwoCanvas has been appended onto svgRef
     const [isLoaded, setIsLoaded] = useState(false);
@@ -110,22 +121,30 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false, penType="f
         }
 
 
-        if(undo){
+        if(undo-doneUndos>0){
+
 
             //This number is the # of paths that need to be stripped to undo this action
-            const lastPath = queueAction('pop');
+            const lastPath = undoQueue[undoQueue.length-1];
+            undoQueue.pop();
+            setUndoQueue(undoQueue);
+
             for(let j = 0; j<lastPath; ++j) {
                 const l = two.scene.children.length;
                 two.remove(two.scene.children[l - 1]);
                 console.log("# of TwoSceneChild: " + two.scene.children.length)
             }
             console.log("Undo: "+undo+", undoTop: "+lastPath+", Remaining Children: "+two.scene.children.length);
+            setdoneUndos(doneUndos+1)
             two.update();
             setTwo(two);
 
 
         }
-    }, [undo])
+        else if(undo <1){
+            setdoneUndos(0);
+        }
+    }, [undo, doneUndos, undoQueue])
 
     const dropShape = useCallback((coord) => {
         if (coord) {
@@ -153,7 +172,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false, penType="f
 
             pushUndoQueue(1);
         }
-    }, [color, radius, toolInUse, two, dispatch])
+    }, [color, radius, toolInUse, two])
 
 
     /**
