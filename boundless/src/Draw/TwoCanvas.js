@@ -354,24 +354,21 @@ const TwoCanvas = ({toolInUse,
 
 
 
-
-        const path = penType === PEN_TYPES[2]? two.makeLine([m1, m2]):two.makeCurve([m1, m2], true);
-
         //Every new shape's gotta be recorded
         setPGroup(PGroup+(1+LINE_RES));
-        path.fill = color;
-        path.stroke = color;
 
 
-
-        if(penType === PEN_TYPES[1]){
-            path.noStroke();
-        }
         if(penType === PEN_TYPES[0]) {
+            const path = two.makeCurve([m1, m2], true);
+            path.fill = color;
+            path.stroke = color;
             path.curved = true;
+            path.linewidth = radius;
+        }
+        if(penType !== PEN_TYPES[2]) {
             setTwo(fillLine(two, originalMousePosition, newMouse, color, radius/2));
         }
-        path.linewidth = radius;
+
         //document.querySelector('#two-'+path.id);
 
         two.update();
