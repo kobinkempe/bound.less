@@ -6,7 +6,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {fillLine, LINE_RES, makePoint, useNumUndos, useTwo, useUndoQueue} from "./TwoHelpers";
 import {getUndoTop, getUQLength, loadUndo, popUndo} from "../Redux/UndoQueueState";
 
-const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
+
+
+//
+const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false, penType="freehand"}) => {
     /** Currently supported Tools:
      *  Pen
      *  All-Canvas Delete
@@ -139,6 +142,12 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
                 two.update();
                 setTwo(two);
                 //dispatch(loadUndo( 1))
+            } else if (toolInUse === 'star'){
+                const star = two.makeStar(coord[0], coord[1], radius/2);
+                star.fill = color;
+                star.noStroke();
+                two.update();
+                setTwo(two);
             }
 
 
@@ -174,7 +183,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
             if (coordinates) {
                 setMouse(coordinates);
             }
-        } else if(toolInUse === 'circle' || toolInUse === 'rectangle'){
+        } else if(toolInUse === 'circle' || toolInUse === 'rectangle' || toolInUse === 'star'){
             dropShape(getTouchCoords(event.changedTouches[0]));
         }
     }, [toolInUse, touchInUse, dropShape]);
@@ -218,7 +227,7 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
             if (toolInUse === 'pen' && coordinates) {
                 setMouse(coordinates);
                 setInUse(true);
-            } else if(toolInUse === 'circle' || toolInUse === 'rectangle'){
+            } else if(toolInUse === 'circle' || toolInUse === 'rectangle' || toolInUse === 'star'){
                 dropShape(getsCoordinates(event));
             }
         }, [toolInUse, dropShape]);
@@ -322,21 +331,33 @@ const TwoCanvas = ({toolInUse, wipe=false, radius, color, undo=false}) => {
         }
         const m1 = makePoint(originalMousePosition);
         const m2 = makePoint(newMouse);
-        const path = two.makeCurve([m1, m2], true);
+
+
+
+
+        const path = penType === 'straight'? two.makeLine([m1, m2]):two.makeCurve([m1, m2], true);
 
         //Every new shape's gotta be recorded
         setPGroup(PGroup+(1+LINE_RES));
         path.fill = color;
         path.stroke = color;
-        path.curved = true;
-        setTwo(fillLine(two, originalMousePosition, newMouse, color, radius/2));
+
+
+
+        if(penType === 'dotted'){
+            path.noStroke();
+        }
+        if(penType === 'freehand') {
+            path.curved = true;
+            setTwo(fillLine(two, originalMousePosition, newMouse, color, radius/2));
+        }
         path.linewidth = radius;
         //document.querySelector('#two-'+path.id);
 
         two.update();
         setTwo(two);
 
-    };
+    }
 
     return (
         <div style={{overflow :"hidden" , height:'100vh', width:'100vw'}} >
