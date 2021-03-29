@@ -1,0 +1,9 @@
+$menu-items:4;
+
+.menu-item{
+  @for $i from 1 through $menu-items{
+    &:nth-child(#{$i+2}){
+      transition-duration:180ms;
+    }
+  }
+}

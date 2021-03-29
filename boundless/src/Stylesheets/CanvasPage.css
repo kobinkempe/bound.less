@@ -4,32 +4,6 @@
     height: 120px;
 }
 
-.colorPickerWrapperC {
-    position: fixed;
-    z-index: 1;
-    left: 2vh;
-    bottom: 2vh;
-}
-
-
-
-.logoContainerC {
-    height: 13vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
-
-.logoC {
-    background-image: url('../Images/Logo1.PNG');
-    background-size: contain;
-    height: 100%;
-    aspect-ratio: 2.91;
-    max-width: 50vw;
-    background-repeat: no-repeat;
-}
-
 .mask2c {
     height: 100%;
     width: 100%;
@@ -37,10 +11,20 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 3;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.toolbar{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 1;
+    left: 3vh;
+    top: 3vh;
+    align-items: center;
 }
 
 .loginBoxC {
@@ -63,21 +47,6 @@
 
 .loginButtonItem {
     margin: 1vh !important;
-}
-
-.toolbar{
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    z-index: 1;
-    left: 3vh;
-    top: 3vh;
-    align-items: center;
-}
-
-.tool {
-    margin-bottom: 15% !important;
-    box-shadow: none !important;
 }
 
 .profile {
