@@ -84,7 +84,7 @@ export const useTwo = () => {
             let str = s.serializeToString(d);
 
             let storageRef = firebase.storage().ref();
-            let canvasRef = storageRef.child("canvas1.svg");
+            let canvasRef = storageRef.child(userName);
 
             canvasRef.putString(str).then((snapshot) => {
                 console.log('Uploaded string');
