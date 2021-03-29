@@ -32,12 +32,10 @@ import GoogleSignIn from "../Components/GoogleSignIn";
 import CanvasToolbar from "../Draw/CanvasToolBar";
 import {useNumUndos, useUndoCount} from "../Draw/TwoHelpers";
 
-// function getRandomColor() {
-//     return 'rgb('
-//         + Math.floor(Math.random() * 255) + ','
-//         + Math.floor(Math.random() * 255) + ','
-//         + Math.floor(Math.random() * 255) + ')';
-// }
+// This is an array of constants for the pen type --------------------
+// 0:'freehand', 1:'dotted', 2:"straight"
+export const PEN_TYPES = ['freehand', 'dotted', "straight"]
+
 
 export const CanvasPage = () => {
     let {canvasID} = useParams();
@@ -59,6 +57,7 @@ export const CanvasPage = () => {
     const [lineWidth, setLineWidth] = useState(5);
     const [undoState, setUndoState] = useState(false);
     const [undos, incUndos] = useNumUndos(0);
+    const [penType, setPenType] = useState(PEN_TYPES[0])
 
     let onPressButton;
     if(loggedIn){
@@ -120,7 +119,9 @@ export const CanvasPage = () => {
                                setToolSelected={setToolSelected}
                                setSelectColor={setSelectColor}
                                setUndoState={incUndos}
-                               setWipe={setWipe}/>
+                               setWipe={setWipe}
+                               penType={penType}
+                               setPenType={setPenType}/>
             </div>
             <TwoCanvas
                 toolInUse={toolSelected}
@@ -128,6 +129,7 @@ export const CanvasPage = () => {
                 radius={lineWidth}
                 color={selectColor}
                 undo={undos}
+                penType={penType}
             />
             <div className='loginButtonC'>
                 {loginButton()}

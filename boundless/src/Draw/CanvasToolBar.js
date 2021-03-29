@@ -26,7 +26,9 @@ export default function CanvasToolbar({setToolSelected,
                                       setWipe,
                                       lineWidth,
                                       setLineWidth,
-                                      setUndoState}){
+                                      setUndoState,
+                                      penType,
+                                      setPenType}){
     //Toolbar States
     const [toolDisplay, setToolDisplay] = useState('closed');
 
