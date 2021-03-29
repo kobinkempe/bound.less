@@ -6,7 +6,7 @@ import {changeColorPen, selectRGB} from "../Redux/rSlicePenOptions";
 import {Button, Fab, ClickAwayListener} from "@material-ui/core";
 import styles from "../Stylesheets/CanvasPage.css";
 import "../Stylesheets/CanvasToolBar.css"
-import {logIn, logOut, selectLoggedIn} from "../Redux/loginState";
+import {logIn, logOut, selectLoggedIn, selectLoggingIn, startLogin, stopLogin} from "../Redux/loginState";
 import {useState} from "react";
 import {
     AllOut,
@@ -22,7 +22,7 @@ import {
 } from '@material-ui/icons'
 import Toolbar from "../Draw/CanvasToolBar";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
-import {addCanvas, canAccessCanvas, makeCanvasPrivate, removeCanvas} from "../Firebase";
+import firebase, {addCanvas, canAccessCanvas, makeCanvasPrivate, removeCanvas} from "../Firebase";
 
 import WidthSlider from "../Draw/Toolbar/WidthSlider";
 
@@ -31,6 +31,7 @@ import WidthSlider from "../Draw/Toolbar/WidthSlider";
 
 import CanvasToolbar from "../Draw/CanvasToolBar";
 import {useUndoCount} from "../Draw/TwoHelpers";
+import GoogleSignIn from "../Components/GoogleSignIn";
 
 // function getRandomColor() {
 //     return 'rgb('
@@ -44,9 +45,13 @@ export const CanvasPage = () => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    //Login States
-    const loggedIn = useSelector(selectLoggedIn);
-    const [loggingIn, setLoggingIn] = useState(false);
+    //Login States and Variables
+    let loggedIn = useSelector(selectLoggedIn);
+    const [val, setVal] = useState(0);
+    if(firebase.auth().currentUser) { //helps with situation where user is already logged into Google account in browser
+        dispatch(logIn(firebase.auth().currentUser.displayName));
+    }
+    let loggingIn = useSelector(selectLoggingIn) && !loggedIn;
 
     //Tool States
     const [toolSelected, setToolSelected] = useState('pen');
@@ -58,30 +63,19 @@ export const CanvasPage = () => {
     let onPressButton;
     if(loggedIn){
         onPressButton = ()=>{
-            dispatch(logOut());
+            firebase.auth().signOut().then(() => {
+                dispatch(logOut());
+                loggedIn = false;
+                sessionStorage.removeItem('loggedIn');
+                setVal(val + 1);
+            }).catch((error) => {
+                console.log(error);
+            });
         }
     } else {
         onPressButton = ()=>{
-            setLoggingIn(true);
+            dispatch(startLogin());
         }
-    }
-
-    let loginBox = () => {
-        if(!loggingIn){
-            return;
-        }
-        return (
-            <div className='mask2c'>
-                <div className='loginBoxC'>
-                    <Button onClick={()=>{
-                        dispatch(logIn('John Doe'));
-                        setLoggingIn(false);
-                    }}>
-                        Log In as John Doe
-                    </Button>
-                </div>
-            </div>
-        )
     }
 
     let loginButton = () => {
@@ -112,6 +106,11 @@ export const CanvasPage = () => {
         }
     }
 
+    let closeButton = () => {
+        dispatch(stopLogin());
+        setVal(val + 1);
+    };
+
     return (
         <div>
             <div color={"primary"} className={'toolbar'} >
@@ -133,7 +132,16 @@ export const CanvasPage = () => {
             <div className='loginButtonC'>
                 {loginButton()}
             </div>
-            {loginBox()}
+            {loggingIn ?
+                <div className='mask2'>
+                    <div className='loginBox'>
+                        <GoogleSignIn />
+                        <Button onClick={closeButton}>
+                            Close Window
+                        </Button>
+                    </div>
+                </div> :
+                <div/>}
         </div>
     )
 }
