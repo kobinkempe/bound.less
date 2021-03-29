@@ -70,7 +70,7 @@ export const useTwo = () => {
     let s = new XMLSerializer();
     let userName;
 
-    if(selectLoggedIn) {
+    if(firebase.auth().currentUser) {
         userName = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + CANV_NAME + ".svg";
     } else {
         userName = "/public/" + "canvas_" + CANV_NAME + ".svg";
@@ -83,7 +83,7 @@ export const useTwo = () => {
             let str = s.serializeToString(d);
 
             let storageRef = firebase.storage().ref();
-            let canvasRef = storageRef.child(userName);
+            let canvasRef = storageRef.child("canvas1.svg");
 
             canvasRef.putString(str).then((snapshot) => {
                 console.log('Uploaded string');
