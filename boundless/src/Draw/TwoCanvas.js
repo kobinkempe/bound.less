@@ -185,6 +185,9 @@ const TwoCanvas = ({toolInUse,
         setMouse(undefined);
         setTouchInUse(false);
         pushUndoQueue(PGroup);
+        if(PGroup > 1){
+            console.log("Path pushed to undo queue of path size: "+PGroup);
+        }
         //dispatch(loadUndo( PGroup));
         setPGroup(0);
 
