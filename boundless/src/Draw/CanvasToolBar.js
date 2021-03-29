@@ -63,7 +63,8 @@ export default function CanvasToolbar({setToolSelected,
         <Fab className={'tool'}
              onClick={()=>{
                  cleanup();
-                 setUndoState(true);
+                 setUndoState();
+                 //setUndoState(true);
                  console.log("Button Clicked");
              }}>
             <Undo/>

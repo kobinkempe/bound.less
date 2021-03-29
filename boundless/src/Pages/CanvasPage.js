@@ -128,7 +128,7 @@ export const CanvasPage = () => {
                 wipe={wipe}
                 radius={lineWidth}
                 color={selectColor}
-                undo={undoState}
+                undo={undos}
                 penType={penType}
             />
             <div className='loginButtonC'>
