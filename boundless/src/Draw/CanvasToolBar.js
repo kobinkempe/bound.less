@@ -1,14 +1,12 @@
 import {ClickAwayListener, Fab} from "@material-ui/core";
 import {
-    AllOut,
     BorderColorRounded,
     Close,
     DeleteForever,
-    FormatShapes,
     Height,
     Palette,
     Undo,
-    Work,
+    Apps,
     Gesture,
     DragIndicator, Remove, Extension, RadioButtonUnchecked, CheckBoxOutlineBlank, StarBorder
 } from "@material-ui/icons";
@@ -97,7 +95,7 @@ export default function CanvasToolbar({setToolSelected,
                                 }
                             }}
                             toolNum={0}
-                            icon={(toolDisplay==='open')?<Undo/>:<Work/>}/>
+                            icon={(toolDisplay==='open')?<Undo/>:<Apps/>}/>
                 <ToolButton toolDisplay={toolDisplay}
                             optionDisplay={optionDisplay === 'pen'}
                             onClick={()=>{

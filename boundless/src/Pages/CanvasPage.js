@@ -137,10 +137,10 @@ export const CanvasPage = () => {
             {loggingIn ?
                 <div className='mask2'>
                     <div className='loginBox'>
-                        <GoogleSignIn />
                         <Button onClick={closeButton}>
-                            Close Window
+                            <Close/>
                         </Button>
+                        <GoogleSignIn />
                     </div>
                 </div> :
                 <div/>}

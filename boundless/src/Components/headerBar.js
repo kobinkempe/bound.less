@@ -4,9 +4,10 @@ import {logIn, logOut, selectLoggedIn, selectUsername, selectLoggingIn, startLog
 import {useDispatch, useSelector} from "react-redux";
 import {HashRouter, useHistory} from "react-router-dom";
 import {useState, useEffect} from "react";
-import {Person} from "@material-ui/icons";
+import {Gesture, Person} from "@material-ui/icons";
 import GoogleSignIn from "./GoogleSignIn"
 import firebase from '../Firebase.js';
+import {Close} from "@material-ui/icons";
 
 export default function HeaderBar({profilePage = false}){
     const dispatch = useDispatch();
@@ -77,10 +78,10 @@ export default function HeaderBar({profilePage = false}){
             {loggingIn ?
                 <div className='mask2'>
                     <div className='loginBox'>
-                        <GoogleSignIn />
                         <Button onClick={closeButton}>
-                            Close Window
+                            <Close/>
                         </Button>
+                        <GoogleSignIn />
                     </div>
                 </div> :
                 <div/>}
