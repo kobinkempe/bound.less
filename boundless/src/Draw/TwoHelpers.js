@@ -84,7 +84,16 @@ export const useTwo = () => {
             let str = s.serializeToString(d);
 
             let storageRef = firebase.storage().ref();
+<<<<<<< Updated upstream
             let canvasRef = storageRef.child(userName);
+=======
+
+            //TODO: Test the code below after our demo (3/29)
+            //let canvasRef = storageRef.child(userName+"_1.svg");
+
+
+            let canvasRef = storageRef.child("canvas1.svg");
+>>>>>>> Stashed changes
 
             canvasRef.putString(str).then((snapshot) => {
                 console.log('Uploaded string');
@@ -101,12 +110,14 @@ export const useTwo = () => {
                         break;
                 }
             })
-            console.log('This will run every 10 seconds!');
+            console.log('Image auto-saved on cloud');
         }, 10000);
 
         return () => clearInterval(interval);
     }, [two]);
 
+    //TODO: In this custom hook is where the TwoCanvas could possible be passed
+    // user information into the canvas (i.e. preferences made on profile).
     return [two, setTwo]
 }
 
