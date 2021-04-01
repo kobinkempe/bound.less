@@ -1,7 +1,7 @@
 .App {
 }
 .Welcome-image {
-  background-image: url('../Images/team.jpg');
+  background-image: url('../Images/welcome.jpg');
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-position: center;
