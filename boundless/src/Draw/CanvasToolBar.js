@@ -91,7 +91,6 @@ export default function CanvasToolbar({setToolSelected,
                                     cleanup();
                                     setUndoState();
                                     //setUndoState(true);
-                                    console.log("Button Clicked");
                                 } else {
                                     setToolDisplay('open')
                                 }

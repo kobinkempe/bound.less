@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 
 //I get by with a little help(er) from my friends (me)
 import {fillLine, LINE_RES, makePoint, useNumUndos, useTwo, useUndoQueue} from "./TwoHelpers";
-import {getUndoTop, getUQLength, loadUndo, popUndo} from "../Redux/UndoQueueState";
 import {PEN_TYPES} from "../Pages/CanvasPage";
 import {useEventCallback} from "@material-ui/core";
 
@@ -75,7 +74,6 @@ const TwoCanvas = ({toolInUse,
     const [touchInUse, setTouchInUse] = useState(false);
     const [touchID, setTouchID] = useState(-1);
 
-    const [shouldUndo, setShouldUndo] = useState(true);
 
 
     const isMouseDownOnlyTool = useCallback(()=>{
@@ -194,8 +192,12 @@ const TwoCanvas = ({toolInUse,
     const exitCanvasRoutine = useCallback(()=>{
         setMouse(undefined);
         setTouchInUse(false);
-        pushUndoQueue(PGroup);
+        if(PGroup > 0){
+            pushUndoQueue(PGroup);
+            console.log("Just pushed :"+PGroup+" to UndoQueue");
+        }
         if(PGroup > 1){
+            pushUndoQueue(PGroup);
             console.log("Path pushed to undo queue of path size: "+PGroup);
         }
         //dispatch(loadUndo( PGroup));
@@ -203,7 +205,7 @@ const TwoCanvas = ({toolInUse,
 
 
 
-    }, [PGroup])
+    }, [PGroup, undoQueue])
 
     const startTouch = useCallback((event) => {
         event.preventDefault();
@@ -277,7 +279,7 @@ const TwoCanvas = ({toolInUse,
     const endMouse = useCallback(() => {
         exitCanvasRoutine();
         console.log("EndMouse Called")
-    }, []);
+    }, [exitCanvasRoutine, undoQueue, PGroup]);
 
     //useEffect for startMouse
     useEffect(() => {
@@ -356,11 +358,12 @@ const TwoCanvas = ({toolInUse,
     }
 
     const drawLine = (originalMousePosition,  newMouse) => {
-        if (!svgRef.current) {
+        if (!svgRef.current ) {
             //console.log("drawLine failed")
             //console.log("SVG Status: "+(svgRef.current != null));
             return;
         }
+        console.log("Children before "+penType+": "+(two?two.scene.children.length:0));
         const m1 = makePoint(originalMousePosition);
         const m2 = makePoint(newMouse);
 
@@ -376,10 +379,11 @@ const TwoCanvas = ({toolInUse,
             path.stroke = color;
             path.curved = true;
             path.linewidth = radius;
-        } else if(penType === PEN_TYPES[1]){
-            const sPath = two.makeLine([m1,m2]);
+        } else if(penType === PEN_TYPES[2]){
+            const sPath = two.makeLine([m1, m2], true);
             sPath.fill = color;
             sPath.stroke = color;
+            sPath.curved = false;
             sPath.linewidth = radius;
         }
         if(penType !== PEN_TYPES[2]) {
@@ -390,6 +394,7 @@ const TwoCanvas = ({toolInUse,
 
         two.update();
         setTwo(two);
+        console.log("Children after "+penType+": "+(two?two.scene.children.length:0));
 
     }
 

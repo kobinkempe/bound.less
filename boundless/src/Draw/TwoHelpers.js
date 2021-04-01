@@ -18,7 +18,7 @@ import {selectLoggedIn} from "../Redux/loginState";
 
 
 
-const UNDO_LIMIT = 30;
+const UNDO_LIMIT = 100;
 
 export const useNumUndos = (initialAmount) => {
     const [num, setNum] = useState(initialAmount);
