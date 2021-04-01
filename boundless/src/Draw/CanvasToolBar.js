@@ -1,4 +1,4 @@
-import {ClickAwayListener, Fab} from "@material-ui/core";
+import {ClickAwayListener, Fab, Toolbar} from "@material-ui/core";
 import {
     BorderColorRounded,
     Close,
@@ -8,7 +8,8 @@ import {
     Undo,
     Apps,
     Gesture,
-    DragIndicator, Remove, Extension, RadioButtonUnchecked, CheckBoxOutlineBlank, StarBorder
+    DragIndicator, Remove, Extension, RadioButtonUnchecked, CheckBoxOutlineBlank, StarBorder,
+    TextFields
 } from "@material-ui/icons";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
 import {HexColorPicker} from "react-colorful";
@@ -84,6 +85,7 @@ export default function CanvasToolbar({setToolSelected,
             logoIcon,
             <div className={'toolBarTools'}>
                 <ToolButton toolDisplay={toolDisplay}
+                            //Undo/Apps button
                             onClick={()=>{
                                 if(toolDisplay==='open'){
                                     cleanup();
@@ -97,6 +99,7 @@ export default function CanvasToolbar({setToolSelected,
                             toolNum={0}
                             icon={(toolDisplay==='open')?<Undo/>:<Apps/>}/>
                 <ToolButton toolDisplay={toolDisplay}
+                            //Pen
                             optionDisplay={optionDisplay === 'pen'}
                             onClick={()=>{
                                 setPenType(PEN_TYPES[0]);
@@ -108,6 +111,7 @@ export default function CanvasToolbar({setToolSelected,
                             icon={<Gesture/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
+                            //
                             optionDisplay={optionDisplay === 'pen'}
                             onClick={()=>{
                                 setPenType(PEN_TYPES[1]);
@@ -129,6 +133,7 @@ export default function CanvasToolbar({setToolSelected,
                             option={3}
                             icon={<Remove/>}
                 />
+
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={()=>{
                                 cleanup();
@@ -142,12 +147,24 @@ export default function CanvasToolbar({setToolSelected,
                             icon={<BorderColorRounded/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
+                            onClick={()=>{
+                                cleanup();
+                                if(optionDisplay === 'text'){
+                                    setOptionDisplay('none')
+                                } else {
+                                    setOptionDisplay('text')
+                                }
+                            }}
+                            toolNum={2}
+                            icon={<TextFields/>}
+                />
+                <ToolButton toolDisplay={toolDisplay}
                             optionDisplay={optionDisplay === 'shapes'}
                             onClick={()=>{
                                 setOptionDisplay('none');
                                 setToolSelected('circle');
                             }}
-                            toolNum={2}
+                            toolNum={3}
                             option={1}
                             icon={<RadioButtonUnchecked/>}
                 />
@@ -157,7 +174,7 @@ export default function CanvasToolbar({setToolSelected,
                                 setOptionDisplay('none');
                                 setToolSelected('rectangle');
                             }}
-                            toolNum={2}
+                            toolNum={3}
                             option={2}
                             icon={<CheckBoxOutlineBlank/>}
                 />
@@ -167,7 +184,7 @@ export default function CanvasToolbar({setToolSelected,
                                 setOptionDisplay('none');
                                 setToolSelected('star');
                             }}
-                            toolNum={2}
+                            toolNum={3}
                             option={3}
                             icon={<StarBorder/>}
                 />
@@ -180,7 +197,7 @@ export default function CanvasToolbar({setToolSelected,
                                     setOptionDisplay('shapes');
                                 }
                             }}
-                            toolNum={2}
+                            toolNum={3}
                             icon={<Extension/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
@@ -192,7 +209,7 @@ export default function CanvasToolbar({setToolSelected,
                                     //setToolDisplay('palette');
                                 }
                             }}
-                            toolNum={3}
+                            toolNum={4}
                             icon={<Palette/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
@@ -204,7 +221,7 @@ export default function CanvasToolbar({setToolSelected,
                                     setOpenLineWidth(true);
                                 }
                             }}
-                            toolNum={4}
+                            toolNum={5}
                             icon={<Height/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
@@ -213,14 +230,14 @@ export default function CanvasToolbar({setToolSelected,
                                 setUndoState(false);
                                 setWipe(true);
                             }}
-                            toolNum={5}
+                            toolNum={6}
                             icon={<DeleteForever/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={()=>{
                                 cleanup();
                                 setToolDisplay('closed')}}
-                            toolNum={6}
+                            toolNum={7}
                             icon={<Close/>}
                             small={true}
                 />

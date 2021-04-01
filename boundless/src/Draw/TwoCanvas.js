@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fillLine, LINE_RES, makePoint, useNumUndos, useTwo, useUndoQueue} from "./TwoHelpers";
 import {getUndoTop, getUQLength, loadUndo, popUndo} from "../Redux/UndoQueueState";
 import {PEN_TYPES} from "../Pages/CanvasPage";
+import {useEventCallback} from "@material-ui/core";
 
 
 
@@ -75,6 +76,13 @@ const TwoCanvas = ({toolInUse,
     const [touchID, setTouchID] = useState(-1);
 
     const [shouldUndo, setShouldUndo] = useState(true);
+
+
+    const isMouseDownOnlyTool = useCallback(()=>{
+            return (toolInUse === 'circle' || toolInUse === 'rectangle'|| toolInUse === 'text'|| toolInUse === 'star');
+        },
+        [toolInUse]
+    );
 
 
     /** TOOLS **/
@@ -166,6 +174,7 @@ const TwoCanvas = ({toolInUse,
                 const star = two.makeStar(coord[0], coord[1], radius, radius*2/5, 5);
                 star.fill = color;
                 star.noStroke();
+                star.rotation = Math.PI
                 two.update();
                 setTwo(two);
             }
@@ -206,7 +215,7 @@ const TwoCanvas = ({toolInUse,
             if (coordinates) {
                 setMouse(coordinates);
             }
-        } else if(toolInUse === 'circle' || toolInUse === 'rectangle' || toolInUse === 'star'){
+        } else if(isMouseDownOnlyTool()){
             dropShape(getTouchCoords(event.changedTouches[0]));
         }
     }, [toolInUse, touchInUse, dropShape]);
@@ -250,7 +259,7 @@ const TwoCanvas = ({toolInUse,
             if (toolInUse === 'pen' && coordinates) {
                 setMouse(coordinates);
                 setInUse(true);
-            } else if(toolInUse === 'circle' || toolInUse === 'rectangle' || toolInUse === 'star'){
+            } else if(isMouseDownOnlyTool()){
                 dropShape(getsCoordinates(event));
             }
         }, [toolInUse, dropShape]);
@@ -367,6 +376,11 @@ const TwoCanvas = ({toolInUse,
             path.stroke = color;
             path.curved = true;
             path.linewidth = radius;
+        } else if(penType === PEN_TYPES[1]){
+            const sPath = two.makeLine([m1,m2]);
+            sPath.fill = color;
+            sPath.stroke = color;
+            sPath.linewidth = radius;
         }
         if(penType !== PEN_TYPES[2]) {
             setTwo(fillLine(two, originalMousePosition, newMouse, color, radius/2));
