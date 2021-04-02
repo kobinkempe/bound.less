@@ -35,12 +35,6 @@ export default function CanvasToolbar({setToolSelected,
     const [toolDisplay, setToolDisplay] = useState('closed');
     const [optionDisplay, setOptionDisplay] = useState('none');
 
-    //Palette
-    const [openPalette, setOpenPalette] = useState(false);
-
-    //Height parameter
-    const [openLineWidth, setOpenLineWidth] = useState(false);
-
     const history = useHistory();
 
 
@@ -58,10 +52,16 @@ export default function CanvasToolbar({setToolSelected,
             <LogoSmallIcon/>
         </Fab>;
 
+    let getTransform = (tool=0, option=0) => {
+        let moveX = 65*option;
+        let moveY = 65*tool;
+        return "translate3d(" + moveX + "px," + moveY + "px,0)"
+    }
+
     //The different popups being used in the toolbar
     let colorPicker =
-        <ClickAwayListener onClickAway={()=>{setOpenPalette(false)}}>
-            <div className='colorPickerWrapperC'>
+        <ClickAwayListener onClickAway={()=>{setOptionDisplay('none')}}>
+            <div className='colorPickerWrapperC' style={{transform: getTransform(4, 1)}}>
                 <HexColorPicker className={"small"}
                                 color={selectColor}
                                 onChange={setSelectColor}
@@ -70,15 +70,12 @@ export default function CanvasToolbar({setToolSelected,
         </ClickAwayListener>
 
     let heightSlider =
-        <div className={'hSlider'}>
-            <WidthSlider onClick={setLineWidth} lineWidth={lineWidth}/>
-        </div>
+        <ClickAwayListener onClickAway={()=>{setOptionDisplay('none')}}>
+            <div className={'hSlider'} style={{transform: getTransform(5, 1)}}>
+                <WidthSlider onClick={setLineWidth} lineWidth={lineWidth}/>
+            </div>
+        </ClickAwayListener>
 
-    let getTransform = (tool=0, option=0) => {
-        let moveX = 65*option;
-        let moveY = 65*tool;
-        return "translate3d(" + moveX + "px," + moveY + "px,0)"
-    }
 
     return(
         [
@@ -201,11 +198,10 @@ export default function CanvasToolbar({setToolSelected,
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={()=>{
-                                if(openPalette){
-                                    setOpenPalette(false);
+                                if(optionDisplay === 'palette'){
+                                    setOptionDisplay('none')
                                 } else {
-                                    setOpenPalette(true);
-                                    //setToolDisplay('palette');
+                                    setOptionDisplay('palette')
                                 }
                             }}
                             toolNum={4}
@@ -214,10 +210,10 @@ export default function CanvasToolbar({setToolSelected,
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={() => {
                                 cleanup();
-                                if(openLineWidth) {
-                                    setOpenLineWidth(false);
-                                }else {
-                                    setOpenLineWidth(true);
+                                if(optionDisplay === 'sizePicker'){
+                                    setOptionDisplay('none')
+                                } else {
+                                    setOptionDisplay('sizePicker')
                                 }
                             }}
                             toolNum={5}
@@ -225,7 +221,6 @@ export default function CanvasToolbar({setToolSelected,
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={()=>{
-                                setOpenLineWidth(false);
                                 setUndoState(false);
                                 setWipe(true);
                             }}
@@ -240,8 +235,8 @@ export default function CanvasToolbar({setToolSelected,
                             icon={<Close/>}
                             small={true}
                 />
-                {openPalette? colorPicker:null}
-                {openLineWidth? heightSlider:null}
+                {(optionDisplay === 'palette')? colorPicker:null}
+                {(optionDisplay === 'sizePicker')? heightSlider:null}
             </div>
         ]
     )

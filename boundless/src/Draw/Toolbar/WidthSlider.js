@@ -25,9 +25,9 @@ export default function WidthSlider({onClick, lineWidth}) {
                 <Grid item>
                 </Grid>
                 <Grid item xs>
-                    <Slider style={{'width': 40}}
+                    <Slider style={{'width': 100}}
                             min={5}
-                            max={75}
+                            max={90}
                             value={value}
                             onChange={handleChange}
                             color = 'rgb(0,0,0)'

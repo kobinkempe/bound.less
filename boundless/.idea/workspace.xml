@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="start">
-      <change afterPath="$PROJECT_DIR$/src/Components/SignInBox.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Pages/PrivacyPolicy.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Pages/TermsOfService.js" afterDir="false" />
+    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="Login UI stuff">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/GoogleSignIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/GoogleSignIn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/headerBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/headerBar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stylesheets/headerBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/headerBar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Draw/CanvasToolBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/CanvasToolBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Draw/Toolbar/WidthSlider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/Toolbar/WidthSlider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Stylesheets/CanvasToolBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/CanvasToolBar.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,6 +110,7 @@
       <workItem from="1616183662130" duration="9000" />
       <workItem from="1616183878800" duration="11894000" />
       <workItem from="1616626652515" duration="6076000" />
+      <workItem from="1617338788654" duration="5437000" />
     </task>
     <task id="LOCAL-00001" summary="UI Changes for Profile Page">
       <created>1615577398290</created>
@@ -186,7 +182,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617009965053</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Login UI stuff">
+      <created>1617327444445</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1617327444445</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -214,6 +217,7 @@
     <MESSAGE value="touchscreen" />
     <MESSAGE value="finish touchscreen" />
     <MESSAGE value="start" />
-    <option name="LAST_COMMIT_MESSAGE" value="start" />
+    <MESSAGE value="Login UI stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Login UI stuff" />
   </component>
 </project>

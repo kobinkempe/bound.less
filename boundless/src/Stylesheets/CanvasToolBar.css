@@ -1,13 +1,13 @@
-.small .react-colorful{
-    width: 120px;
-    height: 120px;
+.small{
+    margin-left: 15px;
 }
 
 .colorPickerWrapperC {
-    position: fixed;
+    position: absolute;
     z-index: 1;
-    left: 2vh;
-    bottom: 2vh;
+    left: 0;
+    bottom: 0;
+    transition: opacity 250ms, transform 250ms;
 }
 
 .logoTool {
@@ -18,7 +18,6 @@
 .toolBarTools {
     position: absolute;
     top: 65px;
-
 }
 
 .tool, .tool1, .toolSmall{
@@ -41,10 +40,11 @@
 
 
 .hSlider{
-    position: fixed;
-    z-index: 1;
-    left: 10vh;
-    top: 40vh;
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    transition: opacity 250ms, transform 250ms;
 /*    align-items: center;*/
 }
 
