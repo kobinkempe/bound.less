@@ -2,7 +2,7 @@ import React from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from '../Firebase.js';
 import '../Stylesheets/Home.css';
-import {logIn, logOut, selectLoggedIn, selectUsername} from "../Redux/loginState";
+import {logIn} from "../Redux/loginState";
 import store from '../Redux/store.js';
 
 export default class SignInScreen extends React.Component {
@@ -30,9 +30,9 @@ export default class SignInScreen extends React.Component {
             }
         },
         // Terms of service url.
-        tosUrl: '<your-tos-url>',
+        tosUrl: '#/terms-of-service',
         // Privacy policy url.
-        privacyPolicyUrl: '<your-privacy-policy-url>'
+        privacyPolicyUrl: '#/privacy-policy'
     };
 
     // Listen to the Firebase Auth state and set the local state.

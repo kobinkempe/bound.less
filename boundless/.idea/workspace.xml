@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="start">
-      <change afterPath="$PROJECT_DIR$/src/Images/welcome.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Components/SignInBox.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pages/PrivacyPolicy.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pages/TermsOfService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Stylesheets/Home.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/Home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/GoogleSignIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/GoogleSignIn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/headerBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/headerBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Stylesheets/headerBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/Stylesheets/headerBar.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,8 +20,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -36,11 +42,11 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/Pages/Home.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Pages/Profile.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Pages/CanvasRouter.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Pages/CanvasPage.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/Profile.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/Home.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Images/toolbarIcons/logoSmall.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/CanvasRouter.js" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1oOJxJ7kGVTfjlQvH6pt1lMtcEu" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

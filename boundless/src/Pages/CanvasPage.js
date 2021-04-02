@@ -1,36 +1,14 @@
-import {useHistory, useParams, Link} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import TwoCanvas from "../Draw/TwoCanvas";
-import {HexColorPicker} from "react-colorful";
 import {useDispatch, useSelector} from "react-redux";
-import {changeColorPen, selectRGB} from "../Redux/rSlicePenOptions";
-import {Button, Fab, ClickAwayListener} from "@material-ui/core";
-import styles from "../Stylesheets/CanvasPage.css";
-import "../Stylesheets/CanvasToolBar.css"
-import {logIn, logOut, selectLoggedIn, selectLoggingIn, startLogin, stopLogin} from "../Redux/loginState";
+import {Button, Fab} from "@material-ui/core";
+import "../Stylesheets/CanvasPage.css"
+import {selectLoggedIn, selectLoggingIn} from "../Redux/loginState";
 import {useState} from "react";
-import {
-    AllOut,
-    BorderColorRounded,
-    Close,
-    FormatShapes,
-    Palette,
-    Work,
-    DeleteForever,
-    AccountCircle,
-    Person,
-    Height, Undo,
-} from '@material-ui/icons'
-import Toolbar from "../Draw/CanvasToolBar";
-import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
-import {addCanvas, canAccessCanvas, makeCanvasPrivate, removeCanvas} from "../Firebase";
-import firebase from '../Firebase.js';
-import WidthSlider from "../Draw/Toolbar/WidthSlider";
-import GoogleSignIn from "../Components/GoogleSignIn";
-
-
-
+import {Person} from '@material-ui/icons'
 import CanvasToolbar from "../Draw/CanvasToolBar";
-import {useNumUndos, useUndoCount} from "../Draw/TwoHelpers";
+import {useNumUndos} from "../Draw/TwoHelpers";
+import SignInBox, {pressButton, useLoginState} from "../Components/SignInBox";
 
 // This is an array of constants for the pen type --------------------
 // 0:'freehand', 1:'dotted', 2:"straight"
@@ -44,11 +22,8 @@ export const CanvasPage = () => {
 
     //Login States and Variables
     let loggedIn = useSelector(selectLoggedIn);
-    const [val, setVal] = useState(0);
-    if(firebase.auth().currentUser) { //helps with situation where user is already logged into Google account in browser
-        dispatch(logIn(firebase.auth().currentUser.displayName));
-    }
     let loggingIn = useSelector(selectLoggingIn) && !loggedIn;
+    useLoginState(dispatch);
 
     //Tool States
     const [toolSelected, setToolSelected] = useState('pen');
@@ -59,36 +34,13 @@ export const CanvasPage = () => {
     const [undos, incUndos] = useNumUndos(0);
     const [penType, setPenType] = useState(PEN_TYPES[0])
 
-    let onPressButton;
-    if(loggedIn){
-        onPressButton = ()=>{
-            firebase.auth().signOut().then(() => {
-                dispatch(logOut());
-                loggedIn = false;
-                sessionStorage.removeItem('loggedIn');
-                setVal(val + 1);
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
-    } else {
-        onPressButton = ()=>{
-            dispatch(startLogin());
-        }
-    }
-
-    let closeButton = () => {
-        dispatch(stopLogin());
-        setVal(val + 1);
-    };
-
     let loginButton = () => {
         if(!loggedIn){
             return <Button
                 className={'loginButtonItem'}
                 variant='contained'
                 color='primary'
-                onClick={onPressButton}>
+                onClick={()=>pressButton(dispatch, loggedIn)}>
                 {'Log In/Sign Up'}
             </Button>;
         } else {
@@ -97,7 +49,7 @@ export const CanvasPage = () => {
                     className={'loginButtonItem'}
                     variant='contained'
                     color='primary'
-                    onClick={onPressButton}>
+                    onClick={()=>pressButton(dispatch, loggedIn)}>
                     {'Log Out'}
                 </Button>,
                 <Fab className={'profile'}
@@ -134,16 +86,7 @@ export const CanvasPage = () => {
             <div className='loginButtonC'>
                 {loginButton()}
             </div>
-            {loggingIn ?
-                <div className='mask2'>
-                    <div className='loginBox'>
-                        <Button onClick={closeButton}>
-                            <Close/>
-                        </Button>
-                        <GoogleSignIn />
-                    </div>
-                </div> :
-                <div/>}
+            {loggingIn ? <SignInBox/>:null}
         </div>
     )
 }

@@ -39,8 +39,15 @@
 }
 
 .loginBox {
-    background-color: white;
-    padding: 5%;
+    background-color: #eeeeee;
+    padding: 1vh 0;
+    border-radius: 18px;
+}
+
+.closeRow {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .logo {
