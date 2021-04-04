@@ -1,13 +1,6 @@
-import React from "react";
-import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import Two from "two.js";
-import {current} from "@reduxjs/toolkit";
-import ReactDOM from 'react-dom'
-import {useSelector} from "react-redux";
-import {selectRGB} from "../Redux/rSlicePenOptions";
-import svg from "two.js/src/renderers/svg";
 import firebase from "firebase";
-import {selectLoggedIn} from "../Redux/loginState";
 
 
 /**
@@ -128,9 +121,8 @@ function getRandomColor() {
 export function makePoint(mouse){
 
 
-    const v = new Two.Vector(mouse[0], mouse[1]);
-    v.position = new Two.Vector().copy(v);
-    return v;
+    // v.position = new Two.Vector().copy(v);
+    return new Two.Anchor(mouse[0], mouse[1]);
 
 }
 

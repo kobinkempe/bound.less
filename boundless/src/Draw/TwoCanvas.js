@@ -57,24 +57,22 @@ const TwoCanvas = ({toolInUse,
     const [two, setTwo] = useTwo();
 
     //Keeps track of the # of shapes that need to be removed from two
-    const [PGroup, setPGroup] = useState(0);
+    //const [PGroup, setPGroup] = useState(0);
 
     //Keeps track of the # of undos completed;
-    const [doneUndos, setdoneUndos] = useState(0);
-    const [undoQueue, pushUndoQueue, setUndoQueue] = useUndoQueue();
+    // const [doneUndos, setdoneUndos] = useState(0);
+    // const [undoQueue, pushUndoQueue, setUndoQueue] = useUndoQueue();
 
     //Determines whether TwoCanvas has been appended onto svgRef
     const [isLoaded, setIsLoaded] = useState(false);
 
     //Stores mouse coordinates
-    const [mouse, setMouse] = useState([0,0]);
+    const [penArray, setPenArray] = useState([]);
+    const [path, setPath] = useState(null);
 
     //Boolean for if the mouse is currently down
-    const [inUse, setInUse] = useState(false);
-    const [touchInUse, setTouchInUse] = useState(false);
+    const [penInUse, setPenInUse] = useState(false);
     const [touchID, setTouchID] = useState(-1);
-
-
 
     const isMouseDownOnlyTool = useCallback(()=>{
             return (toolInUse === 'circle' || toolInUse === 'rectangle'|| toolInUse === 'text'|| toolInUse === 'star');
@@ -122,36 +120,39 @@ const TwoCanvas = ({toolInUse,
         }
     }, [two, wipe])
 
+    //Undo Tool
     useEffect(() =>{
         if(!svgRef.current){
             return
         }
 
+        const l = two.scene.children.length;
+        two.remove(two.scene.children[l - 1]);
 
-        if(undo-doneUndos>0){
-
-
-            //This number is the # of paths that need to be stripped to undo this action
-            const lastPath = undoQueue[undoQueue.length-1];
-            undoQueue.pop();
-            setUndoQueue(undoQueue);
-
-            for(let j = 0; j<lastPath; ++j) {
-                const l = two.scene.children.length;
-                two.remove(two.scene.children[l - 1]);
-                console.log("# of TwoSceneChild: " + two.scene.children.length)
-            }
-            console.log("Undo: "+undo+", undoTop: "+lastPath+", Remaining Children: "+two.scene.children.length);
-            setdoneUndos(doneUndos+1)
-            two.update();
-            setTwo(two);
-
-
-        }
-        else if(undo <1){
-            setdoneUndos(0);
-        }
-    }, [undo, doneUndos, undoQueue])
+        // if(undo-doneUndos>0){
+        //
+        //
+        //     //This number is the # of paths that need to be stripped to undo this action
+        //     const lastPath = undoQueue[undoQueue.length-1];
+        //     undoQueue.pop();
+        //     setUndoQueue(undoQueue);
+        //
+        //     for(let j = 0; j<lastPath; ++j) {
+        //         const l = two.scene.children.length;
+        //         two.remove(two.scene.children[l - 1]);
+        //         console.log("# of TwoSceneChild: " + two.scene.children.length)
+        //     }
+        //     console.log("Undo: "+undo+", undoTop: "+lastPath+", Remaining Children: "+two.scene.children.length);
+        //     setdoneUndos(doneUndos+1)
+        //     two.update();
+        //     setTwo(two);
+        //
+        //
+        // }
+        // else if(undo <1){
+        //     setdoneUndos(0);
+        // }
+    }, [/*undo, doneUndos, undoQueue*/])
 
     const dropShape = useCallback((coord) => {
         if (coord) {
@@ -178,108 +179,120 @@ const TwoCanvas = ({toolInUse,
             }
 
 
-            pushUndoQueue(1);
+            //pushUndoQueue(1);
         }
     }, [color, radius, toolInUse, two])
 
-
-    /**
-     * Stuff that's done when the mouse/touch leaves the canvas
-     * Most importantly, the lineGroup needs to be passed to
-     * the undo stack
-     *
-     */
-    const exitCanvasRoutine = useCallback(()=>{
-        setMouse(undefined);
-        setTouchInUse(false);
-        if(PGroup > 0){
-            pushUndoQueue(PGroup);
-            console.log("Just pushed :"+PGroup+" to UndoQueue");
+    const setPenOptions = useCallback((path)=>{
+        path.noFill();
+        path.stroke = color;
+        path.curved = true;
+        path.linewidth = radius;
+        path.cap = 'round';
+        path.join = 'round';
+        switch (penType){
+            case PEN_TYPES[0]:
+                path.opacity = .1;
+                break;
+            case PEN_TYPES[1]:
+                break;
+            default:
+                break;
         }
-        if(PGroup > 1){
-            pushUndoQueue(PGroup);
-            console.log("Path pushed to undo queue of path size: "+PGroup);
+
+    }, [penType, color, radius])
+
+    const start = useCallback((coords, thisTouchID) => {
+        if(toolInUse === 'pen' && !penInUse){
+            const point = makePoint(coords);
+            setPenArray([point]);
+            setTouchID(thisTouchID);
+            setPenInUse(true);
+            const mPath = two.makeCurve([], true);
+            setPenOptions(mPath);
+            setPath(mPath);
+            two.update();
+            setTwo(two);
+        } else if(isMouseDownOnlyTool()){
+            dropShape(coords);
         }
-        //dispatch(loadUndo( PGroup));
-        setPGroup(0);
+    }, [toolInUse, penInUse, dropShape, two, setPenOptions])
 
+    const move = useCallback((coords, thisTouchID) => {
+        if(penInUse && (toolInUse === 'pen') && (thisTouchID === touchID)){
+            if(penType === PEN_TYPES[2]){
+                setPenArray([penArray[0], makePoint(coords)]);
+            } else {
+                setPenArray(penArray.concat(makePoint(coords)));
+            }
+            path.vertices = penArray;
+            two.update();
+            setTwo(two);
+        }
+    }, [toolInUse, touchID, penInUse, penArray, path, two, penType])
 
-
-    }, [PGroup, undoQueue])
+    const end = useCallback((coords, thisTouchID, nextTouch=false, nextTouchID=false) => {
+        if(penInUse && (thisTouchID === touchID)){
+            setPenInUse(false);
+            setPenArray([]);
+            /**
+             * Stuff that's done when the mouse/touch leaves the canvas
+             * Most importantly, the lineGroup needs to be passed to
+             * the undo stack
+             */
+            // if(PGroup > 0){
+            //     pushUndoQueue(PGroup);
+            //     console.log("Just pushed :"+PGroup+" to UndoQueue");
+            // }
+            // if(PGroup > 1){
+            //     pushUndoQueue(PGroup);
+            //     console.log("Path pushed to undo queue of path size: "+PGroup);
+            // }
+            // setPGroup(0);
+            if(nextTouch){
+                start(nextTouch, nextTouchID);
+            }
+        }
+    },[penInUse, touchID, start, move])
 
     const startTouch = useCallback((event) => {
         event.preventDefault();
-        if(toolInUse === 'pen' && !touchInUse){
-            setTouchInUse(true);
-            let thisTouch = event.changedTouches[0];
-            setTouchID(thisTouch.identifier);
-            let coordinates = getTouchCoords(thisTouch);
-            if (coordinates) {
-                setMouse(coordinates);
-            }
-        } else if(isMouseDownOnlyTool()){
-            dropShape(getTouchCoords(event.changedTouches[0]));
-        }
-    }, [toolInUse, touchInUse, dropShape]);
+        let thisTouch = event.changedTouches[0];
+        start(getTouchCoords(thisTouch), thisTouch.identifier);
+    }, [start]);
 
     const moveTouch = useCallback((event) => {
         event.preventDefault();
-        if (touchInUse) {
-            for(let activeTouch of event.changedTouches){
-                if(activeTouch.identifier === touchID){
-                    const newMouse = getTouchCoords(activeTouch);
-                    if (mouse && newMouse && (toolInUse === 'pen')) {
-                        drawLine(mouse, newMouse);
-                        setMouse(newMouse);
-                    }
-                }
-            }
-
+        for(let activeTouch of event.changedTouches){
+            move(getTouchCoords(activeTouch), activeTouch.identifier);
         }
-    }, [touchInUse, touchID, mouse, toolInUse]);
+    }, [move]);
 
     const endTouch = useCallback((event) => {
         event.preventDefault();
-        if(event.targetTouches.length === 0){
-            setMouse(undefined);
-            setTouchInUse(false);
-            exitCanvasRoutine();
-            console.log("ExitCanvas Called");
-        } else {
-            for(let endingTouch of event.changedTouches) {
-                if (endingTouch.identifier === touchID) {
-                    setTouchInUse(true);
-                    setMouse(getTouchCoords(event.targetTouches[0]));
-                    setTouchID(event.targetTouches[0].identifier);
-                }
+        for(let endingTouch of event.changedTouches) {
+            if(event.targetTouches.length !== 0){
+                end(getTouchCoords(endingTouch),
+                    endingTouch.identifier,
+                    getTouchCoords(event.targetTouches[0]),
+                    event.targetTouches[0].identifier);
+            } else {
+                end(getTouchCoords(endingTouch), endingTouch.identifier);
             }
         }
-    }, [toolInUse, touchID, exitCanvasRoutine]);
+    }, [end]);
 
     const startMouse = useCallback((event) => {
-            const coordinates = getsCoordinates(event);
-            if (toolInUse === 'pen' && coordinates) {
-                setMouse(coordinates);
-                setInUse(true);
-            } else if(isMouseDownOnlyTool()){
-                dropShape(getsCoordinates(event));
-            }
-        }, [toolInUse, dropShape]);
+        start(getsCoordinates(event), 'mouse')
+    }, [start]);
 
     const moveMouse = useCallback((event) => {
-        if (inUse) {
-            const newMouse = getsCoordinates(event);
-            if (mouse && newMouse && (toolInUse === 'pen')) {
-                drawLine(mouse, newMouse);
-                setMouse(newMouse);
-            }
-        }
-    },[inUse, mouse, toolInUse]);
+        move(getsCoordinates(event), 'mouse')
+    },[move]);
 
-    const endMouse = useCallback(() => {
-        exitCanvasRoutine();
-        console.log("EndMouse Called")
-    }, [exitCanvasRoutine, undoQueue, PGroup]);
+    const endMouse = useCallback((event) => {
+        end(getsCoordinates(event), 'mouse');
+    }, [end]);
 
     //useEffect for startMouse
     useEffect(() => {
@@ -357,46 +370,46 @@ const TwoCanvas = ({toolInUse,
         return [touch.pageX, touch.pageY]
     }
 
-    const drawLine = (originalMousePosition,  newMouse) => {
-        if (!svgRef.current ) {
-            //console.log("drawLine failed")
-            //console.log("SVG Status: "+(svgRef.current != null));
-            return;
-        }
-        console.log("Children before "+penType+": "+(two?two.scene.children.length:0));
-        const m1 = makePoint(originalMousePosition);
-        const m2 = makePoint(newMouse);
-
-
-
-        //Every new shape's gotta be recorded
-        setPGroup(PGroup+(1+LINE_RES));
-
-
-        if(penType === PEN_TYPES[0]) {
-            const path = two.makeCurve([m1, m2], true);
-            path.fill = color;
-            path.stroke = color;
-            path.curved = true;
-            path.linewidth = radius;
-        } else if(penType === PEN_TYPES[2]){
-            const sPath = two.makeLine([m1, m2], true);
-            sPath.fill = color;
-            sPath.stroke = color;
-            sPath.curved = false;
-            sPath.linewidth = radius;
-        }
-        if(penType !== PEN_TYPES[2]) {
-            setTwo(fillLine(two, originalMousePosition, newMouse, color, radius/2));
-        }
-
-        //document.querySelector('#two-'+path.id);
-
-        two.update();
-        setTwo(two);
-        console.log("Children after "+penType+": "+(two?two.scene.children.length:0));
-
-    }
+    // const drawLine = (originalMousePosition,  newMouse) => {
+    //     if (!svgRef.current ) {
+    //         //console.log("drawLine failed")
+    //         //console.log("SVG Status: "+(svgRef.current != null));
+    //         return;
+    //     }
+    //     console.log("Children before "+penType+": "+(two?two.scene.children.length:0));
+    //     const m1 = makePoint(originalMousePosition);
+    //     const m2 = makePoint(newMouse);
+    //
+    //
+    //
+    //     //Every new shape's gotta be recorded
+    //     setPGroup(PGroup+(1+LINE_RES));
+    //
+    //
+    //     if(penType === PEN_TYPES[0]) {
+    //         const path = two.makeCurve([m1, m2], true);
+    //         path.fill = color;
+    //         path.stroke = color;
+    //         path.curved = true;
+    //         path.linewidth = radius;
+    //     } else if(penType === PEN_TYPES[2]){
+    //         const sPath = two.makeLine([m1, m2], true);
+    //         sPath.fill = color;
+    //         sPath.stroke = color;
+    //         sPath.curved = false;
+    //         sPath.linewidth = radius;
+    //     }
+    //     if(penType !== PEN_TYPES[2]) {
+    //         setTwo(fillLine(two, originalMousePosition, newMouse, color, radius/2));
+    //     }
+    //
+    //     //document.querySelector('#two-'+path.id);
+    //
+    //     two.update();
+    //     setTwo(two);
+    //     console.log("Children after "+penType+": "+(two?two.scene.children.length:0));
+    //
+    // }
 
     return (
         <div style={{overflow :"hidden" , height:'100vh', width:'100vw'}} >
