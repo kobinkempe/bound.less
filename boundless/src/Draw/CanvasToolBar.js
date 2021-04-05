@@ -8,7 +8,7 @@ import {
     Undo,
     Apps,
     Gesture,
-    DragIndicator, Remove, Extension, RadioButtonUnchecked, CheckBoxOutlineBlank, StarBorder,
+    Create, Remove, Extension, RadioButtonUnchecked, CheckBoxOutlineBlank, StarBorder,
     TextFields
 } from "@material-ui/icons";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
@@ -109,7 +109,7 @@ export default function CanvasToolbar({setToolSelected,
                             }}
                             toolNum={2}
                             option={1}
-                            icon={<Gesture/>}
+                            icon={<BorderColorRounded/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             //
@@ -121,7 +121,7 @@ export default function CanvasToolbar({setToolSelected,
                             }}
                             toolNum={2}
                             option={2}
-                            icon={<DragIndicator/>}
+                            icon={<Create/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             optionDisplay={optionDisplay === 'pen'}
@@ -145,7 +145,7 @@ export default function CanvasToolbar({setToolSelected,
                                 }
                             }}
                             toolNum={2}
-                            icon={<BorderColorRounded/>}
+                            icon={<Gesture/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={()=>{
