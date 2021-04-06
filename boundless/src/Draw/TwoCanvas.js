@@ -177,11 +177,22 @@ const TwoCanvas = ({toolInUse,
                 two.update();
                 setTwo(two);
             } else if (toolInUse === 'text'){
-                const text = two.makeText("Poop!", coord[0], coord[1]);
-                text.size = 14;
+
+                // User clicks, types something, hits enter, and it shows up
+                const text = two.makeText("Text", coord[0], coord[1]);
+                text.size = 16;
+
+                two.renderer.domElement.addEventListener('keyup', function(e) {
+                    var c = String.fromCharCode(e.which);
+                    if (e.keyCode === 46) { // keyCode for delete
+                        text.value = text.value.slice(0, text.value.length - 1);
+                    } else {
+                        text.value += c;
+                    }
+                }, false);
+
                 two.update();
                 setTwo(two);
-                console.log("text added");
             }
 
             //pushUndoQueue(1);
