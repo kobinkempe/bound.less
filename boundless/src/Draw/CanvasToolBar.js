@@ -35,13 +35,6 @@ export default function CanvasToolbar({setToolSelected,
 
     const history = useHistory();
 
-
-    let cleanup = () => {
-        setWipe(false);
-        //setUndoState(false);
-
-    }
-
     let logoIcon =
         <Fab className={'logoTool'}
              onClick={()=>{
@@ -80,10 +73,9 @@ export default function CanvasToolbar({setToolSelected,
             logoIcon,
             <div className={'toolBarTools'}>
                 <ToolButton toolDisplay={toolDisplay}
-                            //Undo/Apps button
+                            //Close/Apps button
                             onClick={()=>{
                                 if(toolDisplay==='open'){
-                                    cleanup();
                                     setToolDisplay('closed')
                                 } else {
                                     setToolDisplay('open')
@@ -92,9 +84,9 @@ export default function CanvasToolbar({setToolSelected,
                             toolNum={0}
                             icon={(toolDisplay==='open')?<Close/>:<Apps/>}/>
                 <ToolButton toolDisplay={toolDisplay}
+                            //Undo
                             onClick={()=>{
-                                cleanup();
-                                setUndoState();
+                                setUndoState(true);
                             }}
                             toolNum={1}
                             icon={<Undo/>}
@@ -137,7 +129,6 @@ export default function CanvasToolbar({setToolSelected,
 
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={()=>{
-                                cleanup();
                                 if(optionDisplay === 'pen'){
                                     setOptionDisplay('none');
                                 } else {
@@ -188,7 +179,6 @@ export default function CanvasToolbar({setToolSelected,
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={()=>{
-                                cleanup();
                                 if(optionDisplay === 'shapes'){
                                     setOptionDisplay('none');
                                 } else {
@@ -211,7 +201,6 @@ export default function CanvasToolbar({setToolSelected,
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={() => {
-                                cleanup();
                                 if(optionDisplay === 'sizePicker'){
                                     setOptionDisplay('none')
                                 } else {
@@ -223,7 +212,6 @@ export default function CanvasToolbar({setToolSelected,
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={()=>{
-                                setUndoState(false);
                                 setWipe(true);
                             }}
                             toolNum={7}

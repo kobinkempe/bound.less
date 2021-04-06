@@ -12,10 +12,12 @@ import {useEventCallback} from "@material-ui/core";
 //
 const TwoCanvas = ({toolInUse,
                        wipe=false,
+                       setWipe,
                        radius,
                        color,
                        undo,
-                       penType="freehand",
+                       setUndo,
+                       penType=PEN_TYPES[0],
                    }) => {
 
 
@@ -117,6 +119,7 @@ const TwoCanvas = ({toolInUse,
             two.clear();
             two.update();
             setTwo(two);
+            setWipe(false);
         }
     }, [two, wipe])
 
@@ -126,8 +129,13 @@ const TwoCanvas = ({toolInUse,
             return
         }
 
-        const l = two.scene.children.length;
-        two.remove(two.scene.children[l - 1]);
+        if(undo){
+            const l = two.scene.children.length;
+            two.remove(two.scene.children[l - 1]);
+            two.update();
+            setTwo(two);
+            setUndo(false);
+        }
 
         // if(undo-doneUndos>0){
         //
@@ -152,7 +160,7 @@ const TwoCanvas = ({toolInUse,
         // else if(undo <1){
         //     setdoneUndos(0);
         // }
-    }, [/*undo, doneUndos, undoQueue*/])
+    }, [undo])
 
     const dropShape = useCallback((coord) => {
         if (coord) {
