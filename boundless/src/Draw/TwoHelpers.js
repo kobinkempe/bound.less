@@ -63,6 +63,7 @@ export const useTwo = () => {
 
     if(firebase.auth().currentUser) {
         userName = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + CANV_NAME + ".svg";
+        addCanvas("canvas_" + CANV_NAME, firebase.auth().currentUser.displayName);
     } else {
         userName = "/public/" + "canvas_" + CANV_NAME + ".svg";
     }
@@ -100,10 +101,6 @@ export const useTwo = () => {
 
         return () => clearInterval(interval);
     }, [two]);
-
-    // /*if(firebase.auth().currentUser) {
-    //     addCanvas("canvas_" + CANV_NAME, firebase.auth.currentUser.displayName);
-    // }*/
 
     //TODO: In this custom hook is where the TwoCanvas could possible be passed
     // user information into the canvas (i.e. preferences made on profile).
