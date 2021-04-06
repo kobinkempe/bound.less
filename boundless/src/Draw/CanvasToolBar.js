@@ -148,13 +148,10 @@ export default function CanvasToolbar({setToolSelected,
                             icon={<Gesture/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
-                            onClick={()=>{
-                                cleanup();
-                                if(optionDisplay === 'text'){
-                                    setOptionDisplay('none')
-                                } else {
-                                    setOptionDisplay('text')
-                                }
+                            optionDisplay={optionDisplay=== 'text'}
+                            onClick={()=> {
+                                setOptionDisplay('none');
+                                setToolSelected('text');
                             }}
                             toolNum={3}
                             icon={<TextFields/>}

@@ -4,6 +4,9 @@
     <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="start">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Draw/CanvasToolBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/CanvasToolBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Draw/TwoHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/TwoHelpers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Firebase.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +111,7 @@
       <workItem from="1616183662130" duration="9000" />
       <workItem from="1616183878800" duration="11894000" />
       <workItem from="1616626652515" duration="6076000" />
-      <workItem from="1617554796403" duration="2894000" />
+      <workItem from="1617554796403" duration="10595000" />
     </task>
     <task id="LOCAL-00001" summary="UI Changes for Profile Page">
       <created>1615577398290</created>

@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from "react";
 import Two from "two.js";
 import firebase from "firebase";
-
+import {addCanvas} from "../Firebase";
 
 /**
  *
  * @param params
  */
-
-
-
 
 const UNDO_LIMIT = 100;
 
@@ -103,6 +100,10 @@ export const useTwo = () => {
 
         return () => clearInterval(interval);
     }, [two]);
+
+    // /*if(firebase.auth().currentUser) {
+    //     addCanvas("canvas_" + CANV_NAME, firebase.auth.currentUser.displayName);
+    // }*/
 
     //TODO: In this custom hook is where the TwoCanvas could possible be passed
     // user information into the canvas (i.e. preferences made on profile).

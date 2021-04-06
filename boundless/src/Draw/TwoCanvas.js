@@ -176,8 +176,13 @@ const TwoCanvas = ({toolInUse,
                 star.rotation = Math.PI
                 two.update();
                 setTwo(two);
+            } else if (toolInUse === 'text'){
+                const text = two.makeText("Poop!", coord[0], coord[1]);
+                text.size = 14;
+                two.update();
+                setTwo(two);
+                console.log("text added");
             }
-
 
             //pushUndoQueue(1);
         }
