@@ -279,6 +279,12 @@ const TwoCanvas = ({toolInUse,
         }
     },[penInUse, touchID, start, move])
 
+    const enterMouse = useCallback((event) => {
+        if(event.which === 0){
+            end(getsCoordinates(event), 'mouse')
+        }
+    }, [start])
+
     const startTouch = useCallback((event) => {
         event.preventDefault();
         let thisTouch = event.changedTouches[0];
@@ -363,13 +369,15 @@ const TwoCanvas = ({toolInUse,
         const canvas = two.renderer.domElement;
 
         canvas.addEventListener('mouseup', endMouse);
-        canvas.addEventListener('mouseleave', endMouse);
+        //canvas.addEventListener('mouseleave', endMouse);
+        canvas.addEventListener('mouseenter', enterMouse);
 
         canvas.addEventListener('touchend', endTouch);
         return () => {
             canvas.removeEventListener('touchend', endTouch);
-            canvas.removeEventListener('mouseleave', endMouse);
+            //canvas.removeEventListener('mouseleave', endMouse);
             canvas.removeEventListener('mouseup', endMouse);
+            canvas.removeEventListener('mouseenter', enterMouse);
         };
     }, [endTouch, touchID, endMouse, two, toolInUse]);
 
