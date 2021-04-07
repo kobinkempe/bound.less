@@ -9,7 +9,7 @@ import {
     Apps,
     Gesture,
     Create, Remove, Extension, RadioButtonUnchecked, CheckBoxOutlineBlank, StarBorder,
-    TextFields
+    TextFields, Redo
 } from "@material-ui/icons";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
 import {HexColorPicker} from "react-colorful";
@@ -26,7 +26,7 @@ export default function CanvasToolbar({setToolSelected,
                                       setWipe,
                                       lineWidth,
                                       setLineWidth,
-                                      setUndoState,
+                                      setUndo, setRedo,
                                       penType,
                                       setPenType}){
     //Toolbar States
@@ -52,7 +52,7 @@ export default function CanvasToolbar({setToolSelected,
     //The different popups being used in the toolbar
     let colorPicker =
         <ClickAwayListener onClickAway={()=>{setOptionDisplay('none')}}>
-            <div className='colorPickerWrapperC' style={{transform: getTransform(5, 1)}}>
+            <div className='colorPickerWrapperC' style={{transform: getTransform(6, 1)}}>
                 <HexColorPicker className={"small"}
                                 color={selectColor}
                                 onChange={setSelectColor}
@@ -62,7 +62,7 @@ export default function CanvasToolbar({setToolSelected,
 
     let heightSlider =
         <ClickAwayListener onClickAway={()=>{setOptionDisplay('none')}}>
-            <div className={'hSlider'} style={{transform: getTransform(6, 1)}}>
+            <div className={'hSlider'} style={{transform: getTransform(7, 1)}}>
                 <WidthSlider onClick={setLineWidth} lineWidth={lineWidth}/>
             </div>
         </ClickAwayListener>
@@ -86,10 +86,18 @@ export default function CanvasToolbar({setToolSelected,
                 <ToolButton toolDisplay={toolDisplay}
                             //Undo
                             onClick={()=>{
-                                setUndoState(true);
+                                setUndo(true);
                             }}
                             toolNum={1}
                             icon={<Undo/>}
+                />
+                <ToolButton toolDisplay={toolDisplay}
+                            //Redo
+                            onClick={()=>{
+                                setRedo(true);
+                            }}
+                            toolNum={2}
+                            icon={<Redo/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             //Pen
@@ -99,7 +107,7 @@ export default function CanvasToolbar({setToolSelected,
                                 setOptionDisplay('none');
                                 setToolSelected('pen');
                             }}
-                            toolNum={2}
+                            toolNum={3}
                             option={1}
                             icon={<BorderColorRounded/>}
                 />
@@ -111,7 +119,7 @@ export default function CanvasToolbar({setToolSelected,
                                 setOptionDisplay('none');
                                 setToolSelected('pen');
                             }}
-                            toolNum={2}
+                            toolNum={3}
                             option={2}
                             icon={<Create/>}
                 />
@@ -122,7 +130,7 @@ export default function CanvasToolbar({setToolSelected,
                                 setOptionDisplay('none');
                                 setToolSelected('pen');
                             }}
-                            toolNum={2}
+                            toolNum={3}
                             option={3}
                             icon={<Remove/>}
                 />
@@ -135,7 +143,7 @@ export default function CanvasToolbar({setToolSelected,
                                     setOptionDisplay('pen');
                                 }
                             }}
-                            toolNum={2}
+                            toolNum={3}
                             icon={<Gesture/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
@@ -144,7 +152,7 @@ export default function CanvasToolbar({setToolSelected,
                                 setOptionDisplay('none');
                                 setToolSelected('text');
                             }}
-                            toolNum={3}
+                            toolNum={4}
                             icon={<TextFields/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
@@ -153,7 +161,7 @@ export default function CanvasToolbar({setToolSelected,
                                 setOptionDisplay('none');
                                 setToolSelected('circle');
                             }}
-                            toolNum={4}
+                            toolNum={5}
                             option={1}
                             icon={<RadioButtonUnchecked/>}
                 />
@@ -163,7 +171,7 @@ export default function CanvasToolbar({setToolSelected,
                                 setOptionDisplay('none');
                                 setToolSelected('rectangle');
                             }}
-                            toolNum={4}
+                            toolNum={5}
                             option={2}
                             icon={<CheckBoxOutlineBlank/>}
                 />
@@ -173,7 +181,7 @@ export default function CanvasToolbar({setToolSelected,
                                 setOptionDisplay('none');
                                 setToolSelected('star');
                             }}
-                            toolNum={4}
+                            toolNum={5}
                             option={3}
                             icon={<StarBorder/>}
                 />
@@ -185,7 +193,7 @@ export default function CanvasToolbar({setToolSelected,
                                     setOptionDisplay('shapes');
                                 }
                             }}
-                            toolNum={4}
+                            toolNum={5}
                             icon={<Extension/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
@@ -196,7 +204,7 @@ export default function CanvasToolbar({setToolSelected,
                                     setOptionDisplay('palette')
                                 }
                             }}
-                            toolNum={5}
+                            toolNum={6}
                             icon={<Palette/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
@@ -207,14 +215,14 @@ export default function CanvasToolbar({setToolSelected,
                                     setOptionDisplay('sizePicker')
                                 }
                             }}
-                            toolNum={6}
+                            toolNum={7}
                             icon={<Height/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             onClick={()=>{
                                 setWipe(true);
                             }}
-                            toolNum={7}
+                            toolNum={8}
                             icon={<DeleteForever/>}
                 />
                 {(optionDisplay === 'palette')? colorPicker:null}
