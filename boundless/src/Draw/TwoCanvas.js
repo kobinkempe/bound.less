@@ -254,7 +254,7 @@ const TwoCanvas = ({toolInUse,
 
                 // User clicks, types something, hits enter, and it shows up
                 const text = two.makeText("Text", coord[0], coord[1]);
-                text.size = 16;
+                text.size = radius * 2;
 
                 two.renderer.domElement.addEventListener('keyup', function(e) {
                     var c = String.fromCharCode(e.which);
