@@ -85,6 +85,7 @@ const TwoCanvas = ({toolInUse,
 
     //ZUI checker
     const [zui, setZUI] = useState(null);
+    const [isZui, setIsZui] = useState(false);
 
 
     const isMouseDownOnlyTool = useCallback(()=>{
@@ -122,12 +123,13 @@ const TwoCanvas = ({toolInUse,
 
     //Load ZUI
     useEffect(() => {
-        if(!svgRef.current || !two){
+        if(!svgRef.current || !two || isZui){
             return;
         }
         console.log("Loaded ZUI");
-        setZUI(new ZUI(two.scene).addLimits(.06,8));
-    }, [])
+        setZUI(new ZUI(two.scene, two.renderer.domElement).addLimits(.06,8));
+        setIsZui(true);
+    }, [two])
 
     //Wipe Tool
     useEffect(()=>{
@@ -244,9 +246,11 @@ const TwoCanvas = ({toolInUse,
     //ZUI
     const zoomCallback = useCallback( (event) => {
         event.preventDefault();
+        let sidePiece = new ZUI(two.scene, two.renderer.domElement).addLimits(.06,8);
         const dy = (event.deltaY)/1000;
-        zui.zoomBy(dy, event.pageX, event.pageY)
-    },[zui])
+        sidePiece.zoomBy(dy, event.pageX, event.pageY);
+        setZUI(sidePiece);
+    },[zui,isZui])
 
 
 
