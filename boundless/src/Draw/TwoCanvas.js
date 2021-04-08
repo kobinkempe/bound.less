@@ -17,10 +17,10 @@ const TwoCanvas = ({toolInUse,
                        color,
                        undo,
                        setUndo,
+                       redo,
+                       setRedo,
                        penType=PEN_TYPES[0],
                    }) => {
-
-
 
     /** Currently supported Tools:
      *  Pen
@@ -76,6 +76,13 @@ const TwoCanvas = ({toolInUse,
     const [penInUse, setPenInUse] = useState(false);
     const [touchID, setTouchID] = useState(-1);
 
+    //Undo storage when Clear is used
+    const [undidTwoStack, setUndidTwoStack] = useState([]);
+
+    //Redo Queue
+    const [redoStack, setRedoStack] = useState([]);
+    const [lastItem, setLastItem] = useState(0);
+
     const isMouseDownOnlyTool = useCallback(()=>{
             return (toolInUse === 'circle' || toolInUse === 'rectangle'|| toolInUse === 'text'|| toolInUse === 'star');
         },
@@ -116,12 +123,32 @@ const TwoCanvas = ({toolInUse,
         }
 
         if(wipe){
-            two.clear();
-            two.update();
-            setTwo(two);
+            let items = [];
+            // I really don't know about this here. I might be copying pointers to things that are soon to be
+            // potentially deleted, idk how javascript works
+            for(let item of two.scene.children){
+                items.push(item);
+            }
+            if(items !== []){
+                setUndidTwoStack([items].concat(undidTwoStack));
+                two.clear();
+                two.update();
+                setTwo(two);
+            }
             setWipe(false);
         }
-    }, [two, wipe])
+    }, [two, wipe, undidTwoStack])
+
+    const checkRedoStack = useCallback(()=>{
+        if(lastItem === two.scene.children[-1]){
+            return true;
+        } else if(lastItem === undidTwoStack.length){
+            return true;
+        } else {
+            setRedoStack([-1]);
+        }
+
+    }, [two, lastItem, undidTwoStack])
 
     //Undo Tool
     useEffect(() =>{
@@ -130,10 +157,24 @@ const TwoCanvas = ({toolInUse,
         }
 
         if(undo){
+            checkRedoStack();
             const l = two.scene.children.length;
-            two.remove(two.scene.children[l - 1]);
+            if(l === 0 && undidTwoStack !== []){
+                two.add(undidTwoStack[0]);
+                setUndidTwoStack(undidTwoStack.slice(1));
+                setRedoStack(['clear'].concat(redoStack));
+            } else {
+                let removeItem = two.scene.children[l - 1];
+                setRedoStack([removeItem].concat(redoStack));
+                two.remove(two.scene.children[l - 1]);
+            }
             two.update();
             setTwo(two);
+            if(two.scene.children.length === 0){
+                setLastItem(undidTwoStack.length);
+            } else {
+                setLastItem(two.scene.children[-1]);
+            }
             setUndo(false);
         }
 
@@ -160,7 +201,32 @@ const TwoCanvas = ({toolInUse,
         // else if(undo <1){
         //     setdoneUndos(0);
         // }
-    }, [undo])
+    }, [undo, undidTwoStack, redoStack, checkRedoStack])
+
+    //Redo Tool
+    useEffect(() =>{
+        if(!svgRef.current){
+            return
+        }
+
+        if(redo){
+            checkRedoStack();
+            let item = redoStack[0];
+            if(item !== -1){
+                if(item === 'clear'){
+                    setWipe(true);
+                    setLastItem(undidTwoStack.length + 1);
+                } else {
+                    two.add(item);
+                    setLastItem(item);
+                }
+                setRedoStack(redoStack.slice(1));
+                two.update();
+                setTwo(two);
+            }
+            setRedo(false);
+        }
+    }, [redo, redoStack, checkRedoStack])
 
     const dropShape = useCallback((coord) => {
         if (coord) {

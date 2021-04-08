@@ -32,6 +32,7 @@ export const CanvasPage = () => {
     const [wipe, setWipe] = useState(false);
     const [lineWidth, setLineWidth] = useState(5);
     const [undoState, setUndoState] = useState(false);
+    const [redo, setRedo] = useState(false);
     //const [undos, incUndos] = useNumUndos(0);
     const [penType, setPenType] = useState(PEN_TYPES[0])
 
@@ -71,7 +72,8 @@ export const CanvasPage = () => {
                                lineWidth={lineWidth}
                                setToolSelected={setToolSelected}
                                setSelectColor={setSelectColor}
-                               setUndoState={setUndoState}
+                               setUndo={setUndoState}
+                               setRedo={setRedo}
                                setWipe={setWipe}
                                penType={penType}
                                setPenType={setPenType}/>
@@ -85,6 +87,8 @@ export const CanvasPage = () => {
                 penType={penType}
                 setWipe={setWipe}
                 setUndo={setUndoState}
+                redo={redo}
+                setRedo={setRedo}
             />
             <div className='loginButtonC'>
                 {loginButton()}
