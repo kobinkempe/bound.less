@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import Two from "two.js";
+import ZUI from "two.js/extras/zui.js"
 import {useDispatch, useSelector} from "react-redux";
 
 //I get by with a little help(er) from my friends (me)
@@ -66,7 +67,6 @@ const TwoCanvas = ({toolInUse,
     // const [undoQueue, pushUndoQueue, setUndoQueue] = useUndoQueue();
 
     //Determines whether TwoCanvas has been appended onto svgRef
-    const [isLoaded, setIsLoaded] = useState(false);
 
     //Stores mouse coordinates
     const [penArray, setPenArray] = useState([]);
@@ -82,6 +82,10 @@ const TwoCanvas = ({toolInUse,
     //Redo Queue
     const [redoStack, setRedoStack] = useState([]);
     const [lastItem, setLastItem] = useState(0);
+
+    //ZUI checker
+    const [zui, setZUI] = useState(null);
+
 
     const isMouseDownOnlyTool = useCallback(()=>{
             return (toolInUse === 'circle' || toolInUse === 'rectangle'|| toolInUse === 'text'|| toolInUse === 'star');
@@ -107,14 +111,23 @@ const TwoCanvas = ({toolInUse,
 
     //Appends twoCanvas and approves loading
     useEffect(() => {
-        if (!svgRef.current || isLoaded) {
+        if (!svgRef.current) {
             return;
         }
         console.log(("Loaded Two"));
         setTwo(two.appendTo(svgRef.current));
 
-        setIsLoaded(true);
     }, []);
+
+
+    //Load ZUI
+    useEffect(() => {
+        if(!svgRef.current || !two){
+            return;
+        }
+        console.log("Loaded ZUI");
+        setZUI(new ZUI(two.scene).addLimits(.06,8));
+    }, [])
 
     //Wipe Tool
     useEffect(()=>{
@@ -227,6 +240,34 @@ const TwoCanvas = ({toolInUse,
             setRedo(false);
         }
     }, [redo, redoStack, checkRedoStack])
+
+    //ZUI
+    const zoomCallback = useCallback( (event) => {
+        event.preventDefault();
+        const dy = (event.deltaY)/1000;
+        zui.zoomBy(dy, event.pageX, event.pageY)
+    },[zui])
+
+
+
+
+    /** ZOOM STUFF **/
+    //useEffect for startMouse
+    useEffect(() => {
+        if (!svgRef.current) {
+            //console.log("SVG Status: "+(svgRef.current != null));
+            //console.log("two load status: "+isLoaded);
+            return;
+        }
+        const canvas = two.renderer.domElement;
+
+        canvas.addEventListener('wheel', zoomCallback);
+        return () => {
+            canvas.removeEventListener('wheel', zoomCallback);
+        };
+    }, [two, toolInUse]);
+
+
 
     const dropShape = useCallback((coord) => {
         if (coord) {
@@ -518,33 +559,4 @@ const TwoCanvas = ({toolInUse,
 }
 export default TwoCanvas;
 
-// //Currently not being used, but ***VERY*** fun
-// function getRandomColor() {
-//     return 'rgb('
-//         + Math.floor(Math.random() * 255) + ','
-//         + Math.floor(Math.random() * 255) + ','
-//         + Math.floor(Math.random() * 255) + ')';
-// }
 
-// const mouseUpCallback = useCallback( (event) => {
-//
-//
-//     //NOTE: In current implementation, it is the tool callback switches (mouseUpCallback,
-//     // mouseDownCallback, etc) that exit out of other tools, not the actual toolbar.
-//     mouseEnd()
-//     switch(toolInUse){
-//         case "pen":
-//             //mouseEnd();
-//             break;
-//         //Note: if stickers ever get online, this is where they should be thrown into
-//         // the callback functions
-//         case "circle":
-//             setInUse(true)
-//             dropShape(event);
-//             break;
-//         case "rectangle":
-//             setInUse(true)
-//             dropShape(event);
-//             break;
-//     }
-// }, [inUse, toolInUse]);
