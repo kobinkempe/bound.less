@@ -247,7 +247,7 @@ const TwoCanvas = ({toolInUse,
     const zoomCallback = useCallback( (event) => {
         event.preventDefault();
         let sidePiece = new ZUI(two.scene, two.renderer.domElement).addLimits(.06,8);
-        const dy = (event.deltaY)/1000;
+        const dy = -(event.deltaY)/1000;
         sidePiece.zoomBy(dy, event.pageX, event.pageY);
         setZUI(sidePiece);
     },[zui,isZui])
