@@ -8,7 +8,25 @@ import {fillLine, LINE_RES, makePoint, useNumUndos, useTwo, useUndoQueue} from "
 import {PEN_TYPES} from "../Pages/CanvasPage";
 import {useEventCallback} from "@material-ui/core";
 
+//TODO: Zoom needs to be implemented by ourselves via transform on the actual two.scene element
+// - New state needs to be made in order to keep track of the inverse matrix, which needs to be applied
+//      whenever a new path is being made
 
+/** TwoCanvas NOTES
+ *
+ * @param toolInUse
+ * @param wipe
+ * @param setWipe
+ * @param radius
+ * @param color
+ * @param undo
+ * @param setUndo
+ * @param redo
+ * @param setRedo
+ * @param penType
+ * @returns {JSX.Element}
+ * @constructor
+ */
 
 //
 const TwoCanvas = ({toolInUse,
