@@ -16,8 +16,11 @@ function App() {
       <Router>
         <div>
           <Switch>
-            <Route path="/canvas">
-              <CanvasRouter />
+            <Route path="/canvas/new">
+              <CanvasRouter isNew={true}/>
+            </Route>
+            <Route path="/canvas/:canvasId">
+              <CanvasRouter isNew={false}/>
             </Route>
             <Route path='/profile'>
               <ProfileRouter />

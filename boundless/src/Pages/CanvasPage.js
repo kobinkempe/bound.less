@@ -16,8 +16,7 @@ import SignInBox, {pressButton, useLoginState} from "../Components/SignInBox";
 export const PEN_TYPES = ['freehand', 'dotted', "straight"]
 
 
-export const CanvasPage = () => {
-    let {canvasID} = useParams();
+export const CanvasPage = ({id}) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
