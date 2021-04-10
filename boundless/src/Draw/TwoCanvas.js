@@ -86,6 +86,12 @@ const TwoCanvas = ({toolInUse,
     //ZUI checker
     const [zui, setZUI] = useState(null);
 
+    const [group, setGroup] = useState(null);
+    const [scale, setScale] = useState(1);
+    const [translate, setTranslate] = useState([0,0]);
+    const inverseScale = 1/scale;
+    const inverseTranslate = [0-translate[0], 0-translate[1]];
+
 
     const isMouseDownOnlyTool = useCallback(()=>{
             return (toolInUse === 'circle' || toolInUse === 'rectangle'|| toolInUse === 'text'|| toolInUse === 'star');
@@ -120,14 +126,14 @@ const TwoCanvas = ({toolInUse,
     }, []);
 
 
-    //Load ZUI
-    useEffect(() => {
-        if(!svgRef.current || !two){
-            return;
-        }
-        console.log("Loaded ZUI");
-        setZUI(new ZUI(two.scene).addLimits(.06,8));
-    }, [])
+    // //Load ZUI
+    // useEffect(() => {
+    //     if(!svgRef.current || !two){
+    //         return;
+    //     }
+    //     console.log("Loaded ZUI");
+    //     setZUI(new ZUI(two.scene).addLimits(.06,8));
+    // }, [])
 
     //Wipe Tool
     useEffect(()=>{
@@ -241,18 +247,37 @@ const TwoCanvas = ({toolInUse,
         }
     }, [redo, redoStack, checkRedoStack])
 
-    //ZUI
     const zoomCallback = useCallback( (event) => {
         event.preventDefault();
-        const dy = (event.deltaY)/1000;
-        zui.zoomBy(dy, event.pageX, event.pageY)
-    },[zui])
+        const dy = (-event.deltaY)/1000;
+        zoomItem(group, [event.pageX, event.pageY], dy, true)
+    },[group])
 
+    const zoomItem = (item, [x,y], amount, setPageZoom=false) => {
+        let realAmount = Math.pow(2, amount);
+        let realX = (x - item.translation.x)*(1 - realAmount) + item.translation.x;
+        let realY = (y - item.translation.y)*(1 - realAmount) + item.translation.y;
+        realAmount = item.scale * realAmount;
+        item.scale = realAmount;
+        item.translation.x = realX;
+        item.translation.y = realY;
+        console.log(realAmount);
+        if(setPageZoom){
+            setScale(realAmount);
+            setTranslate([realX, realY]);
+        }
+        two.update();
+        setTwo(two);
+    }
 
-
+    const addInverseZoom = (item) => {
+        item.scale = inverseScale;
+        item.translation.x = (inverseTranslate[0] * inverseScale);
+        item.translation.y = (inverseTranslate[1] * inverseScale);
+    }
 
     /** ZOOM STUFF **/
-    //useEffect for startMouse
+    //useEffect for scrollMouse
     useEffect(() => {
         if (!svgRef.current) {
             //console.log("SVG Status: "+(svgRef.current != null));
@@ -265,7 +290,7 @@ const TwoCanvas = ({toolInUse,
         return () => {
             canvas.removeEventListener('wheel', zoomCallback);
         };
-    }, [two, toolInUse]);
+    }, [two, toolInUse, zoomCallback]);
 
 
 
@@ -275,22 +300,19 @@ const TwoCanvas = ({toolInUse,
                 const circ = two.makeCircle(coord[0], coord[1], radius / 2);
                 circ.fill = color;
                 circ.noStroke();
-                two.update();
-                setTwo(two);
+                return circ;
             } else if (toolInUse === 'rectangle') {
                 const rect = two.makeRectangle(coord[0], coord[1], radius, radius);
                 rect.fill = color;
                 rect.noStroke();
-                two.update();
-                setTwo(two);
+                return rect;
                 //dispatch(loadUndo( 1))
             } else if (toolInUse === 'star'){
                 const star = two.makeStar(coord[0], coord[1], radius, radius*2/5, 5);
                 star.fill = color;
                 star.noStroke();
-                star.rotation = Math.PI
-                two.update();
-                setTwo(two);
+                star.rotation = Math.PI;
+                return star;
             } else if (toolInUse === 'text'){
 
                 // User clicks, types something, hits enter, and it shows up
@@ -298,21 +320,19 @@ const TwoCanvas = ({toolInUse,
                 text.size = radius * 2;
 
                 two.renderer.domElement.addEventListener('keyup', function(e) {
-                    var c = String.fromCharCode(e.which);
+                    let c = String.fromCharCode(e.which);
                     if (e.keyCode === 46) { // keyCode for delete
                         text.value = text.value.slice(0, text.value.length - 1);
                     } else {
                         text.value += c;
                     }
                 }, false);
-
-                two.update();
-                setTwo(two);
+                return text;
             }
 
             //pushUndoQueue(1);
         }
-    }, [color, radius, toolInUse, two])
+    }, [color, radius, toolInUse, two, group])
 
     const setPenOptions = useCallback((path)=>{
         path.noFill();
@@ -334,6 +354,11 @@ const TwoCanvas = ({toolInUse,
     }, [penType, color, radius])
 
     const start = useCallback((coords, thisTouchID) => {
+        let mGroup = group;
+        if(group === null){
+            mGroup = two.makeGroup();
+            setGroup(mGroup);
+        }
         if(toolInUse === 'pen' && !penInUse){
             const point = makePoint(coords);
             setPenArray([point]);
@@ -342,12 +367,16 @@ const TwoCanvas = ({toolInUse,
             const mPath = two.makeCurve([], true);
             setPenOptions(mPath);
             setPath(mPath);
+            mGroup.add(mPath);
+            addInverseZoom(mPath);
             two.update();
             setTwo(two);
         } else if(isMouseDownOnlyTool()){
-            dropShape(coords);
+            mGroup.add(dropShape(coords));
+            two.update();
+            setTwo(two);
         }
-    }, [toolInUse, penInUse, dropShape, two, setPenOptions])
+    }, [toolInUse, penInUse, dropShape, two, setPenOptions, group, addInverseZoom])
 
     const move = useCallback((coords, thisTouchID) => {
         if(penInUse && (toolInUse === 'pen') && (thisTouchID === touchID)){

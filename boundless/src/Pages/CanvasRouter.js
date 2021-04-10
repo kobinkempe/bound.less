@@ -24,7 +24,7 @@ export const CanvasRouter = ({isNew}) => {
             <Switch>
                 <Route path={`/canvas/:canvasID`}>
                     {hasPermission?
-                        <CanvasPage id={firebase.auth().currentUser.displayName + "/" + id}/>:
+                        <CanvasPage/>:
                         <RequestAccess/>}
                 </Route>
                 <Route exact path={path}>
