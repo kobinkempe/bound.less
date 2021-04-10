@@ -372,7 +372,9 @@ const TwoCanvas = ({toolInUse,
             two.update();
             setTwo(two);
         } else if(isMouseDownOnlyTool()){
-            mGroup.add(dropShape(coords));
+            let shape = two.makeGroup(dropShape(coords));
+            mGroup.add(shape);
+            addInverseZoom(shape);
             two.update();
             setTwo(two);
         }
