@@ -34,7 +34,7 @@ export const CanvasPage = () => {
     const [undoState, setUndoState] = useState(false);
     const [redo, setRedo] = useState(false);
     //const [undos, incUndos] = useNumUndos(0);
-    const [penType, setPenType] = useState(PEN_TYPES[0])
+    const [penType, setPenType] = useState(PEN_TYPES[1])
 
     let loginButton = () => {
         if(!loggedIn){
