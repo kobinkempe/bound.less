@@ -8,25 +8,8 @@ import {fillLine, LINE_RES, makePoint, useNumUndos, useTwo, useUndoQueue} from "
 import {PEN_TYPES} from "../Pages/CanvasPage";
 import {useEventCallback} from "@material-ui/core";
 
-//TODO: Zoom needs to be implemented by ourselves via transform on the actual two.scene element
-// - New state needs to be made in order to keep track of the inverse matrix, which needs to be applied
-//      whenever a new path is being made
-
-/** TwoCanvas NOTES
- *
- * @param toolInUse
- * @param wipe
- * @param setWipe
- * @param radius
- * @param color
- * @param undo
- * @param setUndo
- * @param redo
- * @param setRedo
- * @param penType
- * @returns {JSX.Element}
- * @constructor
- */
+const NEW_GROUP_SCALE_THRESHOLD = 10;
+const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
 
 //
 const TwoCanvas = ({toolInUse,
@@ -38,7 +21,7 @@ const TwoCanvas = ({toolInUse,
                        setUndo,
                        redo,
                        setRedo,
-                       penType=PEN_TYPES[0],
+                       penType=PEN_TYPES[1],
                    }) => {
 
     /** Currently supported Tools:
@@ -103,8 +86,11 @@ const TwoCanvas = ({toolInUse,
 
     //ZUI checker
     const [zui, setZUI] = useState(null);
-    const [isZui, setIsZui] = useState(false);
 
+    const [curIndex, setCurIndex] = useState(-2);
+    const [group, setGroup] = useState([null]);
+    const [scale, setScale] = useState([1]);
+    const [translate, setTranslate] = useState([[0,0]]);
 
     const isMouseDownOnlyTool = useCallback(()=>{
             return (toolInUse === 'circle' || toolInUse === 'rectangle'|| toolInUse === 'text'|| toolInUse === 'star');
@@ -139,15 +125,14 @@ const TwoCanvas = ({toolInUse,
     }, []);
 
 
-    //Load ZUI
-    useEffect(() => {
-        if(!svgRef.current || !two || isZui){
-            return;
-        }
-        console.log("Loaded ZUI");
-        setZUI(new ZUI(two.scene, two.renderer.domElement).addLimits(.06,8));
-        setIsZui(true);
-    }, [two])
+    // //Load ZUI
+    // useEffect(() => {
+    //     if(!svgRef.current || !two){
+    //         return;
+    //     }
+    //     console.log("Loaded ZUI");
+    //     setZUI(new ZUI(two.scene).addLimits(.06,8));
+    // }, [])
 
     //Wipe Tool
     useEffect(()=>{
@@ -261,35 +246,82 @@ const TwoCanvas = ({toolInUse,
         }
     }, [redo, redoStack, checkRedoStack])
 
-    //ZUI
+    const checkScale = (scale) => {
+        return scale >= (1/NEW_GROUP_SCALE_THRESHOLD) &&
+            scale <= NEW_GROUP_SCALE_THRESHOLD
+    }
+
+    const checkTranslate = ([x, y]) => {
+        return Math.abs(x) <= NEW_GROUP_TRANSLATE_THRESHOLD &&
+            Math.abs(y) <= NEW_GROUP_TRANSLATE_THRESHOLD
+    }
+
+    const findGroup = useCallback(() => {
+        for(let i = 0; i < group.length; i++){
+            if(checkScale(scale[i]) && checkTranslate(translate[i])){
+                return i;
+            }
+        }
+        return -1;
+    }, [scale, translate])
+
+    const makeGroup = useCallback(() => {
+        let newGroup = two.makeGroup();
+        setGroup(group.concat(newGroup));
+        let factor = Math.round(Math.log2(scale[0])/(2*Math.log2(NEW_GROUP_SCALE_THRESHOLD)));
+        let newScale = scale[0]/Math.pow(NEW_GROUP_SCALE_THRESHOLD, 2*factor);
+        setScale(scale.concat(newScale));
+        factor = Math.round(translate[0][0]/(2*NEW_GROUP_TRANSLATE_THRESHOLD));
+        let newX = translate[0][0]-(2*factor*NEW_GROUP_TRANSLATE_THRESHOLD);
+        factor = Math.round(translate[0][1]/(2*NEW_GROUP_TRANSLATE_THRESHOLD));
+        let newY = translate[0][1]-(2*factor*NEW_GROUP_TRANSLATE_THRESHOLD);
+        setTranslate(translate.concat([[newX, newY]]));
+        newGroup.scale = newScale;
+        newGroup.translation.x = newX;
+        newGroup.translation.y = newY;
+        return [newGroup, newScale, [newX, newY]];
+    }, [group, scale, translate])
+
+    const zoomGroup = (index, [x,y], amount) => {
+        let realAmount = Math.pow(2, amount);
+        let realX = (x - group[index].translation.x)*(1 - realAmount) + group[index].translation.x;
+        let realY = (y - group[index].translation.y)*(1 - realAmount) + group[index].translation.y;
+        realAmount = group[index].scale * realAmount;
+        group[index].scale = realAmount;
+        group[index].translation.x = realX;
+        group[index].translation.y = realY;
+        let scales = scale;
+        scales[index] = realAmount;
+        setScale(scales);
+        let translates = translate;
+        translate[index] = [realX, realY];
+        setTranslate(translates);
+        if(index === curIndex){
+            if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
+                setCurIndex(-1);
+            }
+        }
+    }
+
     const zoomCallback = useCallback( (event) => {
         event.preventDefault();
-        let sidePiece = new ZUI(two.scene, two.renderer.domElement).addLimits(.06,8);
-        const dy = -(event.deltaY)/1000;
-        sidePiece.zoomBy(dy, event.pageX, event.pageY);
-        setZUI(sidePiece);
-    },[zui,isZui])
-
-
-
-
-    /** ZOOM STUFF **/
-    //useEffect for startMouse
-    useEffect(() => {
-        if (!svgRef.current) {
-            //console.log("SVG Status: "+(svgRef.current != null));
-            //console.log("two load status: "+isLoaded);
-            return;
+        const dy = (-event.deltaY)/1000;
+        for(let index = 0; index < group.length; index++){
+            if(group[index] != null){
+                zoomGroup(index, [event.pageX, event.pageY], dy)
+            }
         }
-        const canvas = two.renderer.domElement;
+        two.update();
+        setTwo(two);
+    },[group, zoomGroup, two])
 
-        canvas.addEventListener('wheel', zoomCallback);
-        return () => {
-            canvas.removeEventListener('wheel', zoomCallback);
-        };
-    }, [two, toolInUse]);
-
-
+    const addInverseZoom = (item, scale, translate) => {
+        let inverseScale = 1/scale;
+        let inverseTranslate = [0-translate[0], 0-translate[1]];
+        item.scale = inverseScale;
+        item.translation.x = (inverseTranslate[0] * inverseScale);
+        item.translation.y = (inverseTranslate[1] * inverseScale);
+    }
 
     const dropShape = useCallback((coord) => {
         if (coord) {
@@ -297,22 +329,19 @@ const TwoCanvas = ({toolInUse,
                 const circ = two.makeCircle(coord[0], coord[1], radius / 2);
                 circ.fill = color;
                 circ.noStroke();
-                two.update();
-                setTwo(two);
+                return circ;
             } else if (toolInUse === 'rectangle') {
                 const rect = two.makeRectangle(coord[0], coord[1], radius, radius);
                 rect.fill = color;
                 rect.noStroke();
-                two.update();
-                setTwo(two);
+                return rect;
                 //dispatch(loadUndo( 1))
             } else if (toolInUse === 'star'){
                 const star = two.makeStar(coord[0], coord[1], radius, radius*2/5, 5);
                 star.fill = color;
                 star.noStroke();
-                star.rotation = Math.PI
-                two.update();
-                setTwo(two);
+                star.rotation = Math.PI;
+                return star;
             } else if (toolInUse === 'text'){
 
                 // User clicks, types something, hits enter, and it shows up
@@ -320,21 +349,19 @@ const TwoCanvas = ({toolInUse,
                 text.size = radius * 2;
 
                 two.renderer.domElement.addEventListener('keyup', function(e) {
-                    var c = String.fromCharCode(e.which);
+                    let c = String.fromCharCode(e.which);
                     if (e.keyCode === 46) { // keyCode for delete
                         text.value = text.value.slice(0, text.value.length - 1);
                     } else {
                         text.value += c;
                     }
                 }, false);
-
-                two.update();
-                setTwo(two);
+                return text;
             }
 
             //pushUndoQueue(1);
         }
-    }, [color, radius, toolInUse, two])
+    }, [color, radius, toolInUse, two, group])
 
     const setPenOptions = useCallback((path)=>{
         path.noFill();
@@ -356,6 +383,28 @@ const TwoCanvas = ({toolInUse,
     }, [penType, color, radius])
 
     const start = useCallback((coords, thisTouchID) => {
+        let index = curIndex;
+        let mGroup, mScale, mTranslate;
+
+        // if we are in an existing group
+        if(index === -1) {
+            index = findGroup();
+        }
+        mGroup = group[index];
+        mScale = scale[index];
+        mTranslate = translate[index];
+
+        // These are for creating a new group; -2 is for the first group
+        if(index === -1){
+            [mGroup, mScale, mTranslate] = makeGroup();
+            index = group.length;
+        } else if(index === -2){
+            mGroup = two.makeGroup();
+            setGroup([mGroup]);
+            index = 0;
+        }
+        setCurIndex(index);
+
         if(toolInUse === 'pen' && !penInUse){
             const point = makePoint(coords);
             setPenArray([point]);
@@ -364,12 +413,18 @@ const TwoCanvas = ({toolInUse,
             const mPath = two.makeCurve([], true);
             setPenOptions(mPath);
             setPath(mPath);
+            mGroup.add(mPath);
+            addInverseZoom(mPath, mScale, mTranslate);
             two.update();
             setTwo(two);
         } else if(isMouseDownOnlyTool()){
-            dropShape(coords);
+            let shape = two.makeGroup(dropShape(coords));
+            mGroup.add(shape);
+            addInverseZoom(shape, mScale, mTranslate);
+            two.update();
+            setTwo(two);
         }
-    }, [toolInUse, penInUse, dropShape, two, setPenOptions])
+    }, [toolInUse, penInUse, dropShape, two, setPenOptions, group, curIndex, makeGroup, findGroup])
 
     const move = useCallback((coords, thisTouchID) => {
         if(penInUse && (toolInUse === 'pen') && (thisTouchID === touchID)){
@@ -509,6 +564,21 @@ const TwoCanvas = ({toolInUse,
             canvas.removeEventListener('mouseenter', enterMouse);
         };
     }, [endTouch, touchID, endMouse, two, toolInUse]);
+
+    //useEffect for scrollMouse
+    useEffect(() => {
+        if (!svgRef.current) {
+            //console.log("SVG Status: "+(svgRef.current != null));
+            //console.log("two load status: "+isLoaded);
+            return;
+        }
+        const canvas = two.renderer.domElement;
+
+        canvas.addEventListener('wheel', zoomCallback);
+        return () => {
+            canvas.removeEventListener('wheel', zoomCallback);
+        };
+    }, [two, toolInUse, zoomCallback]);
 
     //Gets the coordinates of the mouse event
     const getsCoordinates = (event) => {

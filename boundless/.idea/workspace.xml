@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="start">
+    <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="fixed shapes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,7 +22,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="canvasPage" />
+        <entry key="$PROJECT_DIR$/.." value="undoStuff" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -34,11 +36,11 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/Images/toolbarIcons/logoSmall.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Pages/Home.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/CanvasPage.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Pages/Profile.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Pages/CanvasRouter.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Pages/CanvasPage.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Images/toolbarIcons/logoSmall.js" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1oOJxJ7kGVTfjlQvH6pt1lMtcEu" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -51,6 +53,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Images" />
     <property name="list.type.of.created.stylesheet" value="SCSS" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -108,7 +111,8 @@
       <workItem from="1616183878800" duration="11894000" />
       <workItem from="1616626652515" duration="6076000" />
       <workItem from="1617554796403" duration="17194000" />
-      <workItem from="1617776556933" duration="1349000" />
+      <workItem from="1617776556933" duration="34018000" />
+      <workItem from="1618106853433" duration="14240000" />
     </task>
     <task id="LOCAL-00001" summary="UI Changes for Profile Page">
       <created>1615577398290</created>
@@ -187,7 +191,35 @@
       <option name="project" value="LOCAL" />
       <updated>1617736813068</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Changed mouseleave/enter behavior">
+      <created>1617778104981</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1617778104981</updated>
+    </task>
+    <task id="LOCAL-00013" summary="undo/redo with small bugs">
+      <created>1617787031225</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1617787031225</updated>
+    </task>
+    <task id="LOCAL-00014" summary="zoom to 250,000,000,000x">
+      <created>1618028319715</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1618028319715</updated>
+    </task>
+    <task id="LOCAL-00015" summary="fixed shapes">
+      <created>1618032363601</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1618032363601</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -216,6 +248,10 @@
     <MESSAGE value="finish touchscreen" />
     <MESSAGE value="start" />
     <MESSAGE value="Fixed Undo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed Undo" />
+    <MESSAGE value="Changed mouseleave/enter behavior" />
+    <MESSAGE value="undo/redo with small bugs" />
+    <MESSAGE value="zoom to 250,000,000,000x" />
+    <MESSAGE value="fixed shapes" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed shapes" />
   </component>
 </project>
