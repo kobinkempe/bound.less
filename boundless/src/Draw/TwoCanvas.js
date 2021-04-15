@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fillLine, LINE_RES, makePoint, useNumUndos, useTwo, useUndoQueue} from "./TwoHelpers";
 import {PEN_TYPES} from "../Pages/CanvasPage";
 import {useEventCallback} from "@material-ui/core";
+import {kobinGroup} from "./KobinGroup";
 
 const NEW_GROUP_SCALE_THRESHOLD = 10;
 const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
@@ -135,24 +136,38 @@ const TwoCanvas = ({toolInUse,
     // }, [])
 
     //Wipe Tool
+    // useEffect(()=>{
+    //     if(!svgRef.current){
+    //         return
+    //     }
+    //
+    //     if(wipe){
+    //         let items = [];
+    //         // I really don't know about this here. I might be copying pointers to things that are soon to be
+    //         // potentially deleted, idk how javascript works
+    //         for(let item of two.scene.children){
+    //             items.push(item);
+    //         }
+    //         if(items !== []){
+    //             setUndidTwoStack([items].concat(undidTwoStack));
+    //             two.clear();
+    //             two.update();
+    //             setTwo(two);
+    //         }
+    //         setWipe(false);
+    //     }
+    // }, [two, wipe, undidTwoStack])
+
+    // Example KobinGroup Use
     useEffect(()=>{
         if(!svgRef.current){
             return
         }
 
         if(wipe){
-            let items = [];
-            // I really don't know about this here. I might be copying pointers to things that are soon to be
-            // potentially deleted, idk how javascript works
-            for(let item of two.scene.children){
-                items.push(item);
-            }
-            if(items !== []){
-                setUndidTwoStack([items].concat(undidTwoStack));
-                two.clear();
-                two.update();
-                setTwo(two);
-            }
+            let newItems = kobinGroup(group[0], two.width, two.height)
+            group[0].remove(group[0].children);
+            group[0].add(newItems);
             setWipe(false);
         }
     }, [two, wipe, undidTwoStack])
