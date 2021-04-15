@@ -12,6 +12,7 @@ import {kobinGroup} from "./KobinGroup";
 const NEW_GROUP_SCALE_THRESHOLD = 10;
 const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
 
+
 //
 const TwoCanvas = ({toolInUse,
                        wipe=false,
@@ -90,6 +91,9 @@ const TwoCanvas = ({toolInUse,
 
     const [curIndex, setCurIndex] = useState(-2);
     const [group, setGroup] = useState([null]);
+    const [staleGroup, setStaleGroup] = useState([null]);
+
+
     const [scale, setScale] = useState([1]);
     const [translate, setTranslate] = useState([[0,0]]);
 

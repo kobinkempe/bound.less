@@ -22,7 +22,18 @@ export const overlaps = (rect1, rect2, distance = 0) => {
 //
 // Returns a kobinized set of paths that look the same as the given zoomed in group when the kobinized items are zoomed
 // to a scale of .1 with no translation or rotation.
+
+/**
+ *
+ * @param group - Group of paths that need to be kobinized
+ * @param width - width of the boundingRect of the new kCut
+ * @param height -
+ * @param startX - top-left coordinate
+ * @param startY -
+ * @returns {[Two.Ellipse, Two.Ellipse]}
+ */
 export const kobinGroup = (group, width, height, startX=0, startY = 0) => {
+<<<<<<< Updated upstream
     let windowRectangle = {
         top: startY,
         left: startX,
@@ -40,3 +51,10 @@ export const kobinGroup = (group, width, height, startX=0, startY = 0) => {
     }
     return retArray;
 }
+=======
+    return [new Two.Ellipse(50, 50, 20, 20), new Two.Ellipse(150, 150, 25, 25)];
+}
+
+//Creates parts of paths -NR
+
+>>>>>>> Stashed changes
