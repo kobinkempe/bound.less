@@ -270,6 +270,8 @@ const TwoCanvas = ({toolInUse,
             scale <= NEW_GROUP_SCALE_THRESHOLD
     }
 
+    const checkStale = (
+
     const checkTranslate = ([x, y]) => {
         return Math.abs(x) <= NEW_GROUP_TRANSLATE_THRESHOLD &&
             Math.abs(y) <= NEW_GROUP_TRANSLATE_THRESHOLD
@@ -315,6 +317,7 @@ const TwoCanvas = ({toolInUse,
         let translates = translate;
         translate[index] = [realX, realY];
         setTranslate(translates);
+
         if(index === curIndex){
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
                 setCurIndex(-1);

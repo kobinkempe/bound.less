@@ -33,7 +33,6 @@ export const overlaps = (rect1, rect2, distance = 0) => {
  * @returns {[Two.Ellipse, Two.Ellipse]}
  */
 export const kobinGroup = (group, width, height, startX=0, startY = 0) => {
-<<<<<<< Updated upstream
     let windowRectangle = {
         top: startY,
         left: startX,
@@ -51,10 +50,7 @@ export const kobinGroup = (group, width, height, startX=0, startY = 0) => {
     }
     return retArray;
 }
-=======
-    return [new Two.Ellipse(50, 50, 20, 20), new Two.Ellipse(150, 150, 25, 25)];
-}
+
 
 //Creates parts of paths -NR
 
->>>>>>> Stashed changes
