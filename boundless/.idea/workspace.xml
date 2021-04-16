@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="fixed shapes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +70,7 @@
       <recent name="C:\Users\anuja\Git Projects\software-engineering-project-bound.less\boundless\src\Images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\anuja\Git Projects\software-engineering-project-bound.less\boundless\public" />
       <recent name="C:\Users\anuja\Git Projects\software-engineering-project-bound.less\boundless\src\Images" />
       <recent name="C:\Users\anuja\Git Projects\software-engineering-project-bound.less\boundless\src" />
     </key>
@@ -112,7 +113,7 @@
       <workItem from="1617554796403" duration="17194000" />
       <workItem from="1617776556933" duration="34018000" />
       <workItem from="1618106853433" duration="14240000" />
-      <workItem from="1618588462444" duration="902000" />
+      <workItem from="1618588462444" duration="1608000" />
     </task>
     <task id="LOCAL-00001" summary="UI Changes for Profile Page">
       <created>1615577398290</created>
