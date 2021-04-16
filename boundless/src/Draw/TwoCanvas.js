@@ -174,7 +174,7 @@ const TwoCanvas = ({toolInUse,
             group[0].add(newItems);
             setWipe(false);
         }
-    }, [two, wipe, undidTwoStack])
+    }, [two, wipe, undidTwoStack, kobinGroup])
 
     const checkRedoStack = useCallback(()=>{
         if(lastItem === two.scene.children[-1]){
@@ -449,6 +449,8 @@ const TwoCanvas = ({toolInUse,
             mGroup = two.makeGroup();
             setGroup([mGroup]);
             index = 0;
+            mScale = scale[index];
+            mTranslate = translate[index];
         }
         setCurIndex(index);
 
