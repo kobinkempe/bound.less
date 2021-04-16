@@ -22,6 +22,8 @@ const TwoCanvas = ({toolInUse,
                        redo,
                        setRedo,
                        penType=PEN_TYPES[1],
+                       canvasID,
+                       isNew
                    }) => {
 
     /** Currently supported Tools:
@@ -57,8 +59,10 @@ const TwoCanvas = ({toolInUse,
 
     const dispatch = useDispatch();
 
+    console.log("Twocanvas: " + canvasID + " ," + isNew);
+
     //Creates the 'two' object w/o mounting it to the actual DOM
-    const [two, setTwo] = useTwo();
+    const [two, setTwo] = useTwo({canvasID, isNew});
 
     //Keeps track of the # of shapes that need to be removed from two
     //const [PGroup, setPGroup] = useState(0);

@@ -16,8 +16,10 @@ import SignInBox, {pressButton, useLoginState} from "../Components/SignInBox";
 export const PEN_TYPES = ['freehand', 'dotted', "straight"]
 
 
-export const CanvasPage = () => {
+export const CanvasPage = ({isNew}) => {
     const {canvasID} = useParams();
+    console.log("CanvasPage: " + canvasID + ", " + isNew);
+
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -89,6 +91,8 @@ export const CanvasPage = () => {
                 setUndo={setUndoState}
                 redo={redo}
                 setRedo={setRedo}
+                canvasID={canvasID}
+                isNew={isNew}
             />
             <div className='loginButtonC'>
                 {loginButton()}
