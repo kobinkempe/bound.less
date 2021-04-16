@@ -406,6 +406,8 @@ const TwoCanvas = ({toolInUse,
             mGroup = two.makeGroup();
             setGroup([mGroup]);
             index = 0;
+            mScale = scale[index];
+            mTranslate = translate[index];
         }
         setCurIndex(index);
 
