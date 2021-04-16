@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="fixed shapes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/CanvasPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,11 +35,11 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/Images/toolbarIcons/logoSmall.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Pages/Home.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/Pages/CanvasPage.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Pages/Profile.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/Pages/CanvasRouter.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Images/toolbarIcons/logoSmall.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/Pages/CanvasPage.js" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1oOJxJ7kGVTfjlQvH6pt1lMtcEu" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -63,7 +62,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="ts.external.directory.path" value="C:\Users\kobin\Documents\Vanderbilt\Senior year\Software Engineering Project\bound.less\software-engineering-project-bound.less\boundless\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="C:\Users\anuja\Git Projects\software-engineering-project-bound.less\boundless\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -113,6 +112,7 @@
       <workItem from="1617554796403" duration="17194000" />
       <workItem from="1617776556933" duration="34018000" />
       <workItem from="1618106853433" duration="14240000" />
+      <workItem from="1618588462444" duration="902000" />
     </task>
     <task id="LOCAL-00001" summary="UI Changes for Profile Page">
       <created>1615577398290</created>
