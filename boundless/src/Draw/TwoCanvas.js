@@ -1,16 +1,16 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import Two from "two.js";
-import ZUI from "two.js/extras/zui.js"
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
-//I get by with a little help(er) from my friends (me)
-import {fillLine, LINE_RES, makePoint, useNumUndos, useTwo, useUndoQueue} from "./TwoHelpers";
+//I get by with a little help(er) from my friends
+import {makePoint, useTwo} from "./TwoHelpers";
 import {PEN_TYPES} from "../Pages/CanvasPage";
-import {useEventCallback} from "@material-ui/core";
-import {kobinGroup} from "./KobinGroup";
+import {kobinGroup, overlaps} from "./KobinGroup";
+import {printRect} from "./logHelpers";
 
 const NEW_GROUP_SCALE_THRESHOLD = 10;
 const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
+
+const ZGROUP_OVERLAP = 10;
 
 
 //
@@ -270,7 +270,29 @@ const TwoCanvas = ({toolInUse,
             scale <= NEW_GROUP_SCALE_THRESHOLD
     }
 
-    const checkStale = (
+    const checkStale = useCallback((gIndex) =>{
+        const r = group[gIndex].getBoundingClientRect();
+        let twoV = {left: 0, right: two.width, bottom:0, top:two.height};
+
+        //Things not in the screen need to derender
+        if(!overlaps(twoV, r, ZGROUP_OVERLAP)){
+            console.log("Group #"+gIndex+" just went stale. BRect: "+printRect(r));
+            const gDom = document.getElementById(group[gIndex].id);
+            staleGroup[gIndex].dom = new XMLSerializer().serializeToString(gDom);
+            staleGroup[gIndex].translate.x = group[gIndex].translate.x;
+            staleGroup[gIndex].translate.y = group[gIndex].translate.y;
+            staleGroup[gIndex].scale = group[gIndex].scale;
+            group[gIndex].remove(group[gIndex].children);
+            console.log("Emptied Group #"+gIndex+" to "+group[gIndex].children.length+" children");
+
+
+            //Things now in the screen should render
+        }else if(group[gIndex].children.length === 0){
+            group[gIndex].dom = document.insertNode(staleGroup[gIndex].dom);
+
+        }
+
+    }                                       ,[two, group, staleGroup])
 
     const checkTranslate = ([x, y]) => {
         return Math.abs(x) <= NEW_GROUP_TRANSLATE_THRESHOLD &&
@@ -317,6 +339,9 @@ const TwoCanvas = ({toolInUse,
         let translates = translate;
         translate[index] = [realX, realY];
         setTranslate(translates);
+        if(checkStale(index)){
+
+        }
 
         if(index === curIndex){
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
