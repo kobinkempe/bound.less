@@ -286,7 +286,7 @@ const TwoCanvas = ({toolInUse,
             console.log("Group #"+gIndex+" just went stale. BRect: "+printRect(r));
             const gDom = document.getElementById(group[gIndex].id);
 
-            var zipObj;
+            var zipObj = {};
 
 
 
@@ -312,6 +312,7 @@ const TwoCanvas = ({toolInUse,
             //Things overlapping in the screen should render
         }else if(group[gIndex].children.length === 0){
             two.interpret(JSON.parse(staleGroup[gIndex].dom), true, true);
+            staleGroup[gIndex].dom = '';
         }
 
     }                                       ,[two, group, staleGroup])
