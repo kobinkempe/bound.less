@@ -285,12 +285,28 @@ const TwoCanvas = ({toolInUse,
         if(!overlaps(twoV, r, ZGROUP_OVERLAP)){
             console.log("Group #"+gIndex+" just went stale. BRect: "+printRect(r));
             const gDom = document.getElementById(group[gIndex].id);
-            staleGroup[gIndex].dom = JSON.stringify({html: gDom.innerHTML});
-            staleGroup[gIndex].translate.x = group[gIndex].translate.x;
-            staleGroup[gIndex].translate.y = group[gIndex].translate.y;
-            staleGroup[gIndex].scale = group[gIndex].scale;
+
+            var zipObj;
+
+
+
+            zipObj.dom = JSON.stringify({html: gDom.innerHTML});
+            zipObj.translate.x = group[gIndex].translate.x;
+            zipObj.translate.y = group[gIndex].translate.y;
+            zipObj.scale = group[gIndex].scale;
+
+            if(gIndex >= staleGroup.length){
+                staleGroup.push(zipObj)
+            } else {
+                staleGroup[gIndex] = zipObj;
+            }
+
+
             group[gIndex].remove(group[gIndex].children);
+            two.remove(group[gIndex].children);
             console.log("Emptied Group #"+gIndex+" to "+group[gIndex].children.length+" children");
+            setStaleGroup(staleGroup);
+            two.update();
 
 
             //Things overlapping in the screen should render
@@ -345,12 +361,10 @@ const TwoCanvas = ({toolInUse,
         let translates = translate;
         translate[index] = [realX, realY];
         setTranslate(translates);
-        if(checkStale(index)){
-
-        }
 
         if(index === curIndex){
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
+                checkStale(index);
                 setCurIndex(-1);
             }
         }
