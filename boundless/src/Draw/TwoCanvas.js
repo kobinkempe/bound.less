@@ -6,7 +6,6 @@ import {makePoint, useTwo} from "./TwoHelpers";
 import {PEN_TYPES} from "../Pages/CanvasPage";
 import {kobinGroup, overlaps} from "./KobinGroup";
 import {printRect} from "./logHelpers";
-import {$} from jQuery;
 
 const NEW_GROUP_SCALE_THRESHOLD = 10;
 const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
@@ -286,7 +285,7 @@ const TwoCanvas = ({toolInUse,
         if(!overlaps(twoV, r, ZGROUP_OVERLAP)){
             console.log("Group #"+gIndex+" just went stale. BRect: "+printRect(r));
             const gDom = document.getElementById(group[gIndex].id);
-            staleGroup[gIndex].dom = gDom.innerHTML;
+            staleGroup[gIndex].dom = JSON.stringify({html: gDom.innerHTML});
             staleGroup[gIndex].translate.x = group[gIndex].translate.x;
             staleGroup[gIndex].translate.y = group[gIndex].translate.y;
             staleGroup[gIndex].scale = group[gIndex].scale;
@@ -294,10 +293,9 @@ const TwoCanvas = ({toolInUse,
             console.log("Emptied Group #"+gIndex+" to "+group[gIndex].children.length+" children");
 
 
-            //Things now in the screen should render
+            //Things overlapping in the screen should render
         }else if(group[gIndex].children.length === 0){
-            group[gIndex].dom = document.getElementById(group[gIndex].id);
-
+            two.interpret(JSON.parse(staleGroup[gIndex].dom), true, true);
         }
 
     }                                       ,[two, group, staleGroup])

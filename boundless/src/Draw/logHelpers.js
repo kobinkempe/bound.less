@@ -31,5 +31,14 @@ export function domToString (domEl, numOfGroups) {
         if (whitelist.find(x => (x === name)))
             return value;
     });
-    return JSON.stringify(obj, ['two-0', 'two-1', ''])
+
+    const allGroupIds = []
+    whitelist.forEach(
+        element => {
+            allGroupIds.push(element.id);
+        }
+
+    )
+
+    return JSON.stringify(obj, allGroupIds)
 }
