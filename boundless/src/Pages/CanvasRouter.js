@@ -17,6 +17,8 @@ export const CanvasRouter = ({isNew}) => {
         id = Date.now().toString(); //using current time (in ms) provides unique id in virtually all situations
     }
 
+    console.log("Canvas Router" + id);
+
     return (
         isNew ? <Redirect to={`/canvas/${id}`} /> :
         <div>
@@ -24,7 +26,7 @@ export const CanvasRouter = ({isNew}) => {
             <Switch>
                 <Route path={`/canvas/:canvasID`}>
                     {hasPermission?
-                        <CanvasPage/>:
+                        <CanvasPage isNew={isNew}/>:
                         <RequestAccess/>}
                 </Route>
                 <Route exact path={path}>
