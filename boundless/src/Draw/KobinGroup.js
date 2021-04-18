@@ -234,7 +234,7 @@ const getFillShape = (points, originInShape) => {
     for(let line of points){
         let vertices = [];
         for(let i = 0; i < line.length; i++){
-            vertices.push(new Two.Anchor(line[i][0], line[i][1]))
+            vertices.push(new Two.Anchor(line[i][0]*10, line[i][1]*10))
         }
         let path = new Two.Path(vertices);
         path.noFill();
@@ -248,18 +248,18 @@ const getFillShape = (points, originInShape) => {
     return retVal;
 }
 
-const getStrokeShape = (points) => {
+const getStrokeShape = (points, lineWidth) => {
     let retVal = [];
     for(let line of points){
         let vertices = [];
         for(let i = 0; i < line.length; i++){
-            vertices.push(new Two.Anchor(line[i][0], line[i][1]))
+            vertices.push(new Two.Anchor(line[i][0]*10, line[i][1]*10))
         }
         let path = new Two.Path(vertices);
         path.noFill();
-        path.stroke = 'green';
+        path.stroke = 'black';
         path.curved = true;
-        path.linewidth = 4;
+        path.linewidth = lineWidth * 20;
         path.cap = 'round';
         path.join = 'round';
         retVal.push(path);
@@ -279,10 +279,13 @@ function makeKobinizedShape(item, screenRect){
         path = item;
         isShape = false;
     }
-    isFilled = (path.fill !== "transparent");
-    isStroked = (path.stroke !== "transparent");
+    isFilled = (path.fill !== "transparent") && (path.fill !== undefined);
+    isStroked = (path.stroke !== "transparent") && (path.stroke !== undefined);
 
-    let strokeSize = path.lineWidth/2;
+    let strokeSize = path.linewidth*path.scale*path.parent.scale/2;
+    if(isShape){
+        strokeSize *= path.parent.parent.scale;
+    }
     if(!strokeSize){
         strokeSize = 0;
     }
@@ -295,7 +298,7 @@ function makeKobinizedShape(item, screenRect){
         }
     }
     if(isStroked){
-        strokeShape = getStrokeShape(strokePoints);
+        strokeShape = getStrokeShape(strokePoints, strokeSize);
         if(strokeShape !== []){
             retVal = retVal.concat(strokeShape);
         }

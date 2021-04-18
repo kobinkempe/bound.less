@@ -172,6 +172,9 @@ const TwoCanvas = ({toolInUse,
             let newItems = kobinGroup(group[0], two.width, two.height)
             group[0].remove(group[0].children);
             group[0].add(newItems);
+            group[0].scale = .1;
+            group[0].translation.x = 0;
+            group[0].translation.y = 0;
             setWipe(false);
         }
     }, [two, wipe, undidTwoStack, kobinGroup])
