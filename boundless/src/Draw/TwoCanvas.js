@@ -278,44 +278,55 @@ const TwoCanvas = ({toolInUse,
     }
 
     const checkStale = useCallback((gIndex) =>{
-        const r = group[gIndex].getBoundingClientRect();
-        let twoV = {left: 0, right: two.width, bottom:0, top:two.height};
-
-        //Things not in the screen need to derender
-        if(!overlaps(twoV, r, ZGROUP_OVERLAP)){
-            console.log("Group #"+gIndex+" just went stale. BRect: "+printRect(r));
-            const gDom = document.getElementById(group[gIndex].id);
-
-            var zipObj = {};
-
-
-
-            zipObj.dom = JSON.stringify({html: gDom.innerHTML});
-            zipObj.translate.x = group[gIndex].translate.x;
-            zipObj.translate.y = group[gIndex].translate.y;
-            zipObj.scale = group[gIndex].scale;
-
-            if(gIndex >= staleGroup.length){
-                staleGroup.push(zipObj)
-            } else {
-                staleGroup[gIndex] = zipObj;
-            }
-
-
-            group[gIndex].remove(group[gIndex].children);
-            two.remove(group[gIndex].children);
-            console.log("Emptied Group #"+gIndex+" to "+group[gIndex].children.length+" children");
-            setStaleGroup(staleGroup);
-            two.update();
-
-
-            //Things overlapping in the screen should render
-        }else if(group[gIndex].children.length === 0){
-            two.interpret(JSON.parse(staleGroup[gIndex].dom), true, true);
-            staleGroup[gIndex].dom = '';
+        if(!group[gIndex] || !group[gIndex].translate){
+            return false;
         }
 
-    }                                       ,[two, group, staleGroup])
+
+
+        if(gIndex>-1) {
+            const r = group[gIndex].getBoundingClientRect();
+            let twoV = {left: 0, right: two.width, bottom: 0, top: two.height};
+
+            //Things not in the screen need to derender
+            if (!overlaps(twoV, r, ZGROUP_OVERLAP)) {
+                console.log("Group #" + gIndex + " just went stale. BRect: " + printRect(r));
+                const gDom = document.getElementById(group[gIndex].id);
+
+                var zipObj = {dom:"", translate: {x:0, y:0}, scale:1};
+
+
+                zipObj.dom = JSON.stringify({html: gDom.innerHTML});
+                zipObj.translate.x = group[gIndex].translate.x;
+                zipObj.translate.y = group[gIndex].translate.y;
+                zipObj.scale = group[gIndex].scale;
+
+                if (gIndex >= staleGroup.length) {
+                    staleGroup.push(zipObj)
+                } else {
+                    staleGroup[gIndex] = zipObj;
+                }
+
+
+                group[gIndex].remove(group[gIndex].children);
+                two.remove(group[gIndex].children);
+                setGroup(group);
+                console.log("Emptied Group #" + gIndex + " to " + group[gIndex].children.length + " children");
+                setStaleGroup(staleGroup);
+                two.update();
+
+
+                //Things overlapping in the screen should render
+            } else if (group[gIndex].children.length === 0) {
+                two.interpret(JSON.parse(staleGroup[gIndex].dom), true, true);
+                staleGroup[gIndex].dom = '';
+            }
+            return true;
+
+        } else {
+            return false;
+        }
+    },[two, group, staleGroup])
 
     const checkTranslate = ([x, y]) => {
         return Math.abs(x) <= NEW_GROUP_TRANSLATE_THRESHOLD &&
@@ -363,11 +374,15 @@ const TwoCanvas = ({toolInUse,
         translate[index] = [realX, realY];
         setTranslate(translates);
 
+        if(!checkStale(index)){
+            console.log("Failed to load Group #"+index+ " into list of staleGroups");
+        }
+
         if(index === curIndex){
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
-                checkStale(index);
                 setCurIndex(-1);
             }
+        }else{
         }
     }
 

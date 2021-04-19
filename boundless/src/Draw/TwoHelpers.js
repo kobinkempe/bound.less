@@ -87,7 +87,7 @@ export const useFirebaseSVG = (canvasID) => {
 
             two.update();
             setTwo(two);
-            console.log("Reached this point");
+            console.log("canvasRef.getDownloadURL() executed its Promise");
         })
         .catch((error) => {
             switch (error.code) {
