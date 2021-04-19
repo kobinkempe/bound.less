@@ -59,7 +59,7 @@ const TwoCanvas = ({toolInUse,
 
     const dispatch = useDispatch();
 
-    console.log("Twocanvas: " + canvasID + " ," + isNew);
+    //console.log("Twocanvas: " + canvasID + " ," + isNew);
 
     //Creates the 'two' object w/o mounting it to the actual DOM
     const [two, setTwo] = useTwo({canvasID, isNew});
@@ -123,7 +123,7 @@ const TwoCanvas = ({toolInUse,
         if (!svgRef.current) {
             return;
         }
-        console.log(("Loaded Two"));
+        //console.log(("Loaded Two"));
         setTwo(two.appendTo(svgRef.current));
 
     }, []);
