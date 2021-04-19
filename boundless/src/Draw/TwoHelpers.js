@@ -134,7 +134,7 @@ export const useTwo = ({canvasID, isNew}) => {
             let str = s.serializeToString(d);
 
             let storageRef = firebase.storage().ref();
-            let canvasRef = storageRef.child(userName);
+            let canvasRef = storageRef.child(canvasPath);
 
             //TODO: Test the code below after our demo (3/29)
             //let canvasRef = storageRef.child(userName+"_1.svg");
