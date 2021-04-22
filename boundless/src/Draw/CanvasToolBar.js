@@ -100,6 +100,8 @@ export default function CanvasToolbar({setToolSelected,
                             icon={<Redo/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
+
+                            //Pan
                             onClick={
                                 ()=>{
                                     setToolSelected('pan')
