@@ -56,17 +56,17 @@ export const useUndoQueue = () => {
  * @returns {[Two, ((value: (((prevState: Two) => Two) | Two)) => void)]}
  */
 
-export const useFirebaseSVG = (canvasID) => {
+export const useFirebaseSVG = (canvasPath) => {
 
     const [two, setTwo] = useState(new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40}));
 
-    console.log(canvasID);
+    //console.log(canvasPath);
     let storageRef = firebase.storage().ref();
-    let canvasRef = storageRef.child(canvasID);
+    let canvasRef = storageRef.child(canvasPath);
     canvasRef.getDownloadURL()
         .then((url) => {
 
-            let xhr = new XMLHttpRequest();
+            /*let xhr = new XMLHttpRequest();
             xhr.responseType = 'text';
             xhr.onload = (event) => {
                 let text = xhr.response;
@@ -76,18 +76,18 @@ export const useFirebaseSVG = (canvasID) => {
                 svg.center();
                 svg.translation.set(two.width / 2, two.height / 2);
 
-            };
+            };*/
             // xhr.open('GET', url);
             // xhr.send();
 
-            // two.load(url, ((svg) => {
-            //     svg.center();
-            //     svg.translation.set(two.width / 2, two.height / 2);
-            // }));
+            two.load(url, ((svg) => {
+                svg.center();
+                svg.translation.set(two.width / 2, two.height / 2);
+            }));
 
             two.update();
             setTwo(two);
-            console.log("canvasRef.getDownloadURL() executed its Promise");
+            //console.log("Reached this point");
         })
         .catch((error) => {
             switch (error.code) {
@@ -110,18 +110,18 @@ const CANV_NAME = "1"
 
 export const useTwo = ({canvasID, isNew}) => {
 
-    let userName;
+    let canvasPath;
 
     if(firebase.auth().currentUser) {
-        userName = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + CANV_NAME + ".svg";
+        canvasPath = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + CANV_NAME + ".svg";
     } else {
-        userName = "/public/" + "canvas_" + CANV_NAME + ".svg";
+        canvasPath = "/public/" + "canvas_" + CANV_NAME + ".svg";
     }
 
-    console.log("TwoHelpers useTwo:" + userName);
-    console.log("TwoHelpers useTwo:" + canvasID + ", " + isNew);
+    //console.log("TwoHelpers useTwo:" + canvasPath);
+    //console.log("TwoHelpers useTwo:" + canvasID + ", " + isNew);
 
-    const [two, setTwo] = useFirebaseSVG(userName);
+    const [two, setTwo] = useFirebaseSVG(canvasPath);
 
     // addCanvas("canvas_" + canvasID, firebase.auth().currentUser.displayName);
 
@@ -134,14 +134,14 @@ export const useTwo = ({canvasID, isNew}) => {
             let str = s.serializeToString(d);
 
             let storageRef = firebase.storage().ref();
-            let canvasRef = storageRef.child(userName);
+            let canvasRef = storageRef.child(canvasPath);
 
             //TODO: Test the code below after our demo (3/29)
             //let canvasRef = storageRef.child(userName+"_1.svg");
 
 
             canvasRef.putString(str).then((snapshot) => {
-                console.log('Uploaded string');
+                //console.log('Uploaded string');
             }).catch((error) => {
                 switch (error.code) {
                     case 'storage/unauthorized':
@@ -155,7 +155,7 @@ export const useTwo = ({canvasID, isNew}) => {
                         break;
                 }
             })
-            console.log('Image auto-saved on cloud');
+            //console.log('Image auto-saved on cloud');
         }, 10000);
 
         return () => clearInterval(interval);
