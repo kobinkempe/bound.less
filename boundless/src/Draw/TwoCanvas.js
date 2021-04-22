@@ -59,7 +59,7 @@ const TwoCanvas = ({toolInUse,
      */
 
 
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
 
     console.log("Twocanvas: " + canvasID + " ," + isNew);
 
@@ -179,6 +179,10 @@ const TwoCanvas = ({toolInUse,
             group[0].scale = .1;
             group[0].translation.x = 0;
             group[0].translation.y = 0;
+            setGroup([])
+            setScale([1])
+            setTranslate([[0,0]]);
+            two.clear();
             setWipe(false);
         }
     }, [two, wipe, undidTwoStack, kobinGroup])
@@ -278,7 +282,7 @@ const TwoCanvas = ({toolInUse,
     }
 
     const checkStale = useCallback((gIndex) =>{
-        if(!group[gIndex] || !group[gIndex].translate){
+        if(!group[gIndex]){
             return false;
         }
 
@@ -286,19 +290,19 @@ const TwoCanvas = ({toolInUse,
 
         if(gIndex>-1) {
             const r = group[gIndex].getBoundingClientRect();
-            let twoV = {left: 0, right: two.width, bottom: 0, top: two.height};
+            let twoV = {left: 0, right: two.width, bottom: two.height, top: 0};
 
             //Things not in the screen need to derender
             if (!overlaps(twoV, r, ZGROUP_OVERLAP)) {
                 console.log("Group #" + gIndex + " just went stale. BRect: " + printRect(r));
                 const gDom = document.getElementById(group[gIndex].id);
 
-                var zipObj = {dom:"", translate: {x:0, y:0}, scale:1};
+                let zipObj = {dom:"", translation: {x:0, y:0}, scale:1};
 
 
                 zipObj.dom = JSON.stringify({html: gDom.innerHTML});
-                zipObj.translate.x = group[gIndex].translate.x;
-                zipObj.translate.y = group[gIndex].translate.y;
+                zipObj.translation.x = group[gIndex].translation.x;
+                zipObj.translation.y = group[gIndex].translation.y;
                 zipObj.scale = group[gIndex].scale;
 
                 if (gIndex >= staleGroup.length) {
@@ -309,7 +313,6 @@ const TwoCanvas = ({toolInUse,
 
 
                 group[gIndex].remove(group[gIndex].children);
-                two.remove(group[gIndex].children);
                 setGroup(group);
                 console.log("Emptied Group #" + gIndex + " to " + group[gIndex].children.length + " children");
                 setStaleGroup(staleGroup);
@@ -317,7 +320,7 @@ const TwoCanvas = ({toolInUse,
 
 
                 //Things overlapping in the screen should render
-            } else if (group[gIndex].children.length === 0) {
+            } else{
                 two.interpret(JSON.parse(staleGroup[gIndex].dom), true, true);
                 staleGroup[gIndex].dom = '';
             }
@@ -359,6 +362,23 @@ const TwoCanvas = ({toolInUse,
         return [newGroup, newScale, [newX, newY]];
     }, [group, scale, translate])
 
+
+    const panGroup = (index, [x,y], amount) => {
+        let realX = (x - group[index].translation.x)*(1 - translate) + group[index].translation.x;
+        let realY = (y - group[index].translation.y)*(1 - translate) + group[index].translation.y;
+        group[index].translation.x = realX;
+        group[index].translation.y = realY;
+        let translates = translate;
+        translate[index] = [realX, realY];
+        setTranslate(translates);
+        if(index === curIndex){
+            if(!(checkTranslate([realX, realY]))){
+                setCurIndex(-1);
+            }
+        }
+
+    }
+
     const zoomGroup = (index, [x,y], amount) => {
         let realAmount = Math.pow(2, amount);
         let realX = (x - group[index].translation.x)*(1 - realAmount) + group[index].translation.x;
@@ -374,9 +394,11 @@ const TwoCanvas = ({toolInUse,
         translate[index] = [realX, realY];
         setTranslate(translates);
 
+        /**
         if(!checkStale(index)){
             console.log("Failed to load Group #"+index+ " into list of staleGroups");
         }
+         **/
 
         if(index === curIndex){
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
@@ -397,6 +419,13 @@ const TwoCanvas = ({toolInUse,
         two.update();
         setTwo(two);
     },[group, zoomGroup, two])
+
+    const panCallback = useCallback( (event ) => {
+        event.preventDefault();
+        }
+
+
+    )
 
     const addInverseZoom = (item, scale, translate) => {
         let inverseScale = 1/scale;
@@ -508,6 +537,8 @@ const TwoCanvas = ({toolInUse,
             addInverseZoom(shape, mScale, mTranslate);
             two.update();
             setTwo(two);
+        } else if(toolInUse === 'pan'){
+
         }
     }, [toolInUse, penInUse, dropShape, two, setPenOptions, group, curIndex, makeGroup, findGroup])
 
