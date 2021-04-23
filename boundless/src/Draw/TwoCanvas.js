@@ -1,15 +1,19 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import Two from "two.js";
-import ZUI from "two.js/extras/zui.js"
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
-//I get by with a little help(er) from my friends (me)
-import {fillLine, LINE_RES, makePoint, useNumUndos, useTwo, useUndoQueue} from "./TwoHelpers";
+//I get by with a little help(er) from my friends
+import {makePoint, useTwo} from "./TwoHelpers";
 import {PEN_TYPES} from "../Pages/CanvasPage";
-import {useEventCallback} from "@material-ui/core";
+import {kobinGroup, overlaps} from "./KobinGroup";
+import {printRect} from "./logHelpers";
+import firebase from "firebase";
+import Two from "two.js";
 
 const NEW_GROUP_SCALE_THRESHOLD = 10;
 const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
+
+const ZGROUP_OVERLAP = 10;
+
 
 //
 const TwoCanvas = ({toolInUse,
@@ -57,12 +61,24 @@ const TwoCanvas = ({toolInUse,
      */
 
 
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
 
     //console.log("Twocanvas: " + canvasID + " ," + isNew);
 
     //Creates the 'two' object w/o mounting it to the actual DOM
-    const [two, setTwo] = useTwo({canvasID, isNew});
+    //const [two, setTwo] = useTwo({canvasID, isNew});
+    const [two, setTwo] = useState(new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40}));
+
+    let s = new XMLSerializer();
+    let storageRef = firebase.storage().ref();
+    let canvasPath;
+
+    const CANV_NAME = "1";
+    if(firebase.auth().currentUser) {
+        canvasPath = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + CANV_NAME + ".svg";
+    } else {
+        canvasPath = "/public/" + "canvas_" + CANV_NAME + ".svg";
+    }
 
     //Keeps track of the # of shapes that need to be removed from two
     //const [PGroup, setPGroup] = useState(0);
@@ -93,6 +109,9 @@ const TwoCanvas = ({toolInUse,
 
     const [curIndex, setCurIndex] = useState(-2);
     const [group, setGroup] = useState([null]);
+    const [staleGroup, setStaleGroup] = useState([null]);
+
+
     const [scale, setScale] = useState([1]);
     const [translate, setTranslate] = useState([[0,0]]);
 
@@ -118,15 +137,94 @@ const TwoCanvas = ({toolInUse,
      *
      * **/
 
+    const downloadSVG = async (canvasRef) => {
+        await canvasRef.getDownloadURL()
+            .then(async (url) => {
+                console.log(url);
+                await load(two, url).then(() => {
+                    two.update();
+                    setTwo(two);
+                    console.log("Reached this point");
+                });
+            }).then(() => {
+                if (!svgRef.current) {
+                    console.log("No svgRef.current")
+                    return;
+                }
+                console.log(("Loaded Two"));
+                setTwo(two.appendTo(svgRef.current));
+        }).catch((error) => {
+            switch (error.code) {
+                case 'storage/object-not-found':
+                    console.log("File does not exist");
+                    break;
+                case 'storage/unauthorized':
+                    console.log("User doesn't have permission");
+                    break;
+                case 'storage/unknown':
+                    console.log("Unknown error");
+                    break;
+            }
+        });
+    };
+
+    const load = async (two, url) => {
+        await two.load(url, ((svg) => {
+            console.log("In load function")
+            console.log(svg);
+            svg.center();
+            svg.translation.set(two.width / 2, two.height / 2);
+            two.add(svg);
+        }))
+        return 1;
+    };
+
     //Appends twoCanvas and approves loading
     useEffect(() => {
-        if (!svgRef.current) {
+        let storageRef = firebase.storage().ref();
+        let canvasRef = storageRef.child(canvasPath);
+        downloadSVG(canvasRef);
+
+        /*if (!svgRef.current) {
             return;
         }
-        //console.log(("Loaded Two"));
-        setTwo(two.appendTo(svgRef.current));
-
+        console.log(("Loaded Two"));
+        setTwo(two.appendTo(svgRef.current));*/
     }, []);
+
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+
+            let d = two.renderer.domElement;
+            let str = s.serializeToString(d);
+
+
+            //TODO: Test the code below after our demo (3/29)
+            //let canvasRef = storageRef.child(firebase.auth().currentUser.displayName+"_1.svg");
+            let canvasRef = storageRef.child(canvasPath);
+
+
+            canvasRef.putString(str).then((snapshot) => {
+                //console.log('Uploaded string');
+            }).catch((error) => {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        console.log("You're not authorized");
+                        break;
+                    case 'storage/canceled':
+                        console.log("User canceled upload");
+                        break;
+                    case 'storage/unknown':
+                        console.log("Unknown error");
+                        break;
+                }
+            })
+            console.log('Image auto-saved on cloud');
+        }, 10000);
+
+        return () => clearInterval(interval);
+    }, [two]);
 
 
     // //Load ZUI
@@ -139,27 +237,48 @@ const TwoCanvas = ({toolInUse,
     // }, [])
 
     //Wipe Tool
+    // useEffect(()=>{
+    //     if(!svgRef.current){
+    //         return
+    //     }
+    //
+    //     if(wipe){
+    //         let items = [];
+    //         // I really don't know about this here. I might be copying pointers to things that are soon to be
+    //         // potentially deleted, idk how javascript works
+    //         for(let item of two.scene.children){
+    //             items.push(item);
+    //         }
+    //         if(items !== []){
+    //             setUndidTwoStack([items].concat(undidTwoStack));
+    //             two.clear();
+    //             two.update();
+    //             setTwo(two);
+    //         }
+    //         setWipe(false);
+    //     }
+    // }, [two, wipe, undidTwoStack])
+
+    // Example KobinGroup Use
     useEffect(()=>{
         if(!svgRef.current){
             return
         }
 
         if(wipe){
-            let items = [];
-            // I really don't know about this here. I might be copying pointers to things that are soon to be
-            // potentially deleted, idk how javascript works
-            for(let item of two.scene.children){
-                items.push(item);
-            }
-            if(items !== []){
-                setUndidTwoStack([items].concat(undidTwoStack));
-                two.clear();
-                two.update();
-                setTwo(two);
-            }
+            let newItems = kobinGroup(group[0], two.width, two.height)
+            group[0].remove(group[0].children);
+            group[0].add(newItems);
+            group[0].scale = .1;
+            group[0].translation.x = 0;
+            group[0].translation.y = 0;
+            setGroup([])
+            setScale([1])
+            setTranslate([[0,0]]);
+            two.clear();
             setWipe(false);
         }
-    }, [two, wipe, undidTwoStack])
+    }, [two, wipe, undidTwoStack, kobinGroup])
 
     const checkRedoStack = useCallback(()=>{
         if(lastItem === two.scene.children[-1]){
@@ -255,6 +374,56 @@ const TwoCanvas = ({toolInUse,
             scale <= NEW_GROUP_SCALE_THRESHOLD
     }
 
+    const checkStale = useCallback((gIndex) =>{
+        if(!group[gIndex]){
+            return false;
+        }
+
+
+
+        if(gIndex>-1) {
+            const r = group[gIndex].getBoundingClientRect();
+            let twoV = {left: 0, right: two.width, bottom: two.height, top: 0};
+
+            //Things not in the screen need to derender
+            if (!overlaps(twoV, r, ZGROUP_OVERLAP)) {
+                console.log("Group #" + gIndex + " just went stale. BRect: " + printRect(r));
+                const gDom = document.getElementById(group[gIndex].id);
+
+                let zipObj = {dom:"", translation: {x:0, y:0}, scale:1};
+
+
+                zipObj.dom = JSON.stringify({html: gDom.innerHTML});
+                zipObj.translation.x = group[gIndex].translation.x;
+                zipObj.translation.y = group[gIndex].translation.y;
+                zipObj.scale = group[gIndex].scale;
+
+                if (gIndex >= staleGroup.length) {
+                    staleGroup.push(zipObj)
+                } else {
+                    staleGroup[gIndex] = zipObj;
+                }
+
+
+                group[gIndex].remove(group[gIndex].children);
+                setGroup(group);
+                console.log("Emptied Group #" + gIndex + " to " + group[gIndex].children.length + " children");
+                setStaleGroup(staleGroup);
+                two.update();
+
+
+                //Things overlapping in the screen should render
+            } else{
+                two.interpret(JSON.parse(staleGroup[gIndex].dom), true, true);
+                staleGroup[gIndex].dom = '';
+            }
+            return true;
+
+        } else {
+            return false;
+        }
+    },[two, group, staleGroup])
+
     const checkTranslate = ([x, y]) => {
         return Math.abs(x) <= NEW_GROUP_TRANSLATE_THRESHOLD &&
             Math.abs(y) <= NEW_GROUP_TRANSLATE_THRESHOLD
@@ -286,6 +455,23 @@ const TwoCanvas = ({toolInUse,
         return [newGroup, newScale, [newX, newY]];
     }, [group, scale, translate])
 
+
+    const panGroup = (index, [x,y], amount) => {
+        let realX = (x - group[index].translation.x)*(1 - translate) + group[index].translation.x;
+        let realY = (y - group[index].translation.y)*(1 - translate) + group[index].translation.y;
+        group[index].translation.x = realX;
+        group[index].translation.y = realY;
+        let translates = translate;
+        translate[index] = [realX, realY];
+        setTranslate(translates);
+        if(index === curIndex){
+            if(!(checkTranslate([realX, realY]))){
+                setCurIndex(-1);
+            }
+        }
+
+    }
+
     const zoomGroup = (index, [x,y], amount) => {
         let realAmount = Math.pow(2, amount);
         let realX = (x - group[index].translation.x)*(1 - realAmount) + group[index].translation.x;
@@ -300,10 +486,18 @@ const TwoCanvas = ({toolInUse,
         let translates = translate;
         translate[index] = [realX, realY];
         setTranslate(translates);
+
+        /**
+        if(!checkStale(index)){
+            console.log("Failed to load Group #"+index+ " into list of staleGroups");
+        }
+         **/
+
         if(index === curIndex){
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
                 setCurIndex(-1);
             }
+        }else{
         }
     }
 
@@ -318,6 +512,13 @@ const TwoCanvas = ({toolInUse,
         two.update();
         setTwo(two);
     },[group, zoomGroup, two])
+
+    const panCallback = useCallback( (event ) => {
+        event.preventDefault();
+        }
+
+
+    )
 
     const addInverseZoom = (item, scale, translate) => {
         let inverseScale = 1/scale;
@@ -429,6 +630,8 @@ const TwoCanvas = ({toolInUse,
             addInverseZoom(shape, mScale, mTranslate);
             two.update();
             setTwo(two);
+        } else if(toolInUse === 'pan'){
+
         }
     }, [toolInUse, penInUse, dropShape, two, setPenOptions, group, curIndex, makeGroup, findGroup])
 
