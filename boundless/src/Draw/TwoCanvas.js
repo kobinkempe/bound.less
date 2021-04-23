@@ -6,6 +6,8 @@ import {makePoint, useTwo} from "./TwoHelpers";
 import {PEN_TYPES} from "../Pages/CanvasPage";
 import {kobinGroup, overlaps} from "./KobinGroup";
 import {printRect} from "./logHelpers";
+import firebase from "firebase";
+import Two from "two.js";
 
 const NEW_GROUP_SCALE_THRESHOLD = 10;
 const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
@@ -64,7 +66,19 @@ const TwoCanvas = ({toolInUse,
     //console.log("Twocanvas: " + canvasID + " ," + isNew);
 
     //Creates the 'two' object w/o mounting it to the actual DOM
-    const [two, setTwo] = useTwo({canvasID, isNew});
+    //const [two, setTwo] = useTwo({canvasID, isNew});
+    const [two, setTwo] = useState(new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40}));
+
+    let s = new XMLSerializer();
+    let storageRef = firebase.storage().ref();
+    let canvasPath;
+
+    const CANV_NAME = "1";
+    if(firebase.auth().currentUser) {
+        canvasPath = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + CANV_NAME + ".svg";
+    } else {
+        canvasPath = "/public/" + "canvas_" + CANV_NAME + ".svg";
+    }
 
     //Keeps track of the # of shapes that need to be removed from two
     //const [PGroup, setPGroup] = useState(0);
@@ -123,15 +137,94 @@ const TwoCanvas = ({toolInUse,
      *
      * **/
 
+    const downloadSVG = async (canvasRef) => {
+        await canvasRef.getDownloadURL()
+            .then(async (url) => {
+                console.log(url);
+                await load(two, url).then(() => {
+                    two.update();
+                    setTwo(two);
+                    console.log("Reached this point");
+                });
+            }).then(() => {
+                if (!svgRef.current) {
+                    console.log("No svgRef.current")
+                    return;
+                }
+                console.log(("Loaded Two"));
+                setTwo(two.appendTo(svgRef.current));
+        }).catch((error) => {
+            switch (error.code) {
+                case 'storage/object-not-found':
+                    console.log("File does not exist");
+                    break;
+                case 'storage/unauthorized':
+                    console.log("User doesn't have permission");
+                    break;
+                case 'storage/unknown':
+                    console.log("Unknown error");
+                    break;
+            }
+        });
+    };
+
+    const load = async (two, url) => {
+        await two.load(url, ((svg) => {
+            console.log("In load function")
+            console.log(svg);
+            svg.center();
+            svg.translation.set(two.width / 2, two.height / 2);
+            two.add(svg);
+        }))
+        return 1;
+    };
+
     //Appends twoCanvas and approves loading
     useEffect(() => {
-        if (!svgRef.current) {
+        let storageRef = firebase.storage().ref();
+        let canvasRef = storageRef.child(canvasPath);
+        downloadSVG(canvasRef);
+
+        /*if (!svgRef.current) {
             return;
         }
-        //console.log(("Loaded Two"));
-        setTwo(two.appendTo(svgRef.current));
-
+        console.log(("Loaded Two"));
+        setTwo(two.appendTo(svgRef.current));*/
     }, []);
+
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+
+            let d = two.renderer.domElement;
+            let str = s.serializeToString(d);
+
+
+            //TODO: Test the code below after our demo (3/29)
+            //let canvasRef = storageRef.child(firebase.auth().currentUser.displayName+"_1.svg");
+            let canvasRef = storageRef.child(canvasPath);
+
+
+            canvasRef.putString(str).then((snapshot) => {
+                //console.log('Uploaded string');
+            }).catch((error) => {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        console.log("You're not authorized");
+                        break;
+                    case 'storage/canceled':
+                        console.log("User canceled upload");
+                        break;
+                    case 'storage/unknown':
+                        console.log("Unknown error");
+                        break;
+                }
+            })
+            console.log('Image auto-saved on cloud');
+        }, 10000);
+
+        return () => clearInterval(interval);
+    }, [two]);
 
 
     // //Load ZUI
