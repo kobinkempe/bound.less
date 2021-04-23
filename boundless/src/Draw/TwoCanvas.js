@@ -10,7 +10,7 @@ import {printRect} from "./logHelpers";
 const NEW_GROUP_SCALE_THRESHOLD = 10;
 const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
 
-const ZGROUP_OVERLAP = 10;
+const ZGROUP_OVERLAP = 2;
 
 
 //
@@ -282,18 +282,24 @@ const TwoCanvas = ({toolInUse,
     }
 
     const checkStale = useCallback((gIndex) =>{
+        /*
         if(!group[gIndex]){
             return false;
         }
+         */
 
 
 
-        if(gIndex>-1) {
+        if(gIndex>-1 ) {
             const r = group[gIndex].getBoundingClientRect();
-            let twoV = {left: 0, right: two.width, bottom: two.height, top: 0};
+           // let twoV = {left: 0, right: two.width, bottom: 0, top: two.height};
+            const twoV = two.scene.getBoundingClientRect();
+
 
             //Things not in the screen need to derender
             if (!overlaps(twoV, r, ZGROUP_OVERLAP)) {
+
+                console.log("Current Window: "+printRect(twoV))
                 console.log("Group #" + gIndex + " just went stale. BRect: " + printRect(r));
                 const gDom = document.getElementById(group[gIndex].id);
 
@@ -320,7 +326,7 @@ const TwoCanvas = ({toolInUse,
 
 
                 //Things overlapping in the screen should render
-            } else{
+            } else if(staleGroup.length < gIndex){
                 two.interpret(JSON.parse(staleGroup[gIndex].dom), true, true);
                 staleGroup[gIndex].dom = '';
             }
@@ -394,11 +400,9 @@ const TwoCanvas = ({toolInUse,
         translate[index] = [realX, realY];
         setTranslate(translates);
 
-        /**
         if(!checkStale(index)){
             console.log("Failed to load Group #"+index+ " into list of staleGroups");
         }
-         **/
 
         if(index === curIndex){
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
