@@ -102,6 +102,7 @@ export default function CanvasToolbar({setToolSelected,
                 <ToolButton toolDisplay={toolDisplay}
 
                             //Pan
+                            optionDisplay={optionDisplay === 'pan'}
                             onClick={
                                 ()=>{
                                     setToolSelected('pan')

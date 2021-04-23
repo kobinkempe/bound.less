@@ -462,7 +462,7 @@ const TwoCanvas = ({toolInUse,
     }, [group, scale, translate])
 
 
-    const panGroup = (index, [x,y], amount) => {
+    const panGroup = (index, [x,y]) => {
         let realX = (x - group[index].translation.x)*(1 - translate) + group[index].translation.x;
         let realY = (y - group[index].translation.y)*(1 - translate) + group[index].translation.y;
         group[index].translation.x = realX;
@@ -518,11 +518,16 @@ const TwoCanvas = ({toolInUse,
     },[group, zoomGroup, two])
 
     const panCallback = useCallback( (event ) => {
-        event.preventDefault();
-        }
-
-
-    )
+            const dx = event[1][0] - event[0][0];
+            const dy = event[1][1] - event[0][1];
+            for (let index = 0; index < group.length; index++) {
+                if (group[index] != null) {
+                    panGroup(index, [dx, dy])
+                }
+            }
+            two.update();
+            setTwo(Two);
+            }, [group, panGroup, two])
 
     const addInverseZoom = (item, scale, translate) => {
         let inverseScale = 1/scale;
@@ -634,22 +639,34 @@ const TwoCanvas = ({toolInUse,
             addInverseZoom(shape, mScale, mTranslate);
             two.update();
             setTwo(two);
-        } else if(toolInUse === 'pan'){
-
+        } else if(toolInUse === 'pan' && !penInUse){
+            const point = makePoint(coords);
+            setPenArray([point]);
+            setTouchID(thisTouchID);
+            setPenInUse(true);
+            console.log("TwoCanvas has registered toolInUse as pan");
         }
     }, [toolInUse, penInUse, dropShape, two, setPenOptions, group, curIndex, makeGroup, findGroup])
 
     const move = useCallback((coords, thisTouchID) => {
-        if(penInUse && (toolInUse === 'pen') && (thisTouchID === touchID)){
-            if(penType === PEN_TYPES[2]){
+        if (penInUse && thisTouchID === touchID) {
+            if ((toolInUse === 'pen')) {
+                if (penType === PEN_TYPES[2]) {
+                    setPenArray([penArray[0], makePoint(coords)]);
+                } else {
+                    setPenArray(penArray.concat(makePoint(coords)));
+                }
+                path.vertices = penArray;
+                two.update();
+                setTwo(two);
+            } else if((toolInUse === 'pan')) {
                 setPenArray([penArray[0], makePoint(coords)]);
-            } else {
-                setPenArray(penArray.concat(makePoint(coords)));
+                panCallback([penArray[0], makePoint(coords)]);
+                two.update();
+                setTwo(two);
+
             }
-            path.vertices = penArray;
-            two.update();
-            setTwo(two);
-        }
+                }
     }, [toolInUse, touchID, penInUse, penArray, path, two, penType])
 
     const end = useCallback((coords, thisTouchID, nextTouch=false, nextTouchID=false) => {
