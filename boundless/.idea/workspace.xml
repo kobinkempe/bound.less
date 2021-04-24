@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="730e12a6-56a7-413c-9b76-84a882bd7dea" name="Default Changelist" comment="fixed shapes">
-      <change afterPath="$PROJECT_DIR$/src/Components/allCanvasThumbnail.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Stylesheets/allCanvasThumbnail.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/canvasThumbnail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/canvasThumbnail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Draw/TwoCanvas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/CanvasRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/CanvasRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Pages/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pages/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/allCanvasThumbnail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/allCanvasThumbnail.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
