@@ -8,6 +8,7 @@ import {kobinGroup, overlaps} from "./KobinGroup";
 import {printRect} from "./logHelpers";
 import firebase from "firebase";
 import Two from "two.js";
+import canvas from "two.js/src/renderers/canvas";
 
 const NEW_GROUP_SCALE_THRESHOLD = 10;
 const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
@@ -63,8 +64,6 @@ const TwoCanvas = ({toolInUse,
 
     //const dispatch = useDispatch();
 
-    //console.log("Twocanvas: " + canvasID + " ," + isNew);
-
     //Creates the 'two' object w/o mounting it to the actual DOM
     //const [two, setTwo] = useTwo({canvasID, isNew});
     const [two, setTwo] = useState(new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40}));
@@ -73,12 +72,15 @@ const TwoCanvas = ({toolInUse,
     let storageRef = firebase.storage().ref();
     let canvasPath;
 
-    const CANV_NAME = "1";
+    // const CANV_NAME = "1";
+
     if(firebase.auth().currentUser) {
-        canvasPath = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + CANV_NAME + ".svg";
+        canvasPath = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + canvasID + ".svg";
     } else {
-        canvasPath = "/public/" + "canvas_" + CANV_NAME + ".svg";
+
+        canvasPath = "/public/" + "canvas_" + canvasID + ".svg";
     }
+    console.log(canvasPath);
 
     //Keeps track of the # of shapes that need to be removed from two
     //const [PGroup, setPGroup] = useState(0);
@@ -198,7 +200,6 @@ const TwoCanvas = ({toolInUse,
 
             let d = two.renderer.domElement;
             let str = s.serializeToString(d);
-
 
             //TODO: Test the code below after our demo (3/29)
             //let canvasRef = storageRef.child(firebase.auth().currentUser.displayName+"_1.svg");

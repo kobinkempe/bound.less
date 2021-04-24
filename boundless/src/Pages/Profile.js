@@ -4,13 +4,13 @@ import {useSelector} from "react-redux";
 import {selectLoggedIn, selectUsername} from "../Redux/loginState";
 import HeaderBar from "../Components/headerBar";
 import CanvasThumbnail from "../Components/canvasThumbnail";
+import AllCanvasThumbnail from "../Components/allCanvasThumbnail";
 
 export default function Profile() {
     let profileUsername = useParams().username;
     const loggedIn = useSelector(selectLoggedIn);
     const username = useSelector(selectUsername);
     const isOwnProfile = loggedIn && username === profileUsername;
-    console.log(username);
 
     return (
         <div>
@@ -24,37 +24,26 @@ export default function Profile() {
                                 <text>{username}</text>
                             </div>
                             <div className='caption'>
-                                <text>Science Teacher from Mars.</text>
+                                <text>Description.</text>
                             </div>
                         </div>
 
                     </div>
-                    <div className='sheetSection'>
-                        <div className='heading'>
-                            <text>Your bound.less Canvases</text>
-                            <a className='viewAll' href={'#/profile/' + {username} + '/view-all'}>
-                                View All
-                            </a>
-                        </div>
-                        <div className='sheetBox'>
-                            <CanvasThumbnail
-                                href={'#/canvas/new'}
-                                text={'New Canvas'}
-                                newCanvas={true}/>
-                        </div>
-                    </div>
-                    <div className='sheetSection'>
-                        <div className='heading'>
-                            <text>Saved bound.less Canvases</text>
-                            <text>View All</text>
-                        </div>
-                        <div className='sheetBox'>
-                            <CanvasThumbnail
-                                href={'#/canvas/liked1'}
-                                text={'Liked Canvas 1'}
-                                newCanvas={false}/>
-                        </div>
-                    </div>
+                    {/*<div className='sheetSection'>*/}
+                    {/*    <div className='heading'>*/}
+                    {/*        <text>Your bound.less Canvases</text>*/}
+                    {/*        <a className='viewAll' href={'#/profile/' + {username} + '/view-all'}>*/}
+                    {/*            View All*/}
+                    {/*        </a>*/}
+                    {/*    </div>*/}
+                    {/*    <div className='sheetBox'>*/}
+                    {/*        <CanvasThumbnail*/}
+                    {/*            href={'#/canvas/new'}*/}
+                    {/*            text={'New Canvas'}*/}
+                    {/*            newCanvas={true}/>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    <AllCanvasThumbnail/>
                 </div>
             </div>
         </div>
