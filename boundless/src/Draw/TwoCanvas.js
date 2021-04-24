@@ -173,20 +173,20 @@ const TwoCanvas = ({toolInUse,
     };
 
     const load = async (two, url) => {
-        await two.load(url, ((svg) => {
+        await two.load(url, ((svgGroup, svg) => {
             console.log("In load function")
-            console.log(svg);
-            svg.center();
-            svg.translation.set(two.width / 2, two.height / 2);
-            const turned = two.interpret(svg);
-            turned.children.foreach(  (child) => {
+            console.log(svgGroup);
+            //svg.center();
+            //svg.translation.set(two.width / 2, two.height / 2);
+            //const turned = two.interpret(svg);
+            svgGroup.children.foreach(  (child) => {
                 two.scene.add(child);
                 setGroup(group.concat(child));
                 setScale(scale.concat(child.scale));
                 setTranslate(translate.concat([child.translation.x,child.translation.y]));
             })
             setCurIndex(-1);
-            two.remove(turned);
+            two.remove(svgGroup);
         }))
         return 1;
     };
