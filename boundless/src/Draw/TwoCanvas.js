@@ -174,8 +174,8 @@ const TwoCanvas = ({toolInUse,
 
     const load = async (two, url) => {
         await two.load(url, ((svgGroup, svg) => {
-            console.log("In load function")
-            console.log(svgGroup);
+            // console.log("In load function")
+            // console.log(svgGroup);
             //svg.center();
             //svg.translation.set(two.width / 2, two.height / 2);
             //const turned = two.interpret(svg);
