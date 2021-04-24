@@ -179,7 +179,7 @@ const TwoCanvas = ({toolInUse,
             //svg.center();
             //svg.translation.set(two.width / 2, two.height / 2);
             //const turned = two.interpret(svg);
-            svgGroup.children.foreach(  (child) => {
+            svgGroup.children.forEach(  (child) => {
                 two.scene.add(child);
                 setGroup(group.concat(child));
                 setScale(scale.concat(child.scale));
