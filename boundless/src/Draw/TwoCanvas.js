@@ -159,6 +159,8 @@ const TwoCanvas = ({toolInUse,
             switch (error.code) {
                 case 'storage/object-not-found':
                     console.log("File does not exist");
+                    console.log("Loaded Two");
+                    setTwo(two.appendTo(svgRef.current));
                     break;
                 case 'storage/unauthorized':
                     console.log("User doesn't have permission");
@@ -176,7 +178,15 @@ const TwoCanvas = ({toolInUse,
             console.log(svg);
             svg.center();
             svg.translation.set(two.width / 2, two.height / 2);
-            two.add(svg);
+            const turned = two.interpret(svg);
+            turned.children.foreach(  (child) => {
+                two.scene.add(child);
+                setGroup(group.concat(child));
+                setScale(scale.concat(child.scale));
+                setTranslate(translate.concat([child.translation.x,child.translation.y]));
+            })
+            setCurIndex(-1);
+            two.remove(turned);
         }))
         return 1;
     };
@@ -494,9 +504,11 @@ const TwoCanvas = ({toolInUse,
         translate[index] = [realX, realY];
         setTranslate(translates);
 
+        /*
         if(!checkStale(index)){
             console.log("Failed to load Group #"+index+ " into list of staleGroups");
         }
+        */
 
         if(index === curIndex){
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
