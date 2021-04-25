@@ -13,7 +13,7 @@ import canvas from "two.js/src/renderers/canvas";
 const NEW_GROUP_SCALE_THRESHOLD = 10;
 const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
 
-const ZGROUP_OVERLAP = 10;
+const ZGROUP_OVERLAP = 2;
 
 
 //
@@ -376,18 +376,24 @@ const TwoCanvas = ({toolInUse,
     }
 
     const checkStale = useCallback((gIndex) =>{
+        /*
         if(!group[gIndex]){
             return false;
         }
+         */
 
 
 
-        if(gIndex>-1) {
+        if(gIndex>-1 ) {
             const r = group[gIndex].getBoundingClientRect();
-            let twoV = {left: 0, right: two.width, bottom: two.height, top: 0};
+           // let twoV = {left: 0, right: two.width, bottom: 0, top: two.height};
+            const twoV = two.scene.getBoundingClientRect();
+
 
             //Things not in the screen need to derender
             if (!overlaps(twoV, r, ZGROUP_OVERLAP)) {
+
+                console.log("Current Window: "+printRect(twoV))
                 console.log("Group #" + gIndex + " just went stale. BRect: " + printRect(r));
                 const gDom = document.getElementById(group[gIndex].id);
 
@@ -414,7 +420,7 @@ const TwoCanvas = ({toolInUse,
 
 
                 //Things overlapping in the screen should render
-            } else{
+            } else if(staleGroup.length < gIndex){
                 two.interpret(JSON.parse(staleGroup[gIndex].dom), true, true);
                 staleGroup[gIndex].dom = '';
             }
@@ -457,7 +463,7 @@ const TwoCanvas = ({toolInUse,
     }, [group, scale, translate])
 
 
-    const panGroup = (index, [x,y], amount) => {
+    const panGroup = (index, [x,y]) => {
         let realX = (x - group[index].translation.x)*(1 - translate) + group[index].translation.x;
         let realY = (y - group[index].translation.y)*(1 - translate) + group[index].translation.y;
         group[index].translation.x = realX;
@@ -488,11 +494,9 @@ const TwoCanvas = ({toolInUse,
         translate[index] = [realX, realY];
         setTranslate(translates);
 
-        /**
         if(!checkStale(index)){
             console.log("Failed to load Group #"+index+ " into list of staleGroups");
         }
-         **/
 
         if(index === curIndex){
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
@@ -515,11 +519,16 @@ const TwoCanvas = ({toolInUse,
     },[group, zoomGroup, two])
 
     const panCallback = useCallback( (event ) => {
-        event.preventDefault();
-        }
-
-
-    )
+            const dx = event[1][0] - event[0][0];
+            const dy = event[1][1] - event[0][1];
+            for (let index = 0; index < group.length; index++) {
+                if (group[index] != null) {
+                    panGroup(index, [dx, dy])
+                }
+            }
+            two.update();
+            setTwo(Two);
+            }, [group, panGroup, two])
 
     const addInverseZoom = (item, scale, translate) => {
         let inverseScale = 1/scale;
@@ -635,22 +644,34 @@ const TwoCanvas = ({toolInUse,
             addInverseZoom(shape, mScale, mTranslate);
             two.update();
             setTwo(two);
-        } else if(toolInUse === 'pan'){
-
+        } else if(toolInUse === 'pan' && !penInUse){
+            const point = makePoint(coords);
+            setPenArray([point]);
+            setTouchID(thisTouchID);
+            setPenInUse(true);
+            console.log("TwoCanvas has registered toolInUse as pan");
         }
     }, [toolInUse, penInUse, dropShape, two, setPenOptions, group, curIndex, makeGroup, findGroup])
 
     const move = useCallback((coords, thisTouchID) => {
-        if(penInUse && (toolInUse === 'pen') && (thisTouchID === touchID)){
-            if(penType === PEN_TYPES[2]){
+        if (penInUse && thisTouchID === touchID) {
+            if ((toolInUse === 'pen')) {
+                if (penType === PEN_TYPES[2]) {
+                    setPenArray([penArray[0], makePoint(coords)]);
+                } else {
+                    setPenArray(penArray.concat(makePoint(coords)));
+                }
+                path.vertices = penArray;
+                two.update();
+                setTwo(two);
+            } else if((toolInUse === 'pan')) {
                 setPenArray([penArray[0], makePoint(coords)]);
-            } else {
-                setPenArray(penArray.concat(makePoint(coords)));
+                panCallback([penArray[0], makePoint(coords)]);
+                two.update();
+                setTwo(two);
+
             }
-            path.vertices = penArray;
-            two.update();
-            setTwo(two);
-        }
+                }
     }, [toolInUse, touchID, penInUse, penArray, path, two, penType])
 
     const end = useCallback((coords, thisTouchID, nextTouch=false, nextTouchID=false) => {
