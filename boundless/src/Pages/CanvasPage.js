@@ -13,7 +13,7 @@ import SignInBox, {pressButton, useLoginState} from "../Components/SignInBox";
 // This is an array of constants for the pen type --------------------
 // 0:'freehand', 1:'dotted', 2:"straight"
 // TODO: change to highlight, freehand, straight
-export const PEN_TYPES = ['freehand', 'dotted', 'straight', 'erase']
+export const PEN_TYPES = ['freehand', 'highlight', 'straight', 'erase']
 
 
 export const CanvasPage = ({isNew}) => {
