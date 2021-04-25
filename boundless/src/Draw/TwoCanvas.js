@@ -582,6 +582,9 @@ const TwoCanvas = ({toolInUse,
                 break;
             case PEN_TYPES[1]:
                 break;
+            case PEN_TYPES[3]:
+                path.stroke = 'white';
+                path.linewidth = radius * 2;
             default:
                 break;
         }

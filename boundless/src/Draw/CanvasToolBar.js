@@ -8,7 +8,7 @@ import {
     Undo,
     Apps,
     Gesture,
-    Create, Remove, Extension, RadioButtonUnchecked, CheckBoxOutlineBlank, StarBorder,
+    Create, Remove, Extension, Backspace, RadioButtonUnchecked, CheckBoxOutlineBlank, StarBorder,
     TextFields, Redo, PanTool
 } from "@material-ui/icons";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
@@ -115,7 +115,7 @@ export default function CanvasToolbar({setToolSelected,
 
                 />
                 <ToolButton toolDisplay={toolDisplay}
-                            //Pen
+                    // Pen
                             optionDisplay={optionDisplay === 'pen'}
                             onClick={()=>{
                                 setPenType(PEN_TYPES[0]);
@@ -123,11 +123,11 @@ export default function CanvasToolbar({setToolSelected,
                                 setToolSelected('pen');
                             }}
                             toolNum={4}
-                            option={2}
-                            icon={<BorderColorRounded/>}
+                            option={1}
+                            icon={<Create/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
-                            //
+                            //Highlight
                             optionDisplay={optionDisplay === 'pen'}
                             onClick={()=>{
                                 setPenType(PEN_TYPES[1]);
@@ -135,8 +135,8 @@ export default function CanvasToolbar({setToolSelected,
                                 setToolSelected('pen');
                             }}
                             toolNum={4}
-                            option={1}
-                            icon={<Create/>}
+                            option={2}
+                            icon={<BorderColorRounded/>}
                 />
                 <ToolButton toolDisplay={toolDisplay}
                             optionDisplay={optionDisplay === 'pen'}
@@ -148,6 +148,17 @@ export default function CanvasToolbar({setToolSelected,
                             toolNum={4}
                             option={3}
                             icon={<Remove/>}
+                />
+                <ToolButton toolDisplay={toolDisplay}
+                            optionDisplay={optionDisplay === 'pen'}
+                            onClick={()=>{
+                                setPenType(PEN_TYPES[3]);
+                                setOptionDisplay('none');
+                                setToolSelected('pen');
+                            }}
+                            toolNum={4}
+                            option={4}
+                            icon={<Backspace/>}
                 />
 
                 <ToolButton toolDisplay={toolDisplay}
