@@ -21,7 +21,7 @@ export default function Profile() {
                         <div className='userImage'/>
                         <div className='captionText'>
                             <div className='username'>
-                                <text>{username}</text>
+                                <text>{profileUsername}</text>
                             </div>
                             <div className='caption'>
                                 <text>Created X Canvases</text>

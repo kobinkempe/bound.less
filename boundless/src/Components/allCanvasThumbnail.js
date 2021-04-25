@@ -4,13 +4,14 @@ import {selectLoggedIn, selectUsername} from "../Redux/loginState";
 import firebase from 'firebase'
 import {useSelector} from "react-redux";
 import React, {useState, useEffect} from 'react';
+import {useParams} from "react-router-dom";
 
 export default function AllCanvasThumbnail() {
 
     const [canvasList, setCanvasList] = useState([]);
     const [test, setTest] = useState(0);
     let canvases = [CanvasThumbnail({href: '#/canvas/new', text: 'New Canvas', newCanvas: true})];
-    const username = useSelector(selectUsername);
+    const username = useParams().username;
 
     const loadFromDB = async (databaseRef) => {
         let count = 1;
@@ -23,7 +24,6 @@ export default function AllCanvasThumbnail() {
                     text: 'Canvas ' + count,
                     newCanvas: false
                 }))
-                console.log(canvases);
                 ++count;
             });
         }).then(()=> {
@@ -42,14 +42,10 @@ export default function AllCanvasThumbnail() {
 
     const loadList = async (databaseRef) => {
         loadFromDB(databaseRef).then((filledCanvases) => {
-            console.log("Load List: " + filledCanvases.length);
             let temp = filledCanvases.map((canvas, index) => {
                 return (<div key={index}>{canvas}</div>)
             });
-            console.log(temp);
             setCanvasList(temp);
-            console.log("nice!");
-
         }).catch((error) => {
             console.error(error);
         });

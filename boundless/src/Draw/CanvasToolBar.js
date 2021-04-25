@@ -52,7 +52,7 @@ export default function CanvasToolbar({setToolSelected,
     //The different popups being used in the toolbar
     let colorPicker =
         <ClickAwayListener onClickAway={()=>{setOptionDisplay('none')}}>
-            <div className='colorPickerWrapperC' style={{transform: getTransform(7, 1)}}>
+            <div className='colorPickerWrapperC' style={{transform: getTransform(6, 1)}}>
                 <HexColorPicker className={"small"}
                                 color={selectColor}
                                 onChange={setSelectColor}
@@ -62,7 +62,7 @@ export default function CanvasToolbar({setToolSelected,
 
     let heightSlider =
         <ClickAwayListener onClickAway={()=>{setOptionDisplay('none')}}>
-            <div className={'hSlider'} style={{transform: getTransform(8, 1)}}>
+            <div className={'hSlider'} style={{transform: getTransform(7, 1)}}>
                 <WidthSlider onClick={setLineWidth} lineWidth={lineWidth}/>
             </div>
         </ClickAwayListener>
