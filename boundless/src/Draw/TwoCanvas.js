@@ -159,6 +159,8 @@ const TwoCanvas = ({toolInUse,
             switch (error.code) {
                 case 'storage/object-not-found':
                     console.log("File does not exist");
+                    console.log("Loaded Two");
+                    setTwo(two.appendTo(svgRef.current));
                     break;
                 case 'storage/unauthorized':
                     console.log("User doesn't have permission");
@@ -171,12 +173,34 @@ const TwoCanvas = ({toolInUse,
     };
 
     const load = async (two, url) => {
-        await two.load(url, ((svg) => {
-            console.log("In load function")
-            console.log(svg);
-            svg.center();
-            svg.translation.set(two.width / 2, two.height / 2);
-            two.add(svg);
+        await two.load(url, ((svgGroup, svg) => {
+            let children = svgGroup.children[0].children;
+            let [mGroups, mScales, mTranslates] = [[],[],[]];
+            for(let i = 0; i < children.length; ++i){
+                let child = children[i];
+                let items = [];
+                for(let j = 0; j < child.children.length; ++j){
+                    items.push(child.children[j]);
+                }
+                let newGroup = new Two.Group(items);
+                for(let j = 0; j < items.length; ++j){
+                    newGroup.add(items[j]);
+                }
+                let newScale = child.scale.x;
+                let newTranslate = [child.translation.x, child.translation.y];
+                newGroup.scale = newScale;
+                newGroup.translation.x = newTranslate[0];
+                newGroup.translation.y = newTranslate[1];
+                two.scene.add(newGroup);
+                mGroups.push(newGroup);
+                mScales.push(newScale);
+                mTranslates.push(newTranslate);
+            }
+            setGroup(mGroups);
+            setScale(mScales);
+            setTranslate(mTranslates);
+            setCurIndex(-1);
+            //two.remove(svgGroup);
         }))
         return 1;
     };
@@ -238,48 +262,48 @@ const TwoCanvas = ({toolInUse,
     // }, [])
 
     //Wipe Tool
-    // useEffect(()=>{
-    //     if(!svgRef.current){
-    //         return
-    //     }
-    //
-    //     if(wipe){
-    //         let items = [];
-    //         // I really don't know about this here. I might be copying pointers to things that are soon to be
-    //         // potentially deleted, idk how javascript works
-    //         for(let item of two.scene.children){
-    //             items.push(item);
-    //         }
-    //         if(items !== []){
-    //             setUndidTwoStack([items].concat(undidTwoStack));
-    //             two.clear();
-    //             two.update();
-    //             setTwo(two);
-    //         }
-    //         setWipe(false);
-    //     }
-    // }, [two, wipe, undidTwoStack])
-
-    // Example KobinGroup Use
     useEffect(()=>{
         if(!svgRef.current){
             return
         }
 
         if(wipe){
-            let newItems = kobinGroup(group[0], two.width, two.height)
-            group[0].remove(group[0].children);
-            group[0].add(newItems);
-            group[0].scale = .1;
-            group[0].translation.x = 0;
-            group[0].translation.y = 0;
-            setGroup([])
-            setScale([1])
-            setTranslate([[0,0]]);
-            two.clear();
+            let items = [];
+            // I really don't know about this here. I might be copying pointers to things that are soon to be
+            // potentially deleted, idk how javascript works
+            for(let item of two.scene.children){
+                items.push(item);
+            }
+            if(items !== []){
+                setUndidTwoStack([items].concat(undidTwoStack));
+                two.clear();
+                two.update();
+                setTwo(two);
+            }
             setWipe(false);
         }
-    }, [two, wipe, undidTwoStack, kobinGroup])
+    }, [two, wipe, undidTwoStack])
+
+    // Example KobinGroup Use
+    // useEffect(()=>{
+    //     if(!svgRef.current){
+    //         return
+    //     }
+    //
+    //     if(wipe){
+    //         let newItems = kobinGroup(group[0], two.width, two.height)
+    //         group[0].remove(group[0].children);
+    //         group[0].add(newItems);
+    //         group[0].scale = .1;
+    //         group[0].translation.x = 0;
+    //         group[0].translation.y = 0;
+    //         setGroup([])
+    //         setScale([1])
+    //         setTranslate([[0,0]]);
+    //         two.clear();
+    //         setWipe(false);
+    //     }
+    // }, [two, wipe, undidTwoStack, kobinGroup])
 
     const checkRedoStack = useCallback(()=>{
         if(lastItem === two.scene.children[-1]){
@@ -494,9 +518,11 @@ const TwoCanvas = ({toolInUse,
         translate[index] = [realX, realY];
         setTranslate(translates);
 
+        /*
         if(!checkStale(index)){
             console.log("Failed to load Group #"+index+ " into list of staleGroups");
         }
+        */
 
         if(index === curIndex){
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
