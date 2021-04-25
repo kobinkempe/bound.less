@@ -275,7 +275,7 @@ const TwoCanvas = ({toolInUse,
                 items.push(item);
             }
             if(items !== []){
-                setUndidTwoStack([items].concat(undidTwoStack));
+                setUndidTwoStack(items.concat(undidTwoStack));
                 two.clear();
                 two.update();
                 setTwo(two);
