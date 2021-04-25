@@ -39,8 +39,12 @@
     display: flex;
 }
 
-.username {
+.captionThumbnail {
     font-size: 1.5em;
+}
+
+.username {
+    font-size: 2.0em;
 }
 
 .caption {

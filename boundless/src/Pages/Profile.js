@@ -24,25 +24,13 @@ export default function Profile() {
                                 <text>{username}</text>
                             </div>
                             <div className='caption'>
-                                <text>Description.</text>
+                                <text>Created X Canvases</text>
                             </div>
                         </div>
-
                     </div>
-                    {/*<div className='sheetSection'>*/}
-                    {/*    <div className='heading'>*/}
-                    {/*        <text>Your bound.less Canvases</text>*/}
-                    {/*        <a className='viewAll' href={'#/profile/' + {username} + '/view-all'}>*/}
-                    {/*            View All*/}
-                    {/*        </a>*/}
-                    {/*    </div>*/}
-                    {/*    <div className='sheetBox'>*/}
-                    {/*        <CanvasThumbnail*/}
-                    {/*            href={'#/canvas/new'}*/}
-                    {/*            text={'New Canvas'}*/}
-                    {/*            newCanvas={true}/>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                    <div className='captionThumbnail'>
+                        <text>All Canvases</text>
+                    </div>
                     <AllCanvasThumbnail/>
                 </div>
             </div>
