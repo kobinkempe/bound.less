@@ -80,7 +80,7 @@ const TwoCanvas = ({toolInUse,
 
         canvasPath = "/public/" + "canvas_" + canvasID + ".svg";
     }
-    console.log(canvasPath);
+    // console.log(canvasPath);
 
     //Keeps track of the # of shapes that need to be removed from two
     //const [PGroup, setPGroup] = useState(0);
@@ -617,6 +617,10 @@ const TwoCanvas = ({toolInUse,
                 path.opacity = .1;
                 break;
             case PEN_TYPES[1]:
+                break;
+            case PEN_TYPES[3]:
+                path.stroke = 'white';
+                path.linewidth = radius * 2;
                 break;
             default:
                 break;

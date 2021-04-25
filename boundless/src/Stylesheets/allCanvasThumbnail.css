@@ -5,4 +5,8 @@
     justify-content: center;
     /* align-content: center; */
     grid-template-columns: auto auto auto;
+    background-color: lightgrey;
+    padding-top: 3em;
+    padding-bottom: 3em;
+
 }
