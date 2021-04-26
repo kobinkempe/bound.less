@@ -287,7 +287,7 @@ export default function CanvasToolbar({setToolSelected,
                             onClick={()=>{
                                 setToolSelected('download');
                             }}
-                            toolNum={8}
+                            toolNum={9}
                             icon={<GetApp/>}
                             title={"Download your SVG"}
                 />
