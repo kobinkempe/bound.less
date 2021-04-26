@@ -123,13 +123,31 @@ const TwoCanvas = ({toolInUse,
         // Clears the redo stack
     }
 
-    const undoLastItem = () => {
+    const undoLastItem = useCallback(() => {
+        if(undoStack.length < 1){
+            return;
+        }
+        const last = undoStack.pop();
+        group[last[0]].remove(last[1]);
+        two.update();
+        redoStack.push(last);
+        setUndoStack(undoStack);
+        setRedoStack(redoStack);
+        setTwo(two);
+    }, [group, undoStack, redoStack, two])
 
-    }
-
-    const redoNextItem = () => {
-
-    }
+    const redoNextItem = useCallback(() => {
+        if(redoStack.length !== 0){
+            const last = redoStack.pop();
+            group[last[0]].add(last[1]);
+            two.update();
+            undoStack.push(last);
+            setUndoStack(undoStack);
+            setGroup(group);
+            setRedoStack(redoStack);
+            setTwo(two);
+        }
+    }, [group, undoStack, redoStack, two]);
 
     /** TOOLS **/
 
@@ -633,6 +651,7 @@ const TwoCanvas = ({toolInUse,
             setPenOptions(mPath);
             setPath(mPath);
             mGroup.add(mPath);
+            addActionToUndo(index, mPath);
             addInverseZoom(mPath, mScale, mTranslate);
             two.update();
             setTwo(two);
@@ -646,7 +665,6 @@ const TwoCanvas = ({toolInUse,
             setPenArray(coords);
             setTouchID(thisTouchID);
             setPenInUse(true);
-            console.log("TwoCanvas has registered toolInUse as pan");
         }
     }, [toolInUse, penInUse, dropShape, two, setPenOptions, group, curIndex, makeGroup, findGroup])
 
