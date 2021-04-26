@@ -26,7 +26,7 @@ const TwoCanvas = ({toolInUse,
                        setUndo,
                        redo,
                        setRedo,
-                       penType=PEN_TYPES[1],
+                       penType=PEN_TYPES[0],
                        canvasID,
                        isNew
                    }) => {
@@ -77,7 +77,6 @@ const TwoCanvas = ({toolInUse,
     if(firebase.auth().currentUser) {
         canvasPath = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + canvasID + ".svg";
     } else {
-
         canvasPath = "/public/" + "canvas_" + canvasID + ".svg";
     }
     // console.log(canvasPath);
@@ -105,9 +104,6 @@ const TwoCanvas = ({toolInUse,
     //Redo Queue
     const [redoStack, setRedoStack] = useState([]);
     const [lastItem, setLastItem] = useState(0);
-
-    //ZUI checker
-    const [zui, setZUI] = useState(null);
 
     const [curIndex, setCurIndex] = useState(-2);
     const [group, setGroup] = useState([null]);
@@ -230,7 +226,6 @@ const TwoCanvas = ({toolInUse,
         setTwo(two.appendTo(svgRef.current));*/
     }, []);
 
-
     useEffect(() => {
         const interval = setInterval(() => {
 
@@ -263,7 +258,6 @@ const TwoCanvas = ({toolInUse,
         return () => clearInterval(interval);
     }, [two]);
 
-
     // //Load ZUI
     // useEffect(() => {
     //     if(!svgRef.current || !two){
@@ -280,19 +274,13 @@ const TwoCanvas = ({toolInUse,
         }
 
         if(wipe){
-            let items = [];
-            // I really don't know about this here. I might be copying pointers to things that are soon to be
-            // potentially deleted, idk how javascript works
-            for(let item of two.scene.children){
-                items.push(item);
-            }
-            if(items !== []){
-                //setUndidTwoStack([items].concat(undidTwoStack));
-                setUndidTwoStack(items.concat(undidTwoStack));
-                two.clear();
-                two.update();
-                setTwo(two);
-            }
+            two.remove(two.scene);
+            setGroup([null]);
+            setScale([1]);
+            setTranslate([[0, 0]]);
+            setStaleGroup([null]);
+            setCurIndex(-2);
+            two.update();
             setWipe(false);
         }
     }, [two, wipe, undidTwoStack])
@@ -500,20 +488,19 @@ const TwoCanvas = ({toolInUse,
     }, [group, scale, translate])
 
 
-    const panGroup = (index, [x,y]) => {
-        let realX = (x - group[index].translation.x)*(1 - translate) + group[index].translation.x;
-        let realY = (y - group[index].translation.y)*(1 - translate) + group[index].translation.y;
-        group[index].translation.x = realX;
-        group[index].translation.y = realY;
+    const panGroup = (index, [dx,dy]) => {
+        let newX = group[index].translation.x + dx;
+        let newY = group[index].translation.y + dy;
+        group[index].translation.x = newX;
+        group[index].translation.y = newY;
         let translates = translate;
-        translate[index] = [realX, realY];
+        translate[index] = [newX, newY];
         setTranslate(translates);
         if(index === curIndex){
-            if(!(checkTranslate([realX, realY]))){
+            if(!(checkTranslate([newX, newY]))){
                 setCurIndex(-1);
             }
         }
-
     }
 
     const zoomGroup = (index, [x,y], amount) => {
@@ -541,7 +528,6 @@ const TwoCanvas = ({toolInUse,
             if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
                 setCurIndex(-1);
             }
-        }else{
         }
     }
 
@@ -557,17 +543,17 @@ const TwoCanvas = ({toolInUse,
         setTwo(two);
     },[group, zoomGroup, two])
 
-    const panCallback = useCallback( (event ) => {
-            const dx = event[1][0] - event[0][0];
-            const dy = event[1][1] - event[0][1];
-            for (let index = 0; index < group.length; index++) {
-                if (group[index] != null) {
-                    panGroup(index, [dx, dy])
-                }
-            }
-            two.update();
-            setTwo(Two);
-            }, [group, panGroup, two])
+    // const panCallback = useCallback( (event ) => {
+    //         const dx = event[1][0] - event[0][0];
+    //         const dy = event[1][1] - event[0][1];
+    //         for (let index = 0; index < group.length; index++) {
+    //             if (group[index] != null) {
+    //                 panGroup(index, [dx, dy])
+    //             }
+    //         }
+    //         two.update();
+    //         setTwo(Two);
+    //         }, [group, panGroup, two])
 
     const addInverseZoom = (item, scale, translate) => {
         let inverseScale = 1/scale;
@@ -626,9 +612,9 @@ const TwoCanvas = ({toolInUse,
         path.join = 'round';
         switch (penType){
             case PEN_TYPES[0]:
-                path.opacity = .1;
                 break;
             case PEN_TYPES[1]:
+                path.opacity = .4;
                 break;
             case PEN_TYPES[3]:
                 path.stroke = 'white';
@@ -645,9 +631,9 @@ const TwoCanvas = ({toolInUse,
         let mGroup, mScale, mTranslate;
 
         // if we are in an existing group
-        if(index === -1) {
-            index = findGroup();
-        }
+        // if(index === -1) {
+        //     index = findGroup();
+        // }
         mGroup = group[index];
         mScale = scale[index];
         mTranslate = translate[index];
@@ -684,8 +670,7 @@ const TwoCanvas = ({toolInUse,
             two.update();
             setTwo(two);
         } else if(toolInUse === 'pan' && !penInUse){
-            const point = makePoint(coords);
-            setPenArray([point]);
+            setPenArray(coords);
             setTouchID(thisTouchID);
             setPenInUse(true);
             console.log("TwoCanvas has registered toolInUse as pan");
@@ -694,7 +679,7 @@ const TwoCanvas = ({toolInUse,
 
     const move = useCallback((coords, thisTouchID) => {
         if (penInUse && thisTouchID === touchID) {
-            if ((toolInUse === 'pen')) {
+            if (toolInUse === 'pen') {
                 if (penType === PEN_TYPES[2]) {
                     setPenArray([penArray[0], makePoint(coords)]);
                 } else {
@@ -703,15 +688,21 @@ const TwoCanvas = ({toolInUse,
                 path.vertices = penArray;
                 two.update();
                 setTwo(two);
-            } else if((toolInUse === 'pan')) {
-                setPenArray([penArray[0], makePoint(coords)]);
-                panCallback([penArray[0], makePoint(coords)]);
+            } else if(toolInUse === 'pan') {
+                let dx = coords[0] - penArray[0];
+                let dy = coords[1] - penArray[1];
+                for (let index = 0; index < group.length; index++) {
+                    if (group[index] != null) {
+                        panGroup(index, [dx, dy])
+                    }
+                }
+
+                setPenArray(coords);
                 two.update();
                 setTwo(two);
-
             }
-                }
-    }, [toolInUse, touchID, penInUse, penArray, path, two, penType])
+        }
+    }, [toolInUse, touchID, penInUse, penArray, path, two, penType, group, panGroup])
 
     const end = useCallback((coords, thisTouchID, nextTouch=false, nextTouchID=false) => {
         if(penInUse && (thisTouchID === touchID)){
