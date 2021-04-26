@@ -9,7 +9,7 @@ import {
     Apps,
     Gesture,
     Create, Remove, Extension, Backspace, RadioButtonUnchecked, CheckBoxOutlineBlank, StarBorder,
-    TextFields, Redo, PanTool, History
+    TextFields, Redo, PanTool, History, GetApp
 } from "@material-ui/icons";
 import LogoSmallIcon from "../Images/toolbarIcons/logoSmall";
 import {HexColorPicker} from "react-colorful";
@@ -282,6 +282,14 @@ export default function CanvasToolbar({setToolSelected,
                             toolNum={8}
                             icon={<DeleteForever/>}
                             title={"Wipe"}
+                />
+                <ToolButton toolDisplay={toolDisplay}
+                            onClick={()=>{
+                                setToolSelected('download');
+                            }}
+                            toolNum={8}
+                            icon={<GetApp/>}
+                            title={"Download your SVG"}
                 />
                 {(optionDisplay === 'palette')? colorPicker:null}
                 {(optionDisplay === 'sizePicker')? heightSlider:null}

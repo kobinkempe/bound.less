@@ -135,7 +135,7 @@ const TwoCanvas = ({toolInUse,
      *
      * **/
 
-    const downloadSVG = async (canvasRef) => {
+    const downloadSVG = async (canvasRef, userDownload) => {
         await canvasRef.getDownloadURL()
             .then(async (url) => {
                 console.log(url);
@@ -167,6 +167,20 @@ const TwoCanvas = ({toolInUse,
             }
         });
     };
+
+    const downloadSVGForUser = (canvasRef) => {
+        canvasRef.getDownloadURL().then((url) => {
+            let xhr = new XMLHttpRequest();
+            xhr.responseType = 'text';
+            xhr.onload = (event) => {
+                let text = xhr.response;
+            };
+            xhr.open('GET', url);
+            xhr.send();
+        }).catch((error) => {
+            console.error(error);
+        })
+    }
 
     const load = async (two, url) => {
         await two.load(url, ((svgGroup, svg) => {
@@ -322,7 +336,6 @@ const TwoCanvas = ({toolInUse,
         if(!svgRef.current){
             return
         }
-
         if(undo){
             checkRedoStack();
             const l = two.scene.children.length;
@@ -674,6 +687,11 @@ const TwoCanvas = ({toolInUse,
             setTouchID(thisTouchID);
             setPenInUse(true);
             console.log("TwoCanvas has registered toolInUse as pan");
+        } else if (toolInUse === 'download') {
+            console.log("Two Canvas has registered download");
+            let storageRef = firebase.storage().ref();
+            let canvasRef = storageRef.child(canvasPath);
+            downloadSVGForUser(canvasRef);
         }
     }, [toolInUse, penInUse, dropShape, two, setPenOptions, group, curIndex, makeGroup, findGroup])
 
