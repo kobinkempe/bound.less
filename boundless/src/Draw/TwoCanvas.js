@@ -179,15 +179,28 @@ const TwoCanvas = ({toolInUse,
             for(let i = 0; i < children.length; ++i){
                 let child = children[i];
                 let items = [];
+                let itemScales = [], itemTranslates = [];
                 for(let j = 0; j < child.children.length; ++j){
+                    let transformMatrix =
+                        svg.children[1].children[i].children[j].transform.baseVal[0].matrix;
+                    let ogTranslate = [transformMatrix.e, transformMatrix.f];
+                    console.log(ogTranslate);
                     items.push(child.children[j]);
+                    itemScales[j] = items[j].scale.x;
+                    itemTranslates[j] = [items[j].translation.x, items[j].translation.y];
+                    itemTranslates[j][0] =
+                        itemTranslates[j][0] * itemScales[j] + (1-itemScales[j])*(ogTranslate[0]);
+                    itemTranslates[j][1] =
+                        itemTranslates[j][1] * itemScales[j] + (1-itemScales[j])*(ogTranslate[1]);
                 }
                 let newGroup = new Two.Group(items);
                 for(let j = 0; j < items.length; ++j){
                     newGroup.add(items[j]);
+                    [items[j].translation.x, items[j].translation.y] = itemTranslates[j];
                 }
                 let newScale = child.scale.x;
                 let newTranslate = [child.translation.x, child.translation.y];
+                console.log("group", newScale, newTranslate)
                 newGroup.scale = newScale;
                 newGroup.translation.x = newTranslate[0];
                 newGroup.translation.y = newTranslate[1];
@@ -200,7 +213,6 @@ const TwoCanvas = ({toolInUse,
             setScale(mScales);
             setTranslate(mTranslates);
             setCurIndex(-1);
-            //two.remove(svgGroup);
         }))
         return 1;
     };
@@ -275,7 +287,8 @@ const TwoCanvas = ({toolInUse,
                 items.push(item);
             }
             if(items !== []){
-                setUndidTwoStack([items].concat(undidTwoStack));
+                //setUndidTwoStack([items].concat(undidTwoStack));
+                setUndidTwoStack(items.concat(undidTwoStack));
                 two.clear();
                 two.update();
                 setTwo(two);
