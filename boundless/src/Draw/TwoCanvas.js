@@ -99,11 +99,10 @@ const TwoCanvas = ({toolInUse,
     const [touchID, setTouchID] = useState(-1);
 
     //Undo storage when Clear is used
-    const [undidTwoStack, setUndidTwoStack] = useState([]);
+    const [undoStack, setUndoStack] = useState([]);
 
-    //Redo Queue
+    //Redo Stack
     const [redoStack, setRedoStack] = useState([]);
-    const [lastItem, setLastItem] = useState(0);
 
     const [curIndex, setCurIndex] = useState(-2);
     const [group, setGroup] = useState([null]);
@@ -119,6 +118,36 @@ const TwoCanvas = ({toolInUse,
         [toolInUse]
     );
 
+    const addActionToUndo = (action, item) => {
+        // Adds [action, item] to the undo stack
+        // Clears the redo stack
+    }
+
+    const undoLastItem = useCallback(() => {
+        if(undoStack.length < 1){
+            return;
+        }
+        const last = undoStack.pop();
+        group[last[0]].remove(last[1]);
+        two.update();
+        redoStack.push(last);
+        setUndoStack(undoStack);
+        setRedoStack(redoStack);
+        setTwo(two);
+    }, [group, undoStack, redoStack, two])
+
+    const redoNextItem = useCallback(() => {
+        if(redoStack.length !== 0){
+            const last = redoStack.pop();
+            group[last[0]].add(last[1]);
+            two.update();
+            undoStack.push(last);
+            setUndoStack(undoStack);
+            setGroup(group);
+            setRedoStack(redoStack);
+            setTwo(two);
+        }
+    }, [group, undoStack, redoStack, two]);
 
     /** TOOLS **/
 
@@ -288,16 +317,19 @@ const TwoCanvas = ({toolInUse,
         }
 
         if(wipe){
+            two.clear();
             two.remove(two.scene);
             setGroup([null]);
             setScale([1]);
             setTranslate([[0, 0]]);
             setStaleGroup([null]);
             setCurIndex(-2);
+            setUndoStack([]);
+            setRedoStack([]);
             two.update();
             setWipe(false);
         }
-    }, [two, wipe, undidTwoStack])
+    }, [two, wipe, addActionToUndo])
 
     // Example KobinGroup Use
     // useEffect(()=>{
@@ -320,41 +352,13 @@ const TwoCanvas = ({toolInUse,
     //     }
     // }, [two, wipe, undidTwoStack, kobinGroup])
 
-    const checkRedoStack = useCallback(()=>{
-        if(lastItem === two.scene.children[-1]){
-            return true;
-        } else if(lastItem === undidTwoStack.length){
-            return true;
-        } else {
-            setRedoStack([-1]);
-        }
-
-    }, [two, lastItem, undidTwoStack])
-
     //Undo Tool
     useEffect(() =>{
         if(!svgRef.current){
             return
         }
         if(undo){
-            checkRedoStack();
-            const l = two.scene.children.length;
-            if(l === 0 && undidTwoStack !== []){
-                two.add(undidTwoStack[0]);
-                setUndidTwoStack(undidTwoStack.slice(1));
-                setRedoStack(['clear'].concat(redoStack));
-            } else {
-                let removeItem = two.scene.children[l - 1];
-                setRedoStack([removeItem].concat(redoStack));
-                two.remove(two.scene.children[l - 1]);
-            }
-            two.update();
-            setTwo(two);
-            if(two.scene.children.length === 0){
-                setLastItem(undidTwoStack.length);
-            } else {
-                setLastItem(two.scene.children[-1]);
-            }
+            undoLastItem();
             setUndo(false);
         }
 
@@ -381,7 +385,7 @@ const TwoCanvas = ({toolInUse,
         // else if(undo <1){
         //     setdoneUndos(0);
         // }
-    }, [undo, undidTwoStack, redoStack, checkRedoStack])
+    }, [undoLastItem, undo])
 
     //Redo Tool
     useEffect(() =>{
@@ -390,23 +394,10 @@ const TwoCanvas = ({toolInUse,
         }
 
         if(redo){
-            checkRedoStack();
-            let item = redoStack[0];
-            if(item !== -1){
-                if(item === 'clear'){
-                    setWipe(true);
-                    setLastItem(undidTwoStack.length + 1);
-                } else {
-                    two.add(item);
-                    setLastItem(item);
-                }
-                setRedoStack(redoStack.slice(1));
-                two.update();
-                setTwo(two);
-            }
+            redoNextItem();
             setRedo(false);
         }
-    }, [redo, redoStack, checkRedoStack])
+    }, [redo, redoNextItem])
 
     const checkScale = (scale) => {
         return scale >= (1/NEW_GROUP_SCALE_THRESHOLD) &&
@@ -673,6 +664,7 @@ const TwoCanvas = ({toolInUse,
             setPenOptions(mPath);
             setPath(mPath);
             mGroup.add(mPath);
+            addActionToUndo(index, mPath);
             addInverseZoom(mPath, mScale, mTranslate);
             two.update();
             setTwo(two);
@@ -686,7 +678,6 @@ const TwoCanvas = ({toolInUse,
             setPenArray(coords);
             setTouchID(thisTouchID);
             setPenInUse(true);
-            console.log("TwoCanvas has registered toolInUse as pan");
         } else if (toolInUse === 'download') {
             console.log("Two Canvas has registered download");
             let storageRef = firebase.storage().ref();
