@@ -99,11 +99,10 @@ const TwoCanvas = ({toolInUse,
     const [touchID, setTouchID] = useState(-1);
 
     //Undo storage when Clear is used
-    const [undidTwoStack, setUndidTwoStack] = useState([]);
+    const [undoStack, setUndoStack] = useState([]);
 
-    //Redo Queue
+    //Redo Stack
     const [redoStack, setRedoStack] = useState([]);
-    const [lastItem, setLastItem] = useState(0);
 
     const [curIndex, setCurIndex] = useState(-2);
     const [group, setGroup] = useState([null]);
@@ -119,6 +118,18 @@ const TwoCanvas = ({toolInUse,
         [toolInUse]
     );
 
+    const addActionToUndo = (action, item) => {
+        // Adds [action, item] to the undo stack
+        // Clears the redo stack
+    }
+
+    const undoLastItem = () => {
+
+    }
+
+    const redoNextItem = () => {
+
+    }
 
     /** TOOLS **/
 
@@ -283,7 +294,7 @@ const TwoCanvas = ({toolInUse,
             two.update();
             setWipe(false);
         }
-    }, [two, wipe, undidTwoStack])
+    }, [two, wipe])
 
     // Example KobinGroup Use
     // useEffect(()=>{
@@ -315,7 +326,7 @@ const TwoCanvas = ({toolInUse,
             setRedoStack([-1]);
         }
 
-    }, [two, lastItem, undidTwoStack])
+    }, [two])
 
     //Undo Tool
     useEffect(() =>{
@@ -368,7 +379,7 @@ const TwoCanvas = ({toolInUse,
         // else if(undo <1){
         //     setdoneUndos(0);
         // }
-    }, [undo, undidTwoStack, redoStack, checkRedoStack])
+    }, [undo, redoStack, checkRedoStack])
 
     //Redo Tool
     useEffect(() =>{
