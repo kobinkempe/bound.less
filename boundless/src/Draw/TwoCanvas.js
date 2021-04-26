@@ -118,9 +118,11 @@ const TwoCanvas = ({toolInUse,
         [toolInUse]
     );
 
-    const addActionToUndo = (action, item) => {
+    const addActionToUndo = (idx, item) => {
         // Adds [action, item] to the undo stack
         // Clears the redo stack
+        undoStack.push([idx, item])
+        setRedoStack([]);
     }
 
     const undoLastItem = useCallback(() => {
@@ -671,6 +673,7 @@ const TwoCanvas = ({toolInUse,
         } else if(isMouseDownOnlyTool()){
             let shape = two.makeGroup(dropShape(coords));
             mGroup.add(shape);
+            addActionToUndo(index, shape);
             addInverseZoom(shape, mScale, mTranslate);
             two.update();
             setTwo(two);
