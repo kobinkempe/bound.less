@@ -8,6 +8,7 @@ export default function toolButton({toolDisplay,
                                        toolNum,
                                        option=false,
                                        icon,
+                                       title,
                                        small=false}){
 
     let getTransform = (tool=0, option=0) => {
@@ -34,6 +35,7 @@ export default function toolButton({toolDisplay,
         <Fab className={toolStyle}
              style={(toolDisplay==='open')? {transform: getTransform(toolNum, o)}: {}}
              onClick={onClick}
+             title={title}
              size={small?'small':'large'}
         >
             {icon}
