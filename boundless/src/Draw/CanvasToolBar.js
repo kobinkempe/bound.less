@@ -88,7 +88,6 @@ export default function CanvasToolbar({setToolSelected,
                             //Undo
                             optionDisplay = {optionDisplay === 'history'}
                             onClick={()=>{
-                                setOptionDisplay('none');
                                 setUndo(true);
                             }}
                             toolNum={1}
@@ -100,7 +99,6 @@ export default function CanvasToolbar({setToolSelected,
                             //Redo
                             optionDisplay = {optionDisplay === 'history'}
                             onClick={()=>{
-                                setOptionDisplay('none')
                                 setRedo(true);
                             }}
                             toolNum={1}
