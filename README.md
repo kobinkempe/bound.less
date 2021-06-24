@@ -1,6 +1,15 @@
 # bound.less
 
-Vector-based drawing and diagramming web application with infinite zooming capabilites developed by Michael Sawchuk, Kobin Kempe, Anuja Mehta, and Nolan Raghu. The website is usable, and zoomable to the limits of an SVG file, but a few weeks of work are needed for its full capabilities. Next steps include:
+Vector-based drawing and diagramming web application with infinite zooming capabilites developed by Michael Sawchuk, Kobin Kempe, Anuja Mehta, and Nolan Raghu. We used:
+
+* Google Firebase Authentication and Hosting
+* Google Firebase Realtime Database and Storage
+* npm
+* React.js
+* Two.js
+
+
+The website is usable, and zoomable to the limits of an SVG file, but a few weeks of work are needed for its full capabilities. Next steps include:
 
 * Updating the design, especially the toolbar icons and dynamically sizing the toolbar
 * Improving autosave so it works as expected, and implementing the download tool
