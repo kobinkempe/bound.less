@@ -9,9 +9,10 @@ import {printRect} from "./logHelpers";
 import firebase from "firebase";
 import Two from "two.js";
 import canvas from "two.js/src/renderers/canvas";
+import LocalGroup from "./LocalGroup";
 
-const NEW_GROUP_SCALE_THRESHOLD = 10;
-const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
+export const NEW_GROUP_SCALE_THRESHOLD = 10;
+export const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
 
 const ZGROUP_OVERLAP = 2;
 
@@ -105,12 +106,10 @@ const TwoCanvas = ({toolInUse,
     const [redoStack, setRedoStack] = useState([]);
 
     const [curIndex, setCurIndex] = useState(-2);
-    const [group, setGroup] = useState([null]);
-    const [staleGroup, setStaleGroup] = useState([null]);
+    const [localGroups, setLocalGroups] = useState([null]);
 
-
-    const [scale, setScale] = useState([1]);
-    const [translate, setTranslate] = useState([[0,0]]);
+    const [mainScale, setMainScale] = useState(1);
+    const [mainTranslate, setMainTranslate] = useState({x:0, y:0});
 
     const isMouseDownOnlyTool = useCallback(()=>{
             return (toolInUse === 'circle' || toolInUse === 'rectangle'|| toolInUse === 'text'|| toolInUse === 'star');
@@ -130,26 +129,26 @@ const TwoCanvas = ({toolInUse,
             return;
         }
         const last = undoStack.pop();
-        group[last[0]].remove(last[1]);
+        localGroups[last[0]].remove(last[1]);
         two.update();
         redoStack.push(last);
         setUndoStack(undoStack);
         setRedoStack(redoStack);
         setTwo(two);
-    }, [group, undoStack, redoStack, two])
+    }, [localGroups, undoStack, redoStack, two])
 
     const redoNextItem = useCallback(() => {
         if(redoStack.length !== 0){
             const last = redoStack.pop();
-            group[last[0]].add(last[1]);
+            localGroups[last[0]].add(last[1]);
             two.update();
             undoStack.push(last);
             setUndoStack(undoStack);
-            setGroup(group);
+            setLocalGroups(localGroups);
             setRedoStack(redoStack);
             setTwo(two);
         }
-    }, [group, undoStack, redoStack, two]);
+    }, [localGroups, undoStack, redoStack, two]);
 
     /** TOOLS **/
 
@@ -216,7 +215,7 @@ const TwoCanvas = ({toolInUse,
     const load = async (two, url) => {
         await two.load(url, ((svgGroup, svg) => {
             let children = svgGroup.children[0].children;
-            let [mGroups, mScales, mTranslates] = [[],[],[]];
+            let mGroups = [];
             for(let i = 0; i < children.length; ++i){
                 let child = children[i];
                 let items = [];
@@ -225,7 +224,6 @@ const TwoCanvas = ({toolInUse,
                     let transformMatrix =
                         svg.children[1].children[i].children[j].transform.baseVal[0].matrix;
                     let ogTranslate = [transformMatrix.e, transformMatrix.f];
-                    console.log(ogTranslate);
                     items.push(child.children[j]);
                     itemScales[j] = items[j].scale.x;
                     itemTranslates[j] = [items[j].translation.x, items[j].translation.y];
@@ -241,18 +239,15 @@ const TwoCanvas = ({toolInUse,
                 }
                 let newScale = child.scale.x;
                 let newTranslate = [child.translation.x, child.translation.y];
-                console.log("group", newScale, newTranslate)
                 newGroup.scale = newScale;
                 newGroup.translation.x = newTranslate[0];
                 newGroup.translation.y = newTranslate[1];
                 two.scene.add(newGroup);
-                mGroups.push(newGroup);
-                mScales.push(newScale);
-                mTranslates.push(newTranslate);
+                let newLocalGroup = new LocalGroup();
+                newLocalGroup.loadFromGroup(newGroup);
+                mGroups.push(newLocalGroup);
             }
-            setGroup(mGroups);
-            setScale(mScales);
-            setTranslate(mTranslates);
+            setLocalGroups(mGroups);
             setCurIndex(-1);
         }))
         return 1;
@@ -271,6 +266,8 @@ const TwoCanvas = ({toolInUse,
         setTwo(two.appendTo(svgRef.current));*/
     }, []);
 
+    //Saves canvas
+    //TODO fix this
     useEffect(() => {
         const interval = setInterval(() => {
 
@@ -303,15 +300,6 @@ const TwoCanvas = ({toolInUse,
         return () => clearInterval(interval);
     }, [two]);
 
-    // //Load ZUI
-    // useEffect(() => {
-    //     if(!svgRef.current || !two){
-    //         return;
-    //     }
-    //     console.log("Loaded ZUI");
-    //     setZUI(new ZUI(two.scene).addLimits(.06,8));
-    // }, [])
-
     //Wipe Tool
     useEffect(()=>{
         if(!svgRef.current){
@@ -321,10 +309,7 @@ const TwoCanvas = ({toolInUse,
         if(wipe){
             two.clear();
             two.remove(two.scene);
-            setGroup([null]);
-            setScale([1]);
-            setTranslate([[0, 0]]);
-            setStaleGroup([null]);
+            setLocalGroups([null]);
             setCurIndex(-2);
             setUndoStack([]);
             setRedoStack([]);
@@ -340,13 +325,13 @@ const TwoCanvas = ({toolInUse,
     //     }
     //
     //     if(wipe){
-    //         let newItems = kobinGroup(group[0], two.width, two.height)
-    //         group[0].remove(group[0].children);
-    //         group[0].add(newItems);
-    //         group[0].scale = .1;
-    //         group[0].translation.x = 0;
-    //         group[0].translation.y = 0;
-    //         setGroup([])
+    //         let newItems = kobinGroup(localGroups[0], two.width, two.height)
+    //         localGroups[0].remove(localGroups[0].children);
+    //         localGroups[0].add(newItems);
+    //         localGroups[0].scale = .1;
+    //         localGroups[0].translation.x = 0;
+    //         localGroups[0].translation.y = 0;
+    //         setLocalGroups([])
     //         setScale([1])
     //         setTranslate([[0,0]]);
     //         two.clear();
@@ -401,172 +386,40 @@ const TwoCanvas = ({toolInUse,
         }
     }, [redo, redoNextItem])
 
-    const checkScale = (scale) => {
-        return scale >= (1/NEW_GROUP_SCALE_THRESHOLD) &&
-            scale <= NEW_GROUP_SCALE_THRESHOLD
-    }
-
-    const checkStale = useCallback((gIndex) =>{
-        /*
-        if(!group[gIndex]){
-            return false;
-        }
-         */
-
-
-
-        if(gIndex>-1 ) {
-            const r = group[gIndex].getBoundingClientRect();
-           // let twoV = {left: 0, right: two.width, bottom: 0, top: two.height};
-            const twoV = two.scene.getBoundingClientRect();
-
-
-            //Things not in the screen need to derender
-            if (!overlaps(twoV, r, ZGROUP_OVERLAP)) {
-
-                console.log("Current Window: "+printRect(twoV))
-                console.log("Group #" + gIndex + " just went stale. BRect: " + printRect(r));
-                const gDom = document.getElementById(group[gIndex].id);
-
-                let zipObj = {dom:"", translation: {x:0, y:0}, scale:1};
-
-
-                zipObj.dom = JSON.stringify({html: gDom.innerHTML});
-                zipObj.translation.x = group[gIndex].translation.x;
-                zipObj.translation.y = group[gIndex].translation.y;
-                zipObj.scale = group[gIndex].scale;
-
-                if (gIndex >= staleGroup.length) {
-                    staleGroup.push(zipObj)
-                } else {
-                    staleGroup[gIndex] = zipObj;
-                }
-
-
-                group[gIndex].remove(group[gIndex].children);
-                setGroup(group);
-                console.log("Emptied Group #" + gIndex + " to " + group[gIndex].children.length + " children");
-                setStaleGroup(staleGroup);
-                two.update();
-
-
-                //Things overlapping in the screen should render
-            } else if(staleGroup.length < gIndex){
-                two.interpret(JSON.parse(staleGroup[gIndex].dom), true, true);
-                staleGroup[gIndex].dom = '';
-            }
-            return true;
-
-        } else {
-            return false;
-        }
-    },[two, group, staleGroup])
-
-    const checkTranslate = ([x, y]) => {
-        return Math.abs(x) <= NEW_GROUP_TRANSLATE_THRESHOLD &&
-            Math.abs(y) <= NEW_GROUP_TRANSLATE_THRESHOLD
-    }
-
-    const findGroup = useCallback(() => {
-        for(let i = 0; i < group.length; i++){
-            if(checkScale(scale[i]) && checkTranslate(translate[i])){
-                return i;
-            }
-        }
-        return -1;
-    }, [scale, translate])
-
-    const makeGroup = useCallback(() => {
-        let newGroup = two.makeGroup();
-        setGroup(group.concat(newGroup));
-        let factor = Math.round(Math.log2(scale[0])/(2*Math.log2(NEW_GROUP_SCALE_THRESHOLD)));
-        let newScale = scale[0]/Math.pow(NEW_GROUP_SCALE_THRESHOLD, 2*factor);
-        setScale(scale.concat(newScale));
-        factor = Math.round(translate[0][0]/(2*NEW_GROUP_TRANSLATE_THRESHOLD));
-        let newX = translate[0][0]-(2*factor*NEW_GROUP_TRANSLATE_THRESHOLD);
-        factor = Math.round(translate[0][1]/(2*NEW_GROUP_TRANSLATE_THRESHOLD));
-        let newY = translate[0][1]-(2*factor*NEW_GROUP_TRANSLATE_THRESHOLD);
-        setTranslate(translate.concat([[newX, newY]]));
-        newGroup.scale = newScale;
-        newGroup.translation.x = newX;
-        newGroup.translation.y = newY;
-        return [newGroup, newScale, [newX, newY]];
-    }, [group, scale, translate])
-
-
-    const panGroup = (index, [dx,dy]) => {
-        let newX = group[index].translation.x + dx;
-        let newY = group[index].translation.y + dy;
-        group[index].translation.x = newX;
-        group[index].translation.y = newY;
-        let translates = translate;
-        translate[index] = [newX, newY];
-        setTranslate(translates);
-        if(index === curIndex){
-            if(!(checkTranslate([newX, newY]))){
-                setCurIndex(-1);
-            }
-        }
-    }
-
-    const zoomGroup = (index, [x,y], amount) => {
-        let realAmount = Math.pow(2, amount);
-        let realX = (x - group[index].translation.x)*(1 - realAmount) + group[index].translation.x;
-        let realY = (y - group[index].translation.y)*(1 - realAmount) + group[index].translation.y;
-        realAmount = group[index].scale * realAmount;
-        group[index].scale = realAmount;
-        group[index].translation.x = realX;
-        group[index].translation.y = realY;
-        let scales = scale;
-        scales[index] = realAmount;
-        setScale(scales);
-        let translates = translate;
-        translate[index] = [realX, realY];
-        setTranslate(translates);
-
-        /*
-        if(!checkStale(index)){
-            console.log("Failed to load Group #"+index+ " into list of staleGroups");
-        }
-        */
-
-        if(index === curIndex){
-            if(!(checkScale(realAmount) && checkTranslate([realX, realY]))){
-                setCurIndex(-1);
-            }
-        }
-    }
-
     const zoomCallback = useCallback( (event) => {
         event.preventDefault();
         const dy = (-event.deltaY)/1000;
-        for(let index = 0; index < group.length; index++){
-            if(group[index] != null){
-                zoomGroup(index, [event.pageX, event.pageY], dy)
+        for(let localGroup of localGroups){
+            if(localGroup !== null){
+                localGroup.zoom({x:event.pageX, y:event.pageY}, dy);
+                if (localGroup.isMain()){
+                    setMainScale(localGroup.scale());
+                    setMainTranslate(localGroup.translate());
+                }
             }
         }
         two.update();
         setTwo(two);
-    },[group, zoomGroup, two])
+    },[localGroups, two])
 
     // const panCallback = useCallback( (event ) => {
     //         const dx = event[1][0] - event[0][0];
     //         const dy = event[1][1] - event[0][1];
-    //         for (let index = 0; index < group.length; index++) {
-    //             if (group[index] != null) {
+    //         for (let index = 0; index < localGroups.length; index++) {
+    //             if (localGroups[index] != null) {
     //                 panGroup(index, [dx, dy])
     //             }
     //         }
     //         two.update();
     //         setTwo(Two);
-    //         }, [group, panGroup, two])
+    //         }, [localGroups, panGroup, two])
 
     const addInverseZoom = (item, scale, translate) => {
         let inverseScale = 1/scale;
-        let inverseTranslate = [0-translate[0], 0-translate[1]];
+        let inverseTranslate = {x:0-translate.x, y:0-translate.y};
         item.scale = inverseScale;
-        item.translation.x = (inverseTranslate[0] * inverseScale);
-        item.translation.y = (inverseTranslate[1] * inverseScale);
+        item.translation.x = (inverseTranslate.x * inverseScale);
+        item.translation.y = (inverseTranslate.y * inverseScale);
     }
 
     const dropShape = useCallback((coord) => {
@@ -607,7 +460,7 @@ const TwoCanvas = ({toolInUse,
 
             //pushUndoQueue(1);
         }
-    }, [color, radius, toolInUse, two, group])
+    }, [color, radius, toolInUse, two, localGroups])
 
     const setPenOptions = useCallback((path)=>{
         path.noFill();
@@ -633,61 +486,61 @@ const TwoCanvas = ({toolInUse,
     }, [penType, color, radius])
 
     const start = useCallback((coords, thisTouchID) => {
-        let index = curIndex;
-        let mGroup, mScale, mTranslate;
-
-        // if we are in an existing group
-        // if(index === -1) {
-        //     index = findGroup();
-        // }
-        mGroup = group[index];
-        mScale = scale[index];
-        mTranslate = translate[index];
-
-        // These are for creating a new group; -2 is for the first group
-        if(index === -1){
-            [mGroup, mScale, mTranslate] = makeGroup();
-            index = group.length;
-        } else if(index === -2){
-            mGroup = two.makeGroup();
-            setGroup([mGroup]);
-            index = 0;
-            mScale = scale[index];
-            mTranslate = translate[index];
-        }
-        setCurIndex(index);
-
-        if(toolInUse === 'pen' && !penInUse){
-            const point = makePoint(coords);
-            setPenArray([point]);
-            setTouchID(thisTouchID);
-            setPenInUse(true);
-            const mPath = two.makeCurve([], true);
-            setPenOptions(mPath);
-            setPath(mPath);
-            mGroup.add(mPath);
-            addActionToUndo(index, mPath);
-            addInverseZoom(mPath, mScale, mTranslate);
-            two.update();
-            setTwo(two);
-        } else if(isMouseDownOnlyTool()){
-            let shape = two.makeGroup(dropShape(coords));
-            mGroup.add(shape);
-            addActionToUndo(index, shape);
-            addInverseZoom(shape, mScale, mTranslate);
-            two.update();
-            setTwo(two);
-        } else if(toolInUse === 'pan' && !penInUse){
+        if(toolInUse === 'pan' && !penInUse){
             setPenArray(coords);
             setTouchID(thisTouchID);
             setPenInUse(true);
         } else if (toolInUse === 'download') {
+            //TODO this will download when you click the canvas? that ain't right
             console.log("Two Canvas has registered download");
             let storageRef = firebase.storage().ref();
             let canvasRef = storageRef.child(canvasPath);
             downloadSVGForUser(canvasRef);
+        } else {
+            let index = curIndex;
+            let localGroup;
+
+            if(index >= 0 && !localGroups[index].isInRange()){
+                index = -1;
+            }
+            localGroup = localGroups[index];
+
+            // These are for creating a new localGroup; -2 is for the first localGroup
+            if(index === -1){
+                //TODO Why did we get rid of findGroup? Maybe see if we're in a group first
+                localGroup = new LocalGroup(two, mainScale, mainTranslate);
+                setLocalGroups(localGroups.concat(localGroup));
+                index = localGroups.length;
+            } else if(index === -2){
+                localGroup = new LocalGroup(two);
+                setLocalGroups([localGroup]);
+                index = 0;
+            }
+            setCurIndex(index);
+
+            if(toolInUse === 'pen' && !penInUse){
+                const point = makePoint(coords);
+                setPenArray([point]);
+                setTouchID(thisTouchID);
+                setPenInUse(true);
+                const mPath = two.makeCurve([], true);
+                setPenOptions(mPath);
+                setPath(mPath);
+                localGroup.add(mPath);
+                addActionToUndo(index, mPath);
+                addInverseZoom(mPath, localGroup.scale(), localGroup.translate());
+                two.update();
+                setTwo(two);
+            } else if(isMouseDownOnlyTool()){
+                let shape = two.makeGroup(dropShape(coords));
+                localGroup.add(shape);
+                addActionToUndo(index, shape);
+                addInverseZoom(shape, localGroup.scale(), localGroup.translate());
+                two.update();
+                setTwo(two);
+            }
         }
-    }, [toolInUse, penInUse, dropShape, two, setPenOptions, group, curIndex, makeGroup, findGroup])
+    }, [toolInUse, penInUse, dropShape, two, setPenOptions, localGroups, curIndex])
 
     const move = useCallback((coords, thisTouchID) => {
         if (penInUse && thisTouchID === touchID) {
@@ -703,9 +556,13 @@ const TwoCanvas = ({toolInUse,
             } else if(toolInUse === 'pan') {
                 let dx = coords[0] - penArray[0];
                 let dy = coords[1] - penArray[1];
-                for (let index = 0; index < group.length; index++) {
-                    if (group[index] != null) {
-                        panGroup(index, [dx, dy])
+                for (let localGroup of localGroups) {
+                    if (localGroup != null) {
+                        localGroup.pan(dx, dy);
+                        if (localGroup.isMain()){
+                            setMainScale(localGroup.scale());
+                            setMainTranslate(localGroup.translate());
+                        }
                     }
                 }
 
@@ -714,7 +571,7 @@ const TwoCanvas = ({toolInUse,
                 setTwo(two);
             }
         }
-    }, [toolInUse, touchID, penInUse, penArray, path, two, penType, group, panGroup])
+    }, [toolInUse, touchID, penInUse, penArray, path, two, penType, localGroups])
 
     const end = useCallback((coords, thisTouchID, nextTouch=false, nextTouchID=false) => {
         if(penInUse && (thisTouchID === touchID)){
