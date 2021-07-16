@@ -31,7 +31,7 @@ export const CanvasPage = ({isNew}) => {
     const [toolSelected, setToolSelected] = useState('pen');
     const [selectColor, setSelectColor] = useState('rgb(0,0,0)');
     const [wipe, setWipe] = useState(false);
-    const [lineWidth, setLineWidth] = useState(5);
+    const [lineWidth, setLineWidth] = useState(13);
     const [undoState, setUndoState] = useState(false);
     const [redo, setRedo] = useState(false);
     //const [undos, incUndos] = useNumUndos(0);
