@@ -67,20 +67,19 @@ const TwoCanvas = ({toolInUse,
 
     //Creates the 'two' object w/o mounting it to the actual DOM
     //const [two, setTwo] = useTwo({canvasID, isNew});
-    const [two, setTwo] = useState(new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40}));
+    //TODO create a window resize event for window.onResize
+    const [two, setTwo] =
+        useState(new Two({width: window.outerWidth, height: window.outerHeight, autostart:true, resolution:40}));
 
     let s = new XMLSerializer();
     let storageRef = firebase.storage().ref();
     let canvasPath;
-
-    // const CANV_NAME = "1";
 
     if(firebase.auth().currentUser) {
         canvasPath = "/" + firebase.auth().currentUser.displayName + "/" + "canvas_" + canvasID + ".svg";
     } else {
         canvasPath = "/public/" + "canvas_" + canvasID + ".svg";
     }
-    // console.log(canvasPath);
 
     //Keeps track of the # of shapes that need to be removed from two
     //const [PGroup, setPGroup] = useState(0);
@@ -402,18 +401,6 @@ const TwoCanvas = ({toolInUse,
         setTwo(two);
     },[localGroups, two])
 
-    // const panCallback = useCallback( (event ) => {
-    //         const dx = event[1][0] - event[0][0];
-    //         const dy = event[1][1] - event[0][1];
-    //         for (let index = 0; index < localGroups.length; index++) {
-    //             if (localGroups[index] != null) {
-    //                 panGroup(index, [dx, dy])
-    //             }
-    //         }
-    //         two.update();
-    //         setTwo(Two);
-    //         }, [localGroups, panGroup, two])
-
     const addInverseZoom = (item, scale, translate) => {
         let inverseScale = 1/scale;
         let inverseTranslate = {x:0-translate.x, y:0-translate.y};
@@ -597,122 +584,125 @@ const TwoCanvas = ({toolInUse,
         }
     },[penInUse, touchID, start, move])
 
-    const enterMouse = useCallback((event) => {
-        if(event.which === 0){
-            end(getsCoordinates(event), 'mouse')
-        }
-    }, [start])
-
-    const startTouch = useCallback((event) => {
-        event.preventDefault();
-        let thisTouch = event.changedTouches[0];
-        start(getTouchCoords(thisTouch), thisTouch.identifier);
-    }, [start]);
-
-    const moveTouch = useCallback((event) => {
-        event.preventDefault();
-        for(let activeTouch of event.changedTouches){
-            move(getTouchCoords(activeTouch), activeTouch.identifier);
-        }
-    }, [move]);
-
-    const endTouch = useCallback((event) => {
-        event.preventDefault();
-        for(let endingTouch of event.changedTouches) {
-            if(event.targetTouches.length !== 0){
-                end(getTouchCoords(endingTouch),
-                    endingTouch.identifier,
-                    getTouchCoords(event.targetTouches[0]),
-                    event.targetTouches[0].identifier);
-            } else {
-                end(getTouchCoords(endingTouch), endingTouch.identifier);
+    //These include the event listeners and the methods that mount them to the two canvas
+    {
+        const enterMouse = useCallback((event) => {
+            if(event.which === 0){
+                end(getsCoordinates(event), 'mouse')
             }
-        }
-    }, [end]);
+        }, [start])
 
-    const startMouse = useCallback((event) => {
-        start(getsCoordinates(event), 'mouse')
-    }, [start]);
+        const startTouch = useCallback((event) => {
+            event.preventDefault();
+            let thisTouch = event.changedTouches[0];
+            start(getTouchCoords(thisTouch), thisTouch.identifier);
+        }, [start]);
 
-    const moveMouse = useCallback((event) => {
-        move(getsCoordinates(event), 'mouse')
-    },[move]);
+        const moveTouch = useCallback((event) => {
+            event.preventDefault();
+            for(let activeTouch of event.changedTouches){
+                move(getTouchCoords(activeTouch), activeTouch.identifier);
+            }
+        }, [move]);
 
-    const endMouse = useCallback((event) => {
-        end(getsCoordinates(event), 'mouse');
-    }, [end]);
+        const endTouch = useCallback((event) => {
+            event.preventDefault();
+            for(let endingTouch of event.changedTouches) {
+                if(event.targetTouches.length !== 0){
+                    end(getTouchCoords(endingTouch),
+                        endingTouch.identifier,
+                        getTouchCoords(event.targetTouches[0]),
+                        event.targetTouches[0].identifier);
+                } else {
+                    end(getTouchCoords(endingTouch), endingTouch.identifier);
+                }
+            }
+        }, [end]);
 
-    //useEffect for startMouse
-    useEffect(() => {
-        if (!svgRef.current) {
-            //console.log("SVG Status: "+(svgRef.current != null));
-            //console.log("two load status: "+isLoaded);
-            return;
-        }
-        const canvas = two.renderer.domElement;
+        const startMouse = useCallback((event) => {
+            start(getsCoordinates(event), 'mouse')
+        }, [start]);
 
-        canvas.addEventListener('mousedown', startMouse);
-        canvas.addEventListener('touchstart', startTouch);
-        return () => {
-            canvas.removeEventListener('touchstart', startTouch);
-            canvas.removeEventListener('mousedown', startMouse);
-        };
-    }, [startMouse, startTouch, two, toolInUse]);
+        const moveMouse = useCallback((event) => {
+            move(getsCoordinates(event), 'mouse')
+        },[move]);
 
-    //useEffect for moveMouse
-    useEffect(() => {
-        if (!svgRef.current) {
-            //console.log("moveMouse Ev. Handle notGood")
-            //console.log("SVG Status: "+(svgRef.current != null));
-            //console.log("two load status: "+isLoaded);
-            return;
-        }
-        const canvas = two.renderer.domElement;
-        canvas.addEventListener('mousemove', moveMouse);
-        canvas.addEventListener('touchmove', moveTouch);
-        return () => {
-            canvas.removeEventListener('touchmove', moveTouch);
-            canvas.removeEventListener('mousemove', moveMouse);
-        };
-    }, [moveMouse, moveTouch, two, toolInUse]);
+        const endMouse = useCallback((event) => {
+            end(getsCoordinates(event), 'mouse');
+        }, [end]);
 
-    //useEffect for endMouse
-    useEffect(() => {
-        if (!svgRef.current) {
-            //console.log("MouseUp or MouseLeave Ev. Handle notGood")
-            //console.log("SVG Status: "+(svgRef.current != null));
-            //console.log("two load status: "+isLoaded);
-            return;
-        }
-        const canvas = two.renderer.domElement;
+        //useEffect for startMouse
+        useEffect(() => {
+            if (!svgRef.current) {
+                //console.log("SVG Status: "+(svgRef.current != null));
+                //console.log("two load status: "+isLoaded);
+                return;
+            }
+            const canvas = two.renderer.domElement;
 
-        canvas.addEventListener('mouseup', endMouse);
-        //canvas.addEventListener('mouseleave', endMouse);
-        canvas.addEventListener('mouseenter', enterMouse);
+            canvas.addEventListener('mousedown', startMouse);
+            canvas.addEventListener('touchstart', startTouch);
+            return () => {
+                canvas.removeEventListener('touchstart', startTouch);
+                canvas.removeEventListener('mousedown', startMouse);
+            };
+        }, [startMouse, startTouch, two, toolInUse]);
 
-        canvas.addEventListener('touchend', endTouch);
-        return () => {
-            canvas.removeEventListener('touchend', endTouch);
-            //canvas.removeEventListener('mouseleave', endMouse);
-            canvas.removeEventListener('mouseup', endMouse);
-            canvas.removeEventListener('mouseenter', enterMouse);
-        };
-    }, [endTouch, touchID, endMouse, two, toolInUse]);
+        //useEffect for moveMouse
+        useEffect(() => {
+            if (!svgRef.current) {
+                //console.log("moveMouse Ev. Handle notGood")
+                //console.log("SVG Status: "+(svgRef.current != null));
+                //console.log("two load status: "+isLoaded);
+                return;
+            }
+            const canvas = two.renderer.domElement;
+            canvas.addEventListener('mousemove', moveMouse);
+            canvas.addEventListener('touchmove', moveTouch);
+            return () => {
+                canvas.removeEventListener('touchmove', moveTouch);
+                canvas.removeEventListener('mousemove', moveMouse);
+            };
+        }, [moveMouse, moveTouch, two, toolInUse]);
 
-    //useEffect for scrollMouse
-    useEffect(() => {
-        if (!svgRef.current) {
-            //console.log("SVG Status: "+(svgRef.current != null));
-            //console.log("two load status: "+isLoaded);
-            return;
-        }
-        const canvas = two.renderer.domElement;
+        //useEffect for endMouse
+        useEffect(() => {
+            if (!svgRef.current) {
+                //console.log("MouseUp or MouseLeave Ev. Handle notGood")
+                //console.log("SVG Status: "+(svgRef.current != null));
+                //console.log("two load status: "+isLoaded);
+                return;
+            }
+            const canvas = two.renderer.domElement;
 
-        canvas.addEventListener('wheel', zoomCallback);
-        return () => {
-            canvas.removeEventListener('wheel', zoomCallback);
-        };
-    }, [two, toolInUse, zoomCallback]);
+            canvas.addEventListener('mouseup', endMouse);
+            //canvas.addEventListener('mouseleave', endMouse);
+            canvas.addEventListener('mouseenter', enterMouse);
+
+            canvas.addEventListener('touchend', endTouch);
+            return () => {
+                canvas.removeEventListener('touchend', endTouch);
+                //canvas.removeEventListener('mouseleave', endMouse);
+                canvas.removeEventListener('mouseup', endMouse);
+                canvas.removeEventListener('mouseenter', enterMouse);
+            };
+        }, [endTouch, touchID, endMouse, two, toolInUse]);
+
+        //useEffect for scrollMouse
+        useEffect(() => {
+            if (!svgRef.current) {
+                //console.log("SVG Status: "+(svgRef.current != null));
+                //console.log("two load status: "+isLoaded);
+                return;
+            }
+            const canvas = two.renderer.domElement;
+
+            canvas.addEventListener('wheel', zoomCallback);
+            return () => {
+                canvas.removeEventListener('wheel', zoomCallback);
+            };
+        }, [two, toolInUse, zoomCallback]);
+    }
 
     //Gets the coordinates of the mouse event
     const getsCoordinates = (event) => {
