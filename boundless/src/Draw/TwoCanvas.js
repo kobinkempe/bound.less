@@ -316,27 +316,6 @@ const TwoCanvas = ({toolInUse,
         }
     }, [two, wipe, addActionToUndo])
 
-    // Example KobinGroup Use
-    // useEffect(()=>{
-    //     if(!svgRef.current){
-    //         return
-    //     }
-    //
-    //     if(wipe){
-    //         let newItems = kobinGroup(localGroups[0], two.width, two.height)
-    //         localGroups[0].remove(localGroups[0].children);
-    //         localGroups[0].add(newItems);
-    //         localGroups[0].scale = .1;
-    //         localGroups[0].translation.x = 0;
-    //         localGroups[0].translation.y = 0;
-    //         setLocalGroups([])
-    //         setScale([1])
-    //         setTranslate([[0,0]]);
-    //         two.clear();
-    //         setWipe(false);
-    //     }
-    // }, [two, wipe, undidTwoStack, kobinGroup])
-
     //Undo Tool
     useEffect(() =>{
         if(!svgRef.current){

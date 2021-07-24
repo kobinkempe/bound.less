@@ -94,6 +94,10 @@ export default class KGroup {
         );
     }
 
+    isEmpty = () => {
+        return this.group.children.length === 0;
+    }
+
     isOverZoomed = (parentScale = -1) => {
         return this.getScale(parentScale) > ZOOM_IN_THRESHOLD;
     }
@@ -124,6 +128,16 @@ export default class KGroup {
             }
         }
         return false;
+    }
+
+    // Recursively finds and returns the actual KGroup or LocalGroup that is currently active
+    // ie, if this has an active KGroup, but that KGroup has a KGroup of itself, it returns the KGroup's KGroup
+    getActiveGroup = () => {
+        if(this.activeGroup === null){
+            return this;
+        } else {
+            return this.activeGroup.getActiveGroup();
+        }
     }
 
     createChild = () => {

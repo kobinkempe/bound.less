@@ -886,23 +886,55 @@ const makePathBorder = (points, screenRect, lineWidth, rounded=true) => {
     // }
     // leftLine = flipLine(leftLine, width);
 
+    let isFlat = true;
+    let retVal = [];
     let realTop = [[screenRect.right, screenRect.top]];
     for(let i = 0; i<topLine.length; ++i){
+        if(topLine[i][1] !== 0){
+            isFlat = false;
+        }
         realTop.push([topLine[i][0] + screenRect.left, topLine[i][1] + screenRect.top]);
     }
+    if(!isFlat){
+        retVal.push(realTop);
+    }
+
+    isFlat = true;
     let realBottom = [[screenRect.right, screenRect.bottom]];
     for(let i = 0; i<bottomLine.length; ++i){
+        if(bottomLine[i][1] !== 0){
+            isFlat = false;
+        }
         realBottom.push([bottomLine[i][0] + screenRect.left, screenRect.bottom - bottomLine[i][1]]);
     }
+    if(!isFlat){
+        retVal.push(realBottom);
+    }
+
+    isFlat = true;
     let realLeft = [[screenRect.left, screenRect.bottom]];
     for(let i = 0; i<leftLine.length; ++i){
+        if(leftLine[i][1] !== 0){
+            isFlat = false;
+        }
         realLeft.push([leftLine[i][1] + screenRect.left, leftLine[i][0] + screenRect.top]);
     }
+    if(!isFlat){
+        retVal.push(realLeft);
+    }
+
+    isFlat = true;
     let realRight = [[screenRect.right, screenRect.bottom]];
     for(let i = 0; i<rightLine.length; ++i){
+        if(rightLine[i][1] !== 0){
+            isFlat = false;
+        }
         realRight.push([screenRect.right - rightLine[i][1], rightLine[i][0] + screenRect.top]);
     }
-    return [realLeft, realRight, realTop, realBottom];
+    if(!isFlat){
+        retVal.push(realRight);
+    }
+    return retVal;
 }
 
 const getStrokeShapes = (points, lineWidth, screenRect, color) => {

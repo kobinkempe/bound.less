@@ -76,6 +76,7 @@ export default class LocalGroup{
                 this.group.add(this.staleItems);
                 let newX = this.translate().x + dx;
                 let newY = this.translate().y + dy;
+                this.activeGroup = null;
                 this.activateKGroup(this.scale(), {newX, newY})
             }
         } else {
@@ -107,6 +108,7 @@ export default class LocalGroup{
         } else {
             this.activateKGroup(realAmount,{x:realX, y:realY})
         }
+        console.log(this.group.getBoundingClientRect(true));
     }
 
     activateKGroup = (zoom, {x, y}) => {
@@ -139,6 +141,21 @@ export default class LocalGroup{
             && Math.abs(this.translate().y) <= NEW_GROUP_TRANSLATE_THRESHOLD
             && this.scale() >= (1/NEW_GROUP_SCALE_THRESHOLD)
             && this.scale() <= NEW_GROUP_SCALE_THRESHOLD
+    }
+
+    //Returns true if this group is currently displaying nothing
+    isEmpty = () => {
+        return this.group.children.length === 0;
+    }
+
+    // Recursively finds and returns the actual KGroup or LocalGroup that is currently active
+    // ie, if this has an active KGroup, but that KGroup has a KGroup of itself, it returns the KGroup's KGroup
+    getActiveGroup = () => {
+        if(this.activeGroup === null){
+            return this;
+        } else {
+            return this.activeGroup.getActiveGroup();
+        }
     }
 
     isStale = () => {
