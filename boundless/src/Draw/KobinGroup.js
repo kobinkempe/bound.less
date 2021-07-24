@@ -354,8 +354,10 @@ let untangleLines = (lines) => {
     }
 }
 
+// Points is an array of lines, each line of which is an array of points, which is an array formatted [px, py]
 const getFillShapes = (points, originInShape, rect, color) => {
     let retVal = [];
+    // A list of the intersections of the shapes with the border, listed as [[px, py], [line#, isStartOfLine]]
     let intersections = [];
     let shapes = [];
     let newPoints = points;
@@ -368,6 +370,8 @@ const getFillShapes = (points, originInShape, rect, color) => {
     } else {
         untangleLines(newPoints);
     }
+    // Given a position on the border, finds the next intersection in intersections[] you would run into going
+    // clockwise around the border, or the next corner you would hit, whichever you would hit first
     let findNextIntersection = ([xCur, yCur], removePoint = false) => {
         let isTop = yCur === rect.top,
             isRight = xCur === rect.right,
@@ -377,8 +381,9 @@ const getFillShapes = (points, originInShape, rect, color) => {
         let currentIndex = -1;
         for(let i = 0; i < intersections.length; ++i){
             let[[x, y], [j, n]] = intersections[i];
-            if(x !== rect.top && x !== rect.bottom && y !== rect.left && y !== rect.right){
-                let dTop = Math.abs(x - rect.top), dBottom = Math.abs(x - rect.bottom),
+            // This fixes our intersections if they aren't actually right on the border, which is possible
+            if(x !== rect.left && x !== rect.right && y !== rect.top && y !== rect.bottom){
+                let dTop = Math.abs(y - rect.top), dBottom = Math.abs(y - rect.bottom),
                     dLeft = Math.abs(x - rect.left), dRight = Math.abs(x - rect.right);
                 if(dTop <= dBottom && dTop <= dLeft && dTop <= dRight){
                     intersections[i][0][0] = rect.top;
@@ -422,6 +427,7 @@ const getFillShapes = (points, originInShape, rect, color) => {
                 currentVal = diff;
             }
         }
+        // Returns the corner if no intersections found on the current side
         if(currentIndex === -1){
             if(isLeft && !isTop){
                 return [[rect.left, rect.top], -1];
@@ -445,6 +451,7 @@ const getFillShapes = (points, originInShape, rect, color) => {
             return [currentPoint];
         } else {
             if(lineVal === -1){
+                // Meaning the point is a corner of the border
                 return [currentPoint].concat(
                     addRestOfShape(startPoint, findNextIntersection(currentPoint, true)));
             } else {
@@ -466,14 +473,16 @@ const getFillShapes = (points, originInShape, rect, color) => {
     if(points.length !== 0){
         let p0 = newPoints[0][0];
         let pn = newPoints[0][newPoints[0].length - 1];
-        if(p0[0] === pn[0] || p0[1] === pn[1]){
+        if(p0[0] === pn[0] && p0[1] === pn[1]){
             shapes = newPoints;
         } else {
             for(let i = 0; i < newPoints.length; ++i){
                 intersections.push([newPoints[i][0], [i, true]]);
                 intersections.push([newPoints[i][newPoints[i].length - 1], [i, false]]);
             }
-            //Combines the starting -> ending point
+            // Combines the starting -> ending point, so if one of the lines starts and ends within the rectangle, since
+            // the 'intersections' would actually be in the middle of the rectangle, they need to be combined into one
+            // line
             let done = false;
             for(let i = 0; i < intersections.length && !done; ++i){
                 for(let j = i + 1; j < intersections.length && !done; ++j){
@@ -505,6 +514,8 @@ const getFillShapes = (points, originInShape, rect, color) => {
                     }
                 }
             }
+            // Keeps track of the current intersection or corner. If it is a corner, the [line#, isStartOfLine] portion
+            // of the intersection value, ie intersection[1], is replaced with a -1
             let point = [[rect.left, rect.top], -1];
             if(!originInShape){
                 do{point = findNextIntersection(point[0], false)} while(point[1] === -1)

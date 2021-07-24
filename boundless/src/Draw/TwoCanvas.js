@@ -13,8 +13,7 @@ import LocalGroup from "./LocalGroup";
 
 export const NEW_GROUP_SCALE_THRESHOLD = 10;
 export const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
-
-const ZGROUP_OVERLAP = 2;
+export const ZOOM_IN_THRESHOLD = 1000;
 
 
 //

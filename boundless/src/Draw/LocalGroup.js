@@ -1,9 +1,14 @@
 import Two from "two.js";
-import {NEW_GROUP_SCALE_THRESHOLD, NEW_GROUP_TRANSLATE_THRESHOLD} from "./TwoCanvas";
+import {NEW_GROUP_SCALE_THRESHOLD, NEW_GROUP_TRANSLATE_THRESHOLD, ZOOM_IN_THRESHOLD} from "./TwoCanvas";
+import KGroup from "./KGroup";
 
 export default class LocalGroup{
-    kobinLevel = 0;
+    stale = false;
+    twoRef;
     group;
+    activeGroup = null;
+    staleItems = [];
+    kGroups = [];
     static mainGroup;
     constructor(two = null, twoScale = null, twoTranslate = null) {
         this.group = new Two.Group();
@@ -24,6 +29,7 @@ export default class LocalGroup{
             if (LocalGroup.mainGroup === null){
                 LocalGroup.mainGroup = this;
             }
+            this.twoRef = two;
         }
     }
 
@@ -38,37 +44,94 @@ export default class LocalGroup{
         return LocalGroup.mainGroup === this;
     }
 
+    //TODO fix for undo and redo
     add = (item) => {
         this.group.add(item);
     }
 
+    //TODO fix for undo and redo
     remove = (item) => {
         this.group.remove(item);
     }
 
     scale = () => {
-        return this.group.scale;
+        if(this.isStale()){
+            return this.activeGroup.getParentScale();
+        } else {
+            return this.group.scale;
+        }
     }
 
     translate = () => {
-        return {x:this.group.translation.x, y:this.group.translation.y}
+        if(this.isStale()){
+            return this.activeGroup.getParentTranslate();
+        } else {
+            return {x:this.group.translation.x, y:this.group.translation.y};
+        }
     }
 
     pan = (dx, dy) => {
-        let newX = this.translate().x + dx;
-        let newY = this.translate().y + dy;
-        this.group.translation.x = newX;
-        this.group.translation.y = newY;
+        if(this.isStale()){
+            if(!this.activeGroup.pan(dx, dy)){
+                this.group.add(this.staleItems);
+                let newX = this.translate().x + dx;
+                let newY = this.translate().y + dy;
+                this.activateKGroup(this.scale(), {newX, newY})
+            }
+        } else {
+            let newX = this.translate().x + dx;
+            let newY = this.translate().y + dy;
+            this.group.translation.x = newX;
+            this.group.translation.y = newY;
+        }
     }
 
     zoom = ({x, y}, amount) => {
+        if(this.isStale()){
+            if(this.activeGroup.zoom({x, y}, amount)){
+                return;
+            } else {
+                this.stale = false;
+                this.activeGroup = null;
+                this.group.add(this.staleItems);
+            }
+        }
         let realAmount = Math.pow(2, amount);
         let realX = (x - this.translate().x)*(1 - realAmount) + this.translate().x;
         let realY = (y - this.translate().y)*(1 - realAmount) + this.translate().y;
         realAmount = this.scale() * realAmount;
-        this.group.scale = realAmount;
-        this.group.translation.x = realX;
-        this.group.translation.y = realY;
+        if(realAmount <= ZOOM_IN_THRESHOLD){
+            this.group.scale = realAmount;
+            this.group.translation.x = realX;
+            this.group.translation.y = realY;
+        } else {
+            this.activateKGroup(realAmount,{x:realX, y:realY})
+        }
+    }
+
+    activateKGroup = (zoom, {x, y}) => {
+        this.group.children.forEach(
+            (item) => {
+                this.staleItems.push(item);
+            }
+        )
+        this.stale = true;
+        for (let kGroup of this.kGroups){
+            if(this.activeGroup === null && kGroup.isInRange(zoom, {x, y})){
+                kGroup.activate(zoom, {x, y});
+                this.activeGroup = kGroup;
+            }
+        }
+        if (this.activeGroup === null){
+            let newKGroup = new KGroup(
+                this.group, this.twoRef,
+                window.outerWidth * 3,
+                window.outerHeight * 3,
+                0 - window.outerWidth,
+                0 - window.outerHeight);
+            this.kGroups.push(newKGroup);
+            this.activeGroup = newKGroup;
+        }
     }
 
     isInRange = () => {
@@ -79,6 +142,6 @@ export default class LocalGroup{
     }
 
     isStale = () => {
-        return this.kobinLevel !== 0;
+        return this.stale;
     }
 }
