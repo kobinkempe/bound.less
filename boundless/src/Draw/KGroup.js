@@ -179,12 +179,35 @@ export default class KGroup {
             this.returnToParent();
             return false;
         } else if(this.isOverZoomed()){
-            if(!this.activateChild(realAmount,{realX, realY})) {
+            if(!this.activateChild(realAmount,{x:realX, y:realY})) {
                 this.createChild();
             }
         }
         return true;
     }
+
+    // // Zooms and pans the group to the specified amount, including adjusting or switching KGroups as necessary
+    // moveWindow = (scale, translate) => {
+    //     if(this.stale){
+    //         if(this.activeGroup.moveWindow(scale, translate)){
+    //             return true;
+    //         } else {
+    //             this.stale = false;
+    //             this.activeGroup = null;
+    //             this.group.add(this.staleItems);
+    //         }
+    //     }
+    //     if(scale <= ZOOM_IN_THRESHOLD){
+    //         this.group.scale = scale;
+    //         this.group.translation.x = translate.x;
+    //         this.group.translation.y = translate.y;
+    //     } else {
+    //         if(!this.activateChild(scale,{x:translate.x, y:translate.y})) {
+    //             this.createChild();
+    //         }
+    //     }
+    //     return true;
+    // }
 
     returnToParent = () => {
         let parentScale = this.getParentScale();

@@ -13,7 +13,8 @@ import LocalGroup from "./LocalGroup";
 
 export const NEW_GROUP_SCALE_THRESHOLD = 10;
 export const NEW_GROUP_TRANSLATE_THRESHOLD = 1000;
-export const ZOOM_IN_THRESHOLD = 1000;
+export const ZOOM_IN_THRESHOLD = 300;
+export const ZOOM_OUT_THRESHOLD = .00003
 
 
 //
@@ -465,7 +466,7 @@ const TwoCanvas = ({toolInUse,
             let index = curIndex;
             let localGroup;
 
-            if(index >= 0 && !localGroups[index].isInRange()){
+            if(index >= 0 && !localGroups[index].isDrawing()){
                 index = -1;
             }
             localGroup = localGroups[index];

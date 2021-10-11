@@ -9,10 +9,17 @@ export default class LocalGroup{
     activeGroup = null;
     staleItems = [];
     kGroups = [];
-    static mainGroup;
-    constructor(two = null, twoScale = null, twoTranslate = null) {
+    relativeGroups = [];
+    static localGroups = [];
+    static mainGroups = [];
+    constructor(two = null) {
         this.group = new Two.Group();
         let scale = 1, translate = {x:0, y:0};
+        if(LocalGroup.mainGroups.length !== 0){
+            for (let mainGroup of LocalGroup.mainGroups){
+                
+            }
+        }
         if(twoScale !== null && twoTranslate !== null){
             let factor = Math.round(Math.log2(twoScale)/(2*Math.log2(NEW_GROUP_SCALE_THRESHOLD)));
             scale = twoScale/Math.pow(NEW_GROUP_SCALE_THRESHOLD, 2*factor);
@@ -26,22 +33,12 @@ export default class LocalGroup{
         this.group.translation.y = translate.y;
         if (two !== null){
             two.add(this.group);
-            if (LocalGroup.mainGroup === null){
-                LocalGroup.mainGroup = this;
-            }
             this.twoRef = two;
         }
     }
 
     loadFromGroup = (group) => {
         this.group = group;
-        if (LocalGroup.mainGroup === null){
-            LocalGroup.mainGroup = this;
-        }
-    }
-
-    isMain = () => {
-        return LocalGroup.mainGroup === this;
     }
 
     //TODO fix for undo and redo
@@ -77,6 +74,7 @@ export default class LocalGroup{
                 let newX = this.translate().x + dx;
                 let newY = this.translate().y + dy;
                 this.activeGroup = null;
+                this.stale = false;
                 this.activateKGroup(this.scale(), {newX, newY})
             }
         } else {
@@ -108,8 +106,27 @@ export default class LocalGroup{
         } else {
             this.activateKGroup(realAmount,{x:realX, y:realY})
         }
-        console.log(this.group.getBoundingClientRect(true));
     }
+
+    // // Zooms and pans the group to the specified amount, including adjusting or switching KGroups as necessary
+    // moveWindow = (scale, translate) => {
+    //     if(this.isStale()){
+    //         if(this.activeGroup.moveWindow(scale, translate)){
+    //             return;
+    //         } else {
+    //             this.stale = false;
+    //             this.activeGroup = null;
+    //             this.group.add(this.staleItems);
+    //         }
+    //     }
+    //     if(scale <= ZOOM_IN_THRESHOLD){
+    //         this.group.scale = scale;
+    //         this.group.translation.x = translate.x;
+    //         this.group.translation.y = translate.y;
+    //     } else {
+    //         this.activateKGroup(scale,{x:translate.x, y:translate.y})
+    //     }
+    // }
 
     activateKGroup = (zoom, {x, y}) => {
         this.group.children.forEach(
@@ -136,12 +153,25 @@ export default class LocalGroup{
         }
     }
 
-    isInRange = () => {
+    isDrawing = () => {
         return Math.abs(this.translate().x) <= NEW_GROUP_TRANSLATE_THRESHOLD
             && Math.abs(this.translate().y) <= NEW_GROUP_TRANSLATE_THRESHOLD
             && this.scale() >= (1/NEW_GROUP_SCALE_THRESHOLD)
             && this.scale() <= NEW_GROUP_SCALE_THRESHOLD
+            && this.kGroups.length === 0
     }
+
+    // isInRange = () => {
+    //     let thisScale = this.scale();
+    //     let thisTranslate = this.translate();
+    //
+    //     return (
+    //         // 0 - thisTranslate.x >= this.startX * thisKScale
+    //         // && 0 - thisTranslate.x + this.twoRef.width <= (this.startX + this.width) * thisKScale
+    //         // && 0 - thisTranslate.y >= this.startY * thisKScale
+    //         // && 0 - thisTranslate.y + this.twoRef.height <= (this.startX + this.width) * thisKScale
+    //     );
+    // }
 
     //Returns true if this group is currently displaying nothing
     isEmpty = () => {
